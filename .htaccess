@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+ Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /vendedor/
+
+	RewriteCond %{REQUEST_URI} ^kernel.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+    
+    RewriteCond %{REQUEST_URI} ^apps.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?/$1 [L]
+</IfModule>
+

@@ -1,0 +1,1001 @@
+[2012-07-25 15:46:47] - 14508 - Se completo Respuesta
+[2012-07-25 15:46:47] - 14508 - Enviando Respuesta: {"name":"842407","ext":"jpg","path":"files\/1\/","quien":"1"}
+[2012-07-25 15:46:47] - 14508 - Se termino de redimensionar las imagenes
+[2012-07-25 15:46:47] - 14508 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/1/842407.thumb.jpg
+[2012-07-25 15:46:47] - 14508 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/1/842407.jpg
+[2012-07-25 15:46:47] - 14508 - Copiando Original: D:/wamp/www/lovende/kernel/../files/1/842407.original.jpg
+[2012-07-25 15:46:47] - 14508 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/1/842407.jpg
+[2012-07-25 15:46:47] - 14508 - Archivo Fuente: D:\wamp\tmp\php6101.tmp
+[2012-07-25 15:46:47] - 14508 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/1/
+[2012-07-25 15:46:47] - 14508 - Obteniendo el mime: image/jpeg
+[2012-07-25 15:46:47] - 14508 - Inicio de procesamiento
+[2012-07-25 15:46:47] - 14508 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 15:46:47] - 14508 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Desert.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php6101.tmp
+            [error] => 0
+            [size] => 845941
+        )
+
+)
+
+
+[2012-07-25 14:44:06] - 24745 - Se completo Respuesta
+[2012-07-25 14:44:06] - 24745 - Enviando Respuesta: {"name":"472381","ext":"jpg","path":"files\/1\/","quien":"1"}
+[2012-07-25 14:44:06] - 24745 - Se termino de redimensionar las imagenes
+[2012-07-25 14:44:06] - 24745 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/1/472381.thumb.jpg
+[2012-07-25 14:44:06] - 24745 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/1/472381.jpg
+[2012-07-25 14:44:06] - 24745 - Copiando Original: D:/wamp/www/lovende/kernel/../files/1/472381.original.jpg
+[2012-07-25 14:44:06] - 24745 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/1/472381.jpg
+[2012-07-25 14:44:06] - 24745 - Archivo Fuente: D:\wamp\tmp\phpFC63.tmp
+[2012-07-25 14:44:06] - 24745 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/1/
+[2012-07-25 14:44:06] - 24745 - Obteniendo el mime: image/jpeg
+[2012-07-25 14:44:06] - 24745 - Inicio de procesamiento
+[2012-07-25 14:44:06] - 24745 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 14:44:06] - 24745 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Lighthouse.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpFC63.tmp
+            [error] => 0
+            [size] => 561276
+        )
+
+)
+
+
+[2012-07-25 14:41:38] - 20397 - Se completo Respuesta
+[2012-07-25 14:41:38] - 20397 - Enviando Respuesta: {"name":"792572","ext":"jpg","path":"files\/1\/","quien":"1"}
+[2012-07-25 14:41:38] - 20397 - Se termino de redimensionar las imagenes
+[2012-07-25 14:41:38] - 20397 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/1/792572.thumb.jpg
+[2012-07-25 14:41:38] - 20397 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/1/792572.jpg
+[2012-07-25 14:41:38] - 20397 - Copiando Original: D:/wamp/www/lovende/kernel/../files/1/792572.original.jpg
+[2012-07-25 14:41:38] - 20397 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/1/792572.jpg
+[2012-07-25 14:41:38] - 20397 - Archivo Fuente: D:\wamp\tmp\phpB979.tmp
+[2012-07-25 14:41:38] - 20397 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/1/
+[2012-07-25 14:41:38] - 20397 - Obteniendo el mime: image/jpeg
+[2012-07-25 14:41:38] - 20397 - Inicio de procesamiento
+[2012-07-25 14:41:38] - 20397 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 14:41:38] - 20397 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Koala.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpB979.tmp
+            [error] => 0
+            [size] => 780831
+        )
+
+)
+
+
+[2012-07-25 14:12:05] - 3214 - Se completo Respuesta
+[2012-07-25 14:12:05] - 3214 - Enviando Respuesta: {"name":"472961","ext":"jpg","path":"files\/20\/","quien":"1"}
+[2012-07-25 14:12:05] - 3214 - Se termino de redimensionar las imagenes
+[2012-07-25 14:12:05] - 3214 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/472961.thumb.jpg
+[2012-07-25 14:12:05] - 3214 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/472961.jpg
+[2012-07-25 14:12:05] - 3214 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/472961.original.jpg
+[2012-07-25 14:12:05] - 3214 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/472961.jpg
+[2012-07-25 14:12:05] - 3214 - Archivo Fuente: D:\wamp\tmp\phpAC2F.tmp
+[2012-07-25 14:12:05] - 3214 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-25 14:12:05] - 3214 - Obteniendo el mime: image/jpeg
+[2012-07-25 14:12:05] - 3214 - Inicio de procesamiento
+[2012-07-25 14:12:05] - 3214 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 14:12:05] - 3214 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Penguins.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpAC2F.tmp
+            [error] => 0
+            [size] => 777835
+        )
+
+)
+
+
+[2012-07-25 12:16:35] - 10260 - Se completo Respuesta
+[2012-07-25 12:16:35] - 10260 - Enviando Respuesta: {"name":"839447","ext":"jpg","path":"files\/20\/","quien":"1"}
+[2012-07-25 12:16:35] - 10260 - Se termino de redimensionar las imagenes
+[2012-07-25 12:16:35] - 10260 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/839447.thumb.jpg
+[2012-07-25 12:16:34] - 10260 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/839447.jpg
+[2012-07-25 12:16:34] - 10260 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/839447.original.jpg
+[2012-07-25 12:16:34] - 10260 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/839447.jpg
+[2012-07-25 12:16:34] - 10260 - Archivo Fuente: D:\wamp\tmp\phpECC4.tmp
+[2012-07-25 12:16:34] - 10260 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-25 12:16:34] - 10260 - Obteniendo el mime: image/jpeg
+[2012-07-25 12:16:34] - 10260 - Inicio de procesamiento
+[2012-07-25 12:16:34] - 10260 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 12:16:34] - 10260 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Lighthouse.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpECC4.tmp
+            [error] => 0
+            [size] => 561276
+        )
+
+)
+
+
+[2012-07-25 11:53:59] - 27357 - Se completo Respuesta
+[2012-07-25 11:53:59] - 27357 - Enviando Respuesta: {"name":"629028","ext":"jpg","path":"files\/20\/","quien":"1"}
+[2012-07-25 11:53:59] - 27357 - Se termino de redimensionar las imagenes
+[2012-07-25 11:53:59] - 27357 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/629028.thumb.jpg
+[2012-07-25 11:53:59] - 27357 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/629028.jpg
+[2012-07-25 11:53:59] - 27357 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/629028.original.jpg
+[2012-07-25 11:53:59] - 27357 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/629028.jpg
+[2012-07-25 11:53:59] - 27357 - Archivo Fuente: D:\wamp\tmp\php3C39.tmp
+[2012-07-25 11:53:59] - 27357 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-25 11:53:59] - 27357 - Obteniendo el mime: image/jpeg
+[2012-07-25 11:53:59] - 27357 - Inicio de procesamiento
+[2012-07-25 11:53:59] - 27357 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 11:53:59] - 27357 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Penguins.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php3C39.tmp
+            [error] => 0
+            [size] => 777835
+        )
+
+)
+
+
+[2012-07-25 11:46:12] - 15996 - Se completo Respuesta
+[2012-07-25 11:46:12] - 15996 - Enviando Respuesta: {"name":"884765","ext":"jpg","path":"files\/20\/","quien":"1"}
+[2012-07-25 11:46:12] - 15996 - Se termino de redimensionar las imagenes
+[2012-07-25 11:46:11] - 15996 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/884765.thumb.jpg
+[2012-07-25 11:46:11] - 15996 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/884765.jpg
+[2012-07-25 11:46:11] - 15996 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/884765.original.jpg
+[2012-07-25 11:46:11] - 15996 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/884765.jpg
+[2012-07-25 11:46:11] - 15996 - Archivo Fuente: D:\wamp\tmp\php19D9.tmp
+[2012-07-25 11:46:11] - 15996 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-25 11:46:11] - 15996 - Obteniendo el mime: image/jpeg
+[2012-07-25 11:46:11] - 15996 - Inicio de procesamiento
+[2012-07-25 11:46:11] - 15996 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-25 11:46:11] - 15996 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Hydrangeas.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php19D9.tmp
+            [error] => 0
+            [size] => 595284
+        )
+
+)
+
+
+[2012-07-24 20:18:49] - 23542 - Se completo Respuesta
+[2012-07-24 20:18:49] - 23542 - Enviando Respuesta: {"name":"339874","ext":"jpg","path":"files\/20\/","quien":"1"}
+[2012-07-24 20:18:49] - 23542 - Se termino de redimensionar las imagenes
+[2012-07-24 20:18:48] - 23542 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/339874.thumb.jpg
+[2012-07-24 20:18:48] - 23542 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/339874.jpg
+[2012-07-24 20:18:48] - 23542 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/339874.original.jpg
+[2012-07-24 20:18:48] - 23542 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/339874.jpg
+[2012-07-24 20:18:48] - 23542 - Archivo Fuente: D:\wamp\tmp\php3052.tmp
+[2012-07-24 20:18:48] - 23542 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-24 20:18:48] - 23542 - Obteniendo el mime: image/jpeg
+[2012-07-24 20:18:48] - 23542 - Inicio de procesamiento
+[2012-07-24 20:18:48] - 23542 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-24 20:18:48] - 23542 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Chrysanthemum.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php3052.tmp
+            [error] => 0
+            [size] => 879394
+        )
+
+)
+
+
+[2012-07-17 19:35:11] - 2046 - Se completo Respuesta
+[2012-07-17 19:35:11] - 2046 - Enviando Respuesta: {"name":"83862","ext":"png","path":"files\/1\/","quien":"1"}
+[2012-07-17 19:35:11] - 2046 - Se termino de redimensionar las imagenes
+[2012-07-17 19:35:11] - 2046 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/1/83862.thumb.png
+[2012-07-17 19:35:11] - 2046 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/1/83862.png
+[2012-07-17 19:35:11] - 2046 - Copiando Original: D:/wamp/www/lovende/kernel/../files/1/83862.original.png
+[2012-07-17 19:35:11] - 2046 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/1/83862.png
+[2012-07-17 19:35:11] - 2046 - Archivo Fuente: D:\wamp\tmp\phpF062.tmp
+[2012-07-17 19:35:11] - 2046 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/1/
+[2012-07-17 19:35:11] - 2046 - Obteniendo el mime: image/png
+[2012-07-17 19:35:11] - 2046 - Inicio de procesamiento
+[2012-07-17 19:35:11] - 2046 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 19:35:11] - 2046 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpF062.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 19:23:59] - 26749 - Se completo Respuesta
+[2012-07-17 19:23:59] - 26749 - Enviando Respuesta: {"name":"735809","ext":"jpg","path":"files\/1\/","quien":"1"}
+[2012-07-17 19:23:59] - 26749 - Se termino de redimensionar las imagenes
+[2012-07-17 19:23:58] - 26749 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/1/735809.thumb.jpg
+[2012-07-17 19:23:58] - 26749 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/1/735809.jpg
+[2012-07-17 19:23:58] - 26749 - Copiando Original: D:/wamp/www/lovende/kernel/../files/1/735809.original.jpg
+[2012-07-17 19:23:58] - 26749 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/1/735809.jpg
+[2012-07-17 19:23:58] - 26749 - Archivo Fuente: D:\wamp\tmp\phpA953.tmp
+[2012-07-17 19:23:58] - 26749 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/1/
+[2012-07-17 19:23:58] - 26749 - Obteniendo el mime: image/jpeg
+[2012-07-17 19:23:58] - 26749 - Inicio de procesamiento
+[2012-07-17 19:23:58] - 26749 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 19:23:58] - 26749 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => wallpaper-134842.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpA953.tmp
+            [error] => 0
+            [size] => 776826
+        )
+
+)
+
+
+[2012-07-17 11:04:40] - 135 - Se completo Respuesta
+[2012-07-17 11:04:40] - 135 - Enviando Respuesta: {"name":"426788","ext":"jpg","path":"files\/20\/","quien":"2"}
+[2012-07-17 11:04:40] - 135 - Se termino de redimensionar las imagenes
+[2012-07-17 11:04:40] - 135 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/426788.thumb.jpg
+[2012-07-17 11:04:40] - 135 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/426788.jpg
+[2012-07-17 11:04:40] - 135 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/426788.original.jpg
+[2012-07-17 11:04:40] - 135 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/426788.jpg
+[2012-07-17 11:04:40] - 135 - Archivo Fuente: D:\wamp\tmp\php8A73.tmp
+[2012-07-17 11:04:40] - 135 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-17 11:04:40] - 135 - Obteniendo el mime: image/jpeg
+[2012-07-17 11:04:40] - 135 - Inicio de procesamiento
+[2012-07-17 11:04:40] - 135 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 11:04:40] - 135 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Desert.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php8A73.tmp
+            [error] => 0
+            [size] => 845941
+        )
+
+)
+
+
+[2012-07-17 11:04:13] - 24664 - Se completo Respuesta
+[2012-07-17 11:04:13] - 24664 - Enviando Respuesta: {"name":"883850","ext":"jpg","path":"files\/20\/","quien":"4"}
+[2012-07-17 11:04:13] - 24664 - Se termino de redimensionar las imagenes
+[2012-07-17 11:04:13] - 24664 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/883850.thumb.jpg
+[2012-07-17 11:04:13] - 24664 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/883850.jpg
+[2012-07-17 11:04:13] - 24664 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/883850.original.jpg
+[2012-07-17 11:04:13] - 24664 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/883850.jpg
+[2012-07-17 11:04:13] - 24664 - Archivo Fuente: D:\wamp\tmp\php21D1.tmp
+[2012-07-17 11:04:13] - 24664 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-17 11:04:13] - 24664 - Obteniendo el mime: image/jpeg
+[2012-07-17 11:04:13] - 24664 - Inicio de procesamiento
+[2012-07-17 11:04:13] - 24664 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 11:04:13] - 24664 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Desert.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php21D1.tmp
+            [error] => 0
+            [size] => 845941
+        )
+
+)
+
+
+[2012-07-17 11:03:47] - 31690 - Se completo Respuesta
+[2012-07-17 11:03:47] - 31690 - Enviando Respuesta: {"error":true,"mensaje":"No se encuetra loggeado en el sistema","quien":"3"}
+[2012-07-17 11:03:47] - 31690 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 11:03:47] - 31690 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Hydrangeas.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpBAA5.tmp
+            [error] => 0
+            [size] => 595284
+        )
+
+)
+
+
+[2012-07-17 11:03:13] - 27302 - Se completo Respuesta
+[2012-07-17 11:03:13] - 27302 - Enviando Respuesta: {"error":true,"mensaje":"No se encuetra loggeado en el sistema","quien":"2"}
+[2012-07-17 11:03:13] - 27302 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 11:03:13] - 27302 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Desert.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\php386B.tmp
+            [error] => 0
+            [size] => 845941
+        )
+
+)
+
+
+[2012-07-17 10:42:25] - 25907 - Se completo Respuesta
+[2012-07-17 10:42:25] - 25907 - Enviando Respuesta: {"name":"470397","ext":"jpg","path":"files\/20\/","quien":false}
+[2012-07-17 10:42:25] - 25907 - Se termino de redimensionar las imagenes
+[2012-07-17 10:42:25] - 25907 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/470397.thumb.jpg
+[2012-07-17 10:42:25] - 25907 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/470397.jpg
+[2012-07-17 10:42:25] - 25907 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/470397.original.jpg
+[2012-07-17 10:42:25] - 25907 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/470397.jpg
+[2012-07-17 10:42:25] - 25907 - Archivo Fuente: D:\wamp\tmp\php2D90.tmp
+[2012-07-17 10:42:25] - 25907 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-17 10:42:25] - 25907 - Obteniendo el mime: image/jpeg
+[2012-07-17 10:42:25] - 25907 - Inicio de procesamiento
+[2012-07-17 10:42:25] - 25907 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:42:25] - 25907 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => ichigo___bleach_by_climaxtogether.jpg
+            [type] => image/jpeg
+            [tmp_name] => D:\wamp\tmp\php2D90.tmp
+            [error] => 0
+            [size] => 19955
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => ichigo___bleach_by_climaxtogether.jpg
+            [type] => image/jpeg
+            [tmp_name] => D:\wamp\tmp\php2D90.tmp
+            [error] => 0
+            [size] => 19955
+        )
+
+)
+
+
+[2012-07-17 10:42:03] - 12572 - Se completo Respuesta
+[2012-07-17 10:42:03] - 12572 - Enviando Respuesta: {"name":"990966","ext":"png","path":"files\/20\/","quien":false}
+[2012-07-17 10:42:03] - 12572 - Se termino de redimensionar las imagenes
+[2012-07-17 10:42:03] - 12572 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/990966.thumb.png
+[2012-07-17 10:42:03] - 12572 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/990966.png
+[2012-07-17 10:42:03] - 12572 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/990966.original.png
+[2012-07-17 10:42:03] - 12572 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/990966.png
+[2012-07-17 10:42:03] - 12572 - Archivo Fuente: D:\wamp\tmp\phpD5A0.tmp
+[2012-07-17 10:42:03] - 12572 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-17 10:42:03] - 12572 - Obteniendo el mime: image/png
+[2012-07-17 10:42:03] - 12572 - Inicio de procesamiento
+[2012-07-17 10:42:03] - 12572 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:42:03] - 12572 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpD5A0.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpD5A0.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:38:48] - 7841 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:38:48] - 7841 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpDC05.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpDC05.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:38:35] - 22726 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:38:35] - 22726 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpAB92.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpAB92.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:38:28] - 6135 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:38:28] - 6135 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\php8D77.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\php8D77.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:38:23] - 11409 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:38:23] - 11409 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\php7B0F.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\php7B0F.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:32:13] - 15209 - Se completo Respuesta
+[2012-07-17 10:32:13] - 15209 - Enviando Respuesta: {"error":true,"mensaje":"No se encuetra loggeado en el sistema","quien":false}
+[2012-07-17 10:32:13] - 15209 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:32:13] - 15209 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpD637.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file2] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\phpD637.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:32:09] - 2331 - Se completo Respuesta
+[2012-07-17 10:32:09] - 2331 - Enviando Respuesta: {"name":"46325","ext":"jpg","path":"files\/20\/","quien":"1"}
+[2012-07-17 10:32:09] - 2331 - Se termino de redimensionar las imagenes
+[2012-07-17 10:32:09] - 2331 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/46325.thumb.jpg
+[2012-07-17 10:32:09] - 2331 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/46325.jpg
+[2012-07-17 10:32:09] - 2331 - Copiando Original: D:/wamp/www/lovende/kernel/../files/20/46325.original.jpg
+[2012-07-17 10:32:09] - 2331 - Archivo Destino: D:/wamp/www/lovende/kernel/../files/20/46325.jpg
+[2012-07-17 10:32:09] - 2331 - Archivo Fuente: D:\wamp\tmp\phpC45B.tmp
+[2012-07-17 10:32:09] - 2331 - Calculando la ruta destino: D:/wamp/www/lovende/kernel/../files/20/
+[2012-07-17 10:32:09] - 2331 - Obteniendo el mime: image/jpeg
+[2012-07-17 10:32:09] - 2331 - Inicio de procesamiento
+[2012-07-17 10:32:09] - 2331 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:32:09] - 2331 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [imagen] => Array
+        (
+            [name] => Desert.jpg
+            [type] => application/octet-stream
+            [tmp_name] => D:\wamp\tmp\phpC45B.tmp
+            [error] => 0
+            [size] => 845941
+        )
+
+)
+
+
+[2012-07-17 10:30:35] - 20207 - Se completo Respuesta
+[2012-07-17 10:30:35] - 20207 - Enviando Respuesta: {"error":true,"mensaje":"No se encuetra loggeado en el sistema","quien":false}
+[2012-07-17 10:30:35] - 20207 - Obteniendo llave y haciendo login para subir el archivo
+[2012-07-17 10:30:35] - 20207 - Se termino la carga del archivo comienza el procesamiento
+parametros:
+Array
+(
+    [file1] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file2] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\php5717.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+    [file3] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file4] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file5] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [file6] => Array
+        (
+            [name] => 
+            [type] => 
+            [tmp_name] => 
+            [error] => 4
+            [size] => 0
+        )
+
+    [imagen] => Array
+        (
+            [name] => bleach-ichigo-kurosaki.png
+            [type] => image/png
+            [tmp_name] => D:\wamp\tmp\php5717.tmp
+            [error] => 0
+            [size] => 258179
+        )
+
+)
+
+
+[2012-07-17 10:30:30] - 25442 - Se completo Respuesta
+[2012-07-17 10:30:30] - 25442 - Enviando Respuesta: {"name":"388885","ext":"jpg","path":"files\/20\/","quien":"2"}
+[2012-07-17 10:30:30] - 25442 - Se termino de redimensionar las imagenes
+[2012-07-17 10:30:30] - 25442 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/388885.thumb.jpg
+[2012-07-17 10:30:30] - 25442 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/388885.jpg
