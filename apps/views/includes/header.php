@@ -84,14 +84,11 @@ google_ad_height = 90;
 					?><a href="administration/dashboard" title="ir a la administración"
 							class="sep">Dashboard</a> <?php
 				}
-				?><a
-							href="<?=($usuario->estado==="Incompleto"?"home/modal/informacion-compra-venta":"product/nuevo");?>"
-							title="ir a subastas"
-							class="<?=($usuario->estado==="Incompleto"?"nmodal":"");?> sep">Vender</a>
-						<a href="logout" title="Salir">Salir</a>
-			<?php }else {?><a href="login" title="Ingresa con tu cuenta"
-							class="sep">Entrar</a> <a href="register" title="Registrate"
-							class="">Registrarse</a>
+				?><a href="product/nuevo" title="vender" class="sep">Vender</a> <a
+							href="logout" title="Salir">Salir</a>
+			<?php }else {?><a href="product/nuevo" title="vender" class="sep">Vender</a><a
+							href="login" title="Ingresa con tu cuenta" class="sep">Entrar</a>
+						<a href="register" title="Registrate" class="">Registrarse</a>
 			<?php }?>
 			</div>
 					<!--user-box-->
@@ -123,14 +120,20 @@ google_ad_height = 90;
 			<div class="menu">
 				<div class="fondo gradiente"></div>
 				<ul>
-					<li><a href="">Home</a></li>
-					<li><a href="estatica/aboutus">About us</a></li>
-					<li><a href="estatica/services">Services</a></li>
-					<li><a href="estatica/portfolio">Portfolio</a></li>
-					<li><a href="estatica/contactus">Contact us</a></li>
+					<li><a href="">Inicio</a></li>
+					<li><a href="aboutus">Acerca de nosotros</a></li>
+					<li><a href="services">Servicios</a></li>
 				</ul>
 			</div>
 			<!--user-box-->
+			<div class="icon-box">
+				<a href="#" onclick="cambiarBusquedaCategoria(4);return false;"><img
+					src="assets/images/html/automovil.png" /><span>Vehículos</span></a>
+				<a href="#" onclick="cambiarBusquedaCategoria(16);return false;"><img
+					src="assets/images/html/perro.png" /><span>Mascotas</span></a> <a
+					href="#" onclick="cambiarBusquedaCategoria(3);return false;"><img
+					src="assets/images/html/casa.png" /><span>Viviendas</span></a>
+			</div>
 			<div class="search-box">
 				<div class="fondo gradiente"></div>
 				<form action="" method="get"

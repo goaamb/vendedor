@@ -4,8 +4,8 @@ and (min-width : 768px)
 and (max-width : 1024px) {
 
 	.wrapper {max-width: 960px;}
-	.content .main-col {width:684px}
-	.product-file .data {width: 300px;}
+	.content .main-col {width:912px}
+	.product-file .data {width: 260px;}
 	.product-file .data .countdown {font-size: 16px;}
 	.line-category {width: 200px;}
 	.consejos {width: 261px;}

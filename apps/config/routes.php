@@ -26,10 +26,8 @@ if (! defined ( 'BASEPATH' ))
  */
 
 $route ['default_controller'] = "home";
-$route ['fees'] = "home/estatica/fees";
-$route ['terms'] = "home/estatica/terms";
-$route ['benefit'] = "home/estatica/benefit";
-$route ['privacy'] = "home/estatica/privacy";
+$route ['aboutus'] = "home/estatica/aboutus";
+$route ['services'] = "home/estatica/services";
 $route ['logout'] = "usuario/logout";
 $route ['login'] = "usuario/login";
 $route ['login/(:any)'] = "usuario/login/$1";

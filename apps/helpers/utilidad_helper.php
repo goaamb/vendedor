@@ -90,7 +90,7 @@ if (! function_exists ( "my_set_select" )) {
 }
 if (! function_exists ( "my_set_value" )) {
 	function my_set_value($nombre, $default = false) {
-		$default = $default===false ? "" : $default;
+		$default = $default === false ? "" : $default;
 		$r = isset ( $_POST [$nombre] ) ? $_POST [$nombre] : (isset ( $_GET [$nombre] ) ? $_GET [$nombre] : "");
 		return $r ? $r : $default;
 	}
@@ -219,10 +219,9 @@ if (! function_exists ( "imagenArticulo" )) {
 		if ($noimagen) {
 			$imagen = $usuario->imagen;
 		}
-		$user = $usuario->id;
 		$ext = pathinfo ( $imagen, PATHINFO_EXTENSION );
 		$name = pathinfo ( $imagen, PATHINFO_FILENAME );
-		$ruta = "files/" . $user . "/";
+		$ruta = "files/articulos/";
 		$dir = BASEPATH . "../$ruta";
 		if (trim ( $tipo ) == "") {
 			$tipo = ".";
@@ -270,108 +269,98 @@ if (! function_exists ( "linkTargetBlank" )) {
 	}
 }
 if (! function_exists ( "uploadImage" )) {
-	function uploadImage($ouput = true, $user = false) {
+	function uploadImage($ouput = true) {
 		$CI = &get_instance ();
 		$CI->load->library ( "image_lib" );
 		$identificador = rand ();
-		$s = $user;
-		if ($s) {
-			$return = array ();
-			$EXTENDIONTYPESIMA = array (
-					"jpg",
-					"bmp",
-					"gif",
-					"jpg",
-					"png",
-					"png" 
-			);
-			$MIMETYPESIMA = array (
-					"image/jpeg",
-					"image/bmp",
-					"image/gif",
-					"image/pjpeg",
-					"image/png",
-					"image/x-png" 
-			);
-			if (isset ( $_FILES ) && isset ( $_FILES ["imagen"] )) {
-				$files = $_FILES ["imagen"];
-				if (intval ( $files ["size"] ) <= 4194304 && $files ["error"] !== UPLOAD_ERR_FORM_SIZE) {
-					if ($files ["type"] == "application/octet-stream") {
-						$files ["type"] = get_mime ( $files ["tmp_name"] );
-					}
-					if (array_search ( $files ["type"], $MIMETYPESIMA ) !== false) {
-						try {
-							$baseruta = "files/" . $s->id . "/";
-							$ruta = BASEPATH . "../" . $baseruta;
-							if (! is_dir ( $ruta )) {
-								mkdir ( $ruta, 0777, true );
-							}
-							
-							$config ['image_library'] = 'gd2';
-							$config ['source_image'] = $files ["tmp_name"];
-							
-							srand ( time () );
-							do {
-								$name = rand ();
-								$ext = strtolower ( pathinfo ( $files ["name"], PATHINFO_EXTENSION ) );
-								$rutafinal = "$ruta$name.$ext";
-							} while ( is_file ( $rutafinal ) );
-							
-							@copy ( $files ["tmp_name"], "$ruta$name.original.$ext" );
-							
-							$config ['new_image'] = $rutafinal;
-							$config ['create_thumb'] = false;
-							$config ['maintain_ratio'] = TRUE;
-							$config ['master_dim'] = "auto";
-							$config ['quality'] = "60%";
-							if ($CI->input->post ( "quien" ) !== "perfil") {
-								$config ['width'] = 640;
-								$config ['height'] = 480;
-							} else {
-								$config ['width'] = 150;
-								$config ['height'] = 150;
-							}
-							$CI->image_lib->initialize ( $config );
-							$CI->image_lib->resize ();
-							
-							$config ['new_image'] = "$ruta$name.thumb.$ext";
-							if ($CI->input->post ( "quien" ) !== "perfil") {
-								$config ['width'] = 140;
-								$config ['height'] = 140;
-							} else {
-								$config ['width'] = 60;
-								$config ['height'] = 60;
-							}
-							$CI->image_lib->initialize ( $config );
-							$CI->image_lib->resize ();
-							
-							if ($CI->input->post ( "quien" ) == "perfil") {
-								
-								$config ['new_image'] = "$ruta$name.small.$ext";
-								$config ['width'] = 35;
-								$config ['height'] = 35;
-								$CI->image_lib->initialize ( $config );
-								$CI->image_lib->resize ();
-							}
-							$return = array (
-									'name' => "$name",
-									'ext' => "$ext",
-									'path' => "$baseruta",
-									"quien" => $CI->input->post ( "quien" ) 
-							);
-						} catch ( Exception $ex ) {
-							
-							$return = array (
-									'error' => true,
-									'mensaje' => "La Imagen no se pudo subir por favor revise el formato o vuelva a intentarlo mas tarde",
-									"quien" => $CI->input->post ( "quien" ) 
-							);
+		$return = array ();
+		$EXTENDIONTYPESIMA = array (
+				"jpg",
+				"bmp",
+				"gif",
+				"jpg",
+				"png",
+				"png" 
+		);
+		$MIMETYPESIMA = array (
+				"image/jpeg",
+				"image/bmp",
+				"image/gif",
+				"image/pjpeg",
+				"image/png",
+				"image/x-png" 
+		);
+		if (isset ( $_FILES ) && isset ( $_FILES ["imagen"] )) {
+			$files = $_FILES ["imagen"];
+			if (intval ( $files ["size"] ) <= 4194304 && $files ["error"] !== UPLOAD_ERR_FORM_SIZE) {
+				if ($files ["type"] == "application/octet-stream") {
+					$files ["type"] = get_mime ( $files ["tmp_name"] );
+				}
+				if (array_search ( $files ["type"], $MIMETYPESIMA ) !== false) {
+					try {
+						$baseruta = "files/articulos/";
+						$ruta = BASEPATH . "../" . $baseruta;
+						if (! is_dir ( $ruta )) {
+							mkdir ( $ruta, 0777, true );
 						}
-					} else {
+						
+						$config ['image_library'] = 'gd2';
+						$config ['source_image'] = $files ["tmp_name"];
+						
+						srand ( time () );
+						do {
+							$name = rand ();
+							$ext = strtolower ( pathinfo ( $files ["name"], PATHINFO_EXTENSION ) );
+							$rutafinal = "$ruta$name.$ext";
+						} while ( is_file ( $rutafinal ) );
+						
+						//@copy ( $files ["tmp_name"], "$ruta$name.original.$ext" );
+						
+						$config ['new_image'] = $rutafinal;
+						$config ['create_thumb'] = false;
+						$config ['maintain_ratio'] = TRUE;
+						$config ['master_dim'] = "auto";
+						$config ['quality'] = "60%";
+						if ($CI->input->post ( "quien" ) !== "perfil") {
+							$config ['width'] = 640;
+							$config ['height'] = 480;
+						} else {
+							$config ['width'] = 150;
+							$config ['height'] = 150;
+						}
+						$CI->image_lib->initialize ( $config );
+						$CI->image_lib->resize ();
+						
+						$config ['new_image'] = "$ruta$name.thumb.$ext";
+						if ($CI->input->post ( "quien" ) !== "perfil") {
+							$config ['width'] = 140;
+							$config ['height'] = 140;
+						} else {
+							$config ['width'] = 60;
+							$config ['height'] = 60;
+						}
+						$CI->image_lib->initialize ( $config );
+						$CI->image_lib->resize ();
+						
+						if ($CI->input->post ( "quien" ) == "perfil") {
+							
+							$config ['new_image'] = "$ruta$name.small.$ext";
+							$config ['width'] = 35;
+							$config ['height'] = 35;
+							$CI->image_lib->initialize ( $config );
+							$CI->image_lib->resize ();
+						}
+						$return = array (
+								'name' => "$name",
+								'ext' => "$ext",
+								'path' => "$baseruta",
+								"quien" => $CI->input->post ( "quien" ) 
+						);
+					} catch ( Exception $ex ) {
 						
 						$return = array (
 								'error' => true,
-								'mensaje' => "El Formato no es Valido",
+								'mensaje' => "La Imagen no se pudo subir por favor revise el formato o vuelva a intentarlo mas tarde",
 								"quien" => $CI->input->post ( "quien" ) 
 						);
 					}
@@ -379,7 +368,7 @@ if (! function_exists ( "uploadImage" )) {
 					
 					$return = array (
 							'error' => true,
-							'mensaje' => "La imagen no puede ser mayor a 4Mb",
+							'mensaje' => "El Formato no es Valido",
 							"quien" => $CI->input->post ( "quien" ) 
 					);
 				}
@@ -387,14 +376,15 @@ if (! function_exists ( "uploadImage" )) {
 				
 				$return = array (
 						'error' => true,
-						'mensaje' => "El Archivo no se pudo subir por favor revise el formato o vuelva a intentarlo mas tarde",
+						'mensaje' => "La imagen no puede ser mayor a 4Mb",
 						"quien" => $CI->input->post ( "quien" ) 
 				);
 			}
 		} else {
+			
 			$return = array (
 					'error' => true,
-					'mensaje' => "No se encuetra loggeado en el sistema",
+					'mensaje' => "El Archivo no se pudo subir por favor revise el formato o vuelva a intentarlo mas tarde",
 					"quien" => $CI->input->post ( "quien" ) 
 			);
 		}

@@ -52,8 +52,7 @@ function verificarOrdenamiento() {
 			a = "asc";
 			break;
 		}
-		$("#" + who).next("table").find("th[data-orderby='" + gob + "']")
-				.addClass("select " + a).data("asc", a);
+		$("#" + who).next("table").find("th[data-orderby='" + gob + "']").addClass("select " + a).data("asc", a);
 	} else {
 		var s = $("th[data-default='true']").addClass("select");
 		for ( var i = 0; i < s.length; i++) {
@@ -436,29 +435,7 @@ function crearArticulo(a) {
 	var st = G.dom.create("strong");
 	p.appendChild(st);
 	d1.appendChild(p);
-
-	if (a.tipo == "Fijo" || a.tipo == "Cantidad") {
-		st.innerHTML = a.precio;
-	} else {
-		st.innerHTML = a.mayorPuja;
-	}
-	p = G.dom.create("p");
-	d1.appendChild(p);
-	if (a.tipo == "Fijo") {
-		p.innerHTML = a.textoOferta;
-	}
-	if (a.tipo == "Cantidad") {
-		p.innerHTML = a.textoOferta;
-	} else if (a.tipo == "Subasta") {
-		var x = parseInt(a.cP, 10);
-		if (x > 0) {
-			p.innerHTML = a.cantidadPujas;
-		}
-	}
-	p = G.dom.create("p");
-	p.className = "grey";
-	d1.appendChild(p);
-	p.innerHTML = a.tiempo;
+	st.innerHTML = a.precio;
 	var ul = G.dom.create("ul");
 	var li = G.dom.create("li");
 	var h2 = G.dom.create("h2");
@@ -468,10 +445,6 @@ function crearArticulo(a) {
 	al.innerHTML = a.titulo;
 	h2.appendChild(al);
 	li.appendChild(h2);
-	ul.appendChild(li);
-	li = G.dom.create("li");
-	li.className = "grey";
-	li.innerHTML = a.pais_nombre;
 	ul.appendChild(li);
 	d.appendChild(ul);
 
@@ -565,8 +538,7 @@ function verMasArticulos(tipo, p, s) {
 					var oc = ap.attr("onclick").replace(/.*([\d]+).*/, "$1");
 					oc = parseInt(oc, 10);
 					oc = isNaN(oc) ? 1 : oc;
-					ap.attr("onclick", "return verMasArticulos('home','"
-							+ (oc + 1) + "','" + (s ? s : "all") + "');");
+					ap.attr("onclick", "return verMasArticulos('home','" + (oc + 1) + "','" + (s ? s : "all") + "');");
 					var f = parseInt(data["final"], 10);
 					f = isNaN(f) ? 0 : f;
 					$("#contadorFinal").html(f);
@@ -624,8 +596,7 @@ function verMas(url, funcion, crear, vfinal, vtotal, p, s) {
 				}
 				$('.nmodal').nyroModal();
 				var ap = $("p.ver-mas a:first");
-				ap.attr("onclick", "return " + funcion + "('" + data[vfinal]
-						+ "','" + (s ? s : "all") + "');");
+				ap.attr("onclick", "return " + funcion + "('" + data[vfinal] + "','" + (s ? s : "all") + "');");
 				var f = parseInt(data[vfinal], 10);
 				f = isNaN(f) ? 0 : f;
 				$("#contadorFinal").html(f);
@@ -649,32 +620,23 @@ function verMas(url, funcion, crear, vfinal, vtotal, p, s) {
 	return false;
 }
 function verMasArticulosComprados(p, s) {
-	return verMas("usuario/verMasArticulosComprados",
-			"verMasArticulosComprados", crearArticuloVendido, "finalComprados",
-			"totalComprados", p, s);
+	return verMas("usuario/verMasArticulosComprados", "verMasArticulosComprados", crearArticuloVendido, "finalComprados", "totalComprados", p, s);
 }
 function verMasArticulosVendidos(p, s) {
-	return verMas("usuario/verMasArticulosVendidos", "verMasArticulosVendidos",
-			crearArticuloVendido, "finalVendidos", "totalVendidos", p, s);
+	return verMas("usuario/verMasArticulosVendidos", "verMasArticulosVendidos", crearArticuloVendido, "finalVendidos", "totalVendidos", p, s);
 }
 
 function verMasArticulosEnCompra(p, s) {
-	return verMas("usuario/verMasArticulosEnCompra", "verMasArticulosEnCompra",
-			crearArticuloEnCompra, "finalEnCompra", "totalEnCompra", p, s);
+	return verMas("usuario/verMasArticulosEnCompra", "verMasArticulosEnCompra", crearArticuloEnCompra, "finalEnCompra", "totalEnCompra", p, s);
 }
 function verMasArticulosEnVenta(p, s) {
-	return verMas("usuario/verMasArticulosEnVenta", "verMasArticulosEnVenta",
-			crearArticuloEnVenta, "finalEnVenta", "totalEnVenta", p, s);
+	return verMas("usuario/verMasArticulosEnVenta", "verMasArticulosEnVenta", crearArticuloEnVenta, "finalEnVenta", "totalEnVenta", p, s);
 }
 function verMasArticulosNoComprados(p, s) {
-	return verMas("usuario/verMasArticulosNoComprados",
-			"verMasArticulosNoComprados", crearArticuloNoComprados,
-			"finalNoComprados", "totalNoComprados", p, s);
+	return verMas("usuario/verMasArticulosNoComprados", "verMasArticulosNoComprados", crearArticuloNoComprados, "finalNoComprados", "totalNoComprados", p, s);
 }
 function verMasArticulosNoVendidos(p, s) {
-	return verMas("usuario/verMasArticulosNoVendidos",
-			"verMasArticulosNoVendidos", crearArticuloNoVendidos,
-			"finalNoVendidos", "totalNoVendidos", p, s);
+	return verMas("usuario/verMasArticulosNoVendidos", "verMasArticulosNoVendidos", crearArticuloNoVendidos, "finalNoVendidos", "totalNoVendidos", p, s);
 }
 
 function cambiarOrdenBusqueda() {
@@ -760,8 +722,7 @@ function denunciarPago() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -785,8 +746,7 @@ function verificarRetrasoEnvio() {
 			dataType : "json",
 			success : function(data) {
 				if (data.exito) {
-					location.href = location.href.split("#").shift().split("?")
-							.shift();
+					location.href = location.href.split("#").shift().split("?").shift();
 				} else {
 					$('.nyroModalClose').click();
 				}
@@ -811,8 +771,7 @@ function denunciarRecibido() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -833,8 +792,7 @@ function denunciarEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -856,8 +814,7 @@ function denunciarGastosEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -882,8 +839,7 @@ function enviarGastosEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -954,8 +910,7 @@ function enviarPago() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -980,8 +935,7 @@ function confirmarRecepcion() {
 			dataType : "json",
 			success : function(data) {
 				if (data.exito) {
-					location.href = location.href.split("#").shift().split("?")
-							.shift();
+					location.href = location.href.split("#").shift().split("?").shift();
 				} else {
 					$('.nyroModalClose').click();
 				}
@@ -1003,8 +957,7 @@ function confirmarEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?")
-						.shift();
+				location.href = location.href.split("#").shift().split("?").shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -1028,8 +981,7 @@ function cambiarTipoTarifa() {
 			dataType : "json",
 			success : function(data) {
 				if (data.exito) {
-					location.href = location.href.split("#").shift().split("?")
-							.shift();
+					location.href = location.href.split("#").shift().split("?").shift();
 				} else {
 					$('.nyroModalClose').click();
 				}
@@ -1085,8 +1037,7 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length - 2; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("disabled").attr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").addClass("required")
-							.addClass("min-value").removeAttr("disabled");
+					$(".formA input[name='" + dxi + "']").addClass("required").addClass("min-value").removeAttr("disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1097,8 +1048,7 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length - 1; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("disabled").attr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").addClass("required")
-							.addClass("min-value").removeAttr("disabled");
+					$(".formA input[name='" + dxi + "']").addClass("required").addClass("min-value").removeAttr("disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1118,9 +1068,7 @@ function cambiarGastos() {
 				for ( var i = 1; i < c.length; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").removeClass(
-							"required").removeClass("min-value").attr(
-							"disabled", "disabled");
+					$(".formA input[name='" + dxi + "']").removeClass("required").removeClass("min-value").attr("disabled", "disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 
@@ -1132,9 +1080,7 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").removeClass(
-							"required").removeClass("min-value").attr(
-							"disabled", "disabled");
+					$(".formA input[name='" + dxi + "']").removeClass("required").removeClass("min-value").attr("disabled", "disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1145,9 +1091,7 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("checked");
-					$(".formA input[name='" + dxi + "']").removeClass(
-							"required").removeClass("min-value").attr(
-							"disabled", "disabled");
+					$(".formA input[name='" + dxi + "']").removeClass("required").removeClass("min-value").attr("disabled", "disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1168,8 +1112,7 @@ function envioLocalCambio() {
 		var c = f.find("input[type='checkbox']").not(this);
 		if (this.checked) {
 			c.attr("disabled", "disabled");
-			f.find("input[type='text']").attr("disabled", "disabled")
-					.removeClass("required");
+			f.find("input[type='text']").attr("disabled", "disabled").removeClass("required");
 			for ( var i = 0; i < c.length; i++) {
 				var di = $(c[i]).data("input");
 				$("#" + di + "Error").html("").data("tipo-error", "");
@@ -1179,8 +1122,7 @@ function envioLocalCambio() {
 			for ( var i = 0; i < c.length; i++) {
 				if (c[i].checked) {
 					var di = $(c[i]).data("input");
-					$(".formA input[name='" + di + "']").removeAttr("disabled")
-							.addClass("required");
+					$(".formA input[name='" + di + "']").removeAttr("disabled").addClass("required");
 				}
 			}
 		}

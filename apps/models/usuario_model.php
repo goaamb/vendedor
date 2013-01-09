@@ -63,8 +63,7 @@ class Usuario_model extends CI_Model {
 				"estado" => "Incompleto",
 				"fb_id" => $this->fb_id,
 				"registro" => date ( "Y-m-d H:i:s" ),
-				"base" => $this->seudonimo,
-				"codigo_oculto" => $this->codigo_oculto 
+				"base" => $this->seudonimo
 		);
 		if (@$this->db->insert ( "usuario", $datos )) {
 			$this->id = $this->db->insert_id ();

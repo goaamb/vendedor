@@ -86,11 +86,11 @@ class Home extends BaseController {
 							}
 							unset ( $r );
 						}
-						break;
+					break;
 					case "2" :
 						if (isset ( $_FILES ) && isset ( $_FILES ["excel"] ))
 							$emails = $this->importarEmails ( $_FILES ["excel"] );
-						break;
+					break;
 				}
 				/*
 				 * $emails = array ( "goaamb@gmail.com" => "Alvaro Justo Michel
@@ -155,6 +155,157 @@ class Home extends BaseController {
 		}
 		return $emails;
 	}
+	public function importarVehiculos() {
+		ini_set ( "max_execution_time", "3600" );
+		$data = array ();
+		$archivo = (isset ( $_FILES ) && isset ( $_FILES ["archivo"] )) ? $_FILES ["archivo"] : false;
+		if ($archivo && is_file ( $archivo ["tmp_name"] )) {
+			require_once (BASEPATH . "../apps/libraries/PHPExcel/IOFactory.php");
+			$objPHPExcel = PHPExcel_IOFactory::load ( $archivo ["tmp_name"] );
+			$h = $objPHPExcel->getActiveSheet ();
+			$r = 2;
+			$c = 0;
+			$count = 0;
+			$imagenes = $this->articulo->listarDirectorio ();
+			
+			do {
+				$marca = $h->getCellByColumnAndRow ( $c, $r )->getValue ();
+				if (trim ( $marca ) != "") {
+					if (isset ( $imagenes [$count] )) {
+						$file = BASEPATH . "../files/temporal/" . $imagenes [$count];
+						$_FILES = array (
+								"imagen" => array (
+										"size" => filesize ( $file ),
+										"error" => 0,
+										"type" => "image/jpeg",
+										"tmp_name" => $file,
+										"name" => pathinfo ( $file, PATHINFO_BASENAME ) 
+								) 
+						);
+						$articulo = $this->articulo;
+						$image = uploadImage ( false );
+						if (is_array ( $image ) && isset ( $image ["name"] ) && isset ( $image ["ext"] )) {
+							$articulo->foto = $image ["name"] . "." . $image ["ext"];
+						}
+					}
+					$modelo = $h->getCellByColumnAndRow ( $c + 1, $r )->getValue ();
+					$cilindrada = $h->getCellByColumnAndRow ( $c + 2, $r )->getValue ();
+					$caja = $h->getCellByColumnAndRow ( $c + 3, $r )->getValue ();
+					$combustible = $h->getCellByColumnAndRow ( $c + 4, $r )->getValue ();
+					$precio = $h->getCellByColumnAndRow ( $c + 5, $r )->getValue ();
+					$telefono = $h->getCellByColumnAndRow ( $c + 6, $r )->getValue ();
+					$titulo = $marca . " - " . $modelo . " - " . $telefono;
+					$articulo->titulo = $titulo;
+					$articulo->categoria = 4;
+					$articulo->precio = $precio;
+					$articulo->moneda = 2;
+					$articulo->fecha_registro = date ( "Y-m-d H:i:s" );
+					$articulo->precio = $precio;
+					$articulo->contactar_con = $telefono;
+					$articulo->ciudad = 196;
+					$articulo->estado = "A la venta";
+					$vehiculo = new stdClass ();
+					$vehiculo->marca = $marca;
+					$vehiculo->cilindrada = $cilindrada;
+					$vehiculo->caja = $caja;
+					$vehiculo->combustible = $combustible;
+					$this->articulo->registrar ( false, $vehiculo );
+					
+					$count ++;
+				}
+				$r ++;
+			} while ( trim ( $marca ) !== "" );
+			if ($count > 0) {
+				$data ["Mensaje"] = "Se importaron $count Categorías";
+			} else {
+				$data ["Error"] = "No se importo ninguna Categoría";
+			}
+		}
+		$this->loadGUI ( "importar_articulos", $data );
+	}
+	public function importarMascotas() {
+		$data = array ();
+		$archivo = (isset ( $_FILES ) && isset ( $_FILES ["archivo"] )) ? $_FILES ["archivo"] : false;
+		if ($archivo && is_file ( $archivo ["tmp_name"] )) {
+			require_once (BASEPATH . "../apps/libraries/PHPExcel/IOFactory.php");
+			$objPHPExcel = PHPExcel_IOFactory::load ( $archivo ["tmp_name"] );
+			$h = $objPHPExcel->getActiveSheet ();
+			$r = 2;
+			$c = 1;
+			$count = 0;
+			$imagenes = $this->articulo->listarDirectorio ();
+			
+			do {
+				$raza = $h->getCellByColumnAndRow ( $c, $r )->getValue ();
+				if (trim ( $raza ) != "") {
+					if (isset ( $imagenes [$count] )) {
+						$file = BASEPATH . "../files/temporal/" . $imagenes [$count];
+						$_FILES = array (
+								"imagen" => array (
+										"size" => filesize ( $file ),
+										"error" => 0,
+										"type" => "image/jpeg",
+										"tmp_name" => $file,
+										"name" => pathinfo ( $file, PATHINFO_BASENAME ) 
+								) 
+						);
+						$articulo = $this->articulo;
+						$image = uploadImage ( false );
+						if (is_array ( $image ) && isset ( $image ["name"] ) && isset ( $image ["ext"] )) {
+							$articulo->foto = $image ["name"] . "." . $image ["ext"];
+						}
+					}
+					$sexo = $h->getCellByColumnAndRow ( $c + 1, $r )->getValue ();
+					switch (strtoupper ( $sexo )) {
+						case "M" :
+							$sexo = "Macho";
+						break;
+						case "H" :
+							$sexo = "Hembra";
+						break;
+						default :
+							$sexo = "Hembra y Macho";
+						break;
+					}
+					$pedigri = $h->getCellByColumnAndRow ( $c + 2, $r )->getValue ();
+					switch (strtoupper ( $pedigri )) {
+						case "SI" :
+							$pedigri = "Si";
+						break;
+						default :
+							$pedigri = "No";
+						break;
+					}
+					$telefono = $h->getCellByColumnAndRow ( $c + 3, $r )->getValue ();
+					$observacion = $h->getCellByColumnAndRow ( $c + 4, $r )->getValue ();
+					$titulo = $raza . " - " . $sexo . " - " . $telefono;
+					$articulo->titulo = $titulo;
+					$articulo->categoria = 16;
+					$articulo->precio = 0;
+					$articulo->moneda = 2;
+					$articulo->fecha_registro = date ( "Y-m-d H:i:s" );
+					$articulo->contactar_con = $telefono;
+					$articulo->ciudad = 196;
+					$articulo->estado = "A la venta";
+					$mascota = new stdClass ();
+					$mascota->raza = $raza;
+					$mascota->sexo = $sexo;
+					$mascota->pedigri = $pedigri;
+					$mascota->observacion = $observacion;
+					$this->articulo->registrar ( false, $mascota, true );
+					
+					$count ++;
+				}
+				$r ++;
+			} while ( trim ( $raza ) !== "" );
+			if ($count > 0) {
+				$data ["Mensaje"] = "Se importaron $count Categorías";
+			} else {
+				$data ["Error"] = "No se importo ninguna Categoría";
+			}
+		}
+		$this->loadGUI ( "importar_articulos", $data );
+	}
 	public function importarCategorias() {
 		$data = array ();
 		$archivo = (isset ( $_FILES ) && isset ( $_FILES ["archivo"] )) ? $_FILES ["archivo"] : false;
@@ -174,7 +325,12 @@ class Home extends BaseController {
 					) );
 					$rc = $this->db->get ( "categoria" )->result ();
 					if (! ($rc && is_array ( $rc ) && count ( $rc ) > 0)) {
-						continue;
+						$rc = array (
+								new stdClass () 
+						);
+						$rc [0]->id = null;
+						$rc [0]->nivel = 0;
+						$rc [0]->activo = 1;
 					}
 					$espanol = $h->getCellByColumnAndRow ( $c + 1, $r )->getValue ();
 					$ingles = $h->getCellByColumnAndRow ( $c + 2, $r )->getValue ();
@@ -404,23 +560,23 @@ class Home extends BaseController {
 				switch ($tipo) {
 					case "mensaje" :
 						$data ["receptor"] = $this->usuario->darUsuarioXId ( $id );
-						break;
+					break;
 					case "articulo" :
 						$data ["articulo"] = $this->articulo->darArticulo ( $id );
-						break;
+					break;
 					case "usuario" :
 						$data ["usuario"] = $this->usuario->darUsuarioXId ( $id );
-						break;
+					break;
 					case "votos" :
 						$data ["usuario"] = $this->usuario->darUsuarioXId ( $id );
 						$data ["mes1"] = $this->usuario->darVotos ( $id, 1 );
 						$data ["mes6"] = $this->usuario->darVotos ( $id, 6 );
 						$data ["mes12"] = $this->usuario->darVotos ( $id, 12 );
 						$data ["todos"] = $this->usuario->darVotos ( $id );
-						break;
+					break;
 					case "myuser" :
 						$data ["usuario"] = $this->usuario->darUsuarioXId ( $this->myuser->id );
-						break;
+					break;
 					case "articulosComprados" :
 						$this->load->model ( "Paypal_model", "paypal" );
 						$data ["comprador"] = $this->usuario->darUsuarioXId ( $id );
@@ -433,7 +589,7 @@ class Home extends BaseController {
 								$data ["vendedor"] = $this->usuario->darUsuarioXId ( $data ["paquete"]->vendedor );
 							}
 						}
-						break;
+					break;
 					case "articulosVendedor" :
 						$this->load->model ( "Paypal_model", "paypal" );
 						$data ["vendedor"] = $this->usuario->darUsuarioXId ( $id );
@@ -446,7 +602,7 @@ class Home extends BaseController {
 								$data ["comprador"] = $this->usuario->darUsuarioXId ( $data ["paquete"]->comprador );
 							}
 						}
-						break;
+					break;
 					case "paquete" :
 						$this->load->model ( "Paypal_model", "paypal" );
 						$data ["comprador"] = $this->usuario->darUsuarioXId ( $id );
@@ -454,21 +610,21 @@ class Home extends BaseController {
 						if ($data ["paquete"]) {
 							$data ["vendedor"] = $this->usuario->darUsuarioXId ( $data ["paquete"]->vendedor );
 						}
-						break;
+					break;
 					case "comprador" :
 						$data ["comprador"] = $this->usuario->darUsuarioXId ( $id );
 						if ($data ["comprador"]) {
 							$data ["comprador"]->pais = $data ["comprador"]->darPais ();
 							$data ["comprador"]->ciudad = $data ["comprador"]->darCiudad ();
 						}
-						break;
+					break;
 					case "vendedor" :
 						$data ["vendedor"] = $this->usuario->darUsuarioXId ( $id );
 						if ($data ["vendedor"]) {
 							$data ["vendedor"]->pais = $data ["vendedor"]->darPais ();
 							$data ["vendedor"]->ciudad = $data ["vendedor"]->darCiudad ();
 						}
-						break;
+					break;
 					case "facturaDetalle" :
 						$mes = date ( "m" );
 						$anio = date ( "Y" );
@@ -490,7 +646,7 @@ class Home extends BaseController {
 								}
 							}
 						}
-						break;
+					break;
 					case "denunciamensaje" :
 						if ($this->myuser) {
 							$data ['reportador'] = $this->usuario->darUsuarioXId ( $pagos );
@@ -601,27 +757,10 @@ class Home extends BaseController {
 				if ($imagen) {
 					$x ["id"] = $articulo->id;
 					$x ["titulo"] = $articulo->titulo;
-					$x ["tipo"] = $articulo->tipo;
 					$x ["furl"] = "product/" . $x ["id"] . "-" . normalizarTexto ( $x ["titulo"] );
 					$x ["imagen"] = $imagen;
 					list ( , $x ["height"] ) = getimagesize ( BASEPATH . "../$imagen" );
 					$x ["precio"] = formato_moneda ( $articulo->precio ) . " \$us";
-					if ($x ["tipo"] == "Fijo") {
-						$x ["cantidadOfertas"] = $articulo->cantidadOfertas . " " . traducir ( "ofertas" );
-						$x ["cO"] = $articulo->cantidadOfertas;
-						$x ["tiempo"] = calculaTiempoDiferencia ( date ( "Y-m-d H:i:s" ), strtotime ( $articulo->fecha_registro ) + $vencimientoOferta, true );
-						$x ["textoOferta"] = "";
-					} elseif ($x ["tipo"] == "Cantidad") {
-						$x ["cC"] = $articulo->cantidad;
-						$x ["textoOferta"] = "";
-						$x ["tiempo"] = calculaTiempoDiferencia ( date ( "Y-m-d H:i:s" ), strtotime ( $articulo->fecha_registro ) + $vencimientoOferta, true );
-					} else {
-						$x ["mayorPuja"] = formato_moneda ( $articulo->mayorPuja ) . " \$us";
-						$x ["cantidadPujas"] = $articulo->cantidadPujas . " " . traducir ( "pujas" );
-						$x ["cP"] = $articulo->cantidadPujas;
-						$x ["tiempo"] = calculaTiempoDiferencia ( date ( "Y-m-d H:i:s" ), strtotime ( $articulo->fecha_registro ) + $articulo->duracion * 86400, true );
-					}
-					$x ["pais_nombre"] = traducir ( "Ubicación:" ) . " " . $articulo->pais_nombre;
 					$json [] = $x;
 				}
 			}
@@ -631,6 +770,36 @@ class Home extends BaseController {
 				"total" => $data ["total"],
 				"final" => $data ["inicio"] + count ( $json ) 
 		) ) );
+	}
+	public function contarCategorias() {
+		$this->db->update ( "categoria", array (
+				"cantidad" => 0 
+		) );
+		$r = $this->db->query ( "SELECT articulo.categoria,count(articulo.categoria) as cantidad
+				FROM `articulo`
+				left join usuario on articulo.usuario=usuario.id and usuario.estado<>'Baneado'
+				WHERE articulo.estado<>'Finalizado' group by articulo.categoria" )->result ();
+		if ($r && is_array ( $r ) && count ( $r ) > 0) {
+			foreach ( $r as $c ) {
+				$this->db->update ( "categoria", array (
+						"cantidad" => $c->cantidad 
+				), array (
+						"id" => $c->categoria 
+				) );
+			}
+			$r = $this->db->query ( "SELECT sum(cantidad) as cantidad,padre FROM `categoria` where nivel=3 and cantidad >0 group by padre" )->result ();
+			if ($r && is_array ( $r ) && count ( $r ) > 0) {
+				foreach ( $r as $c ) {
+					$this->db->query ( "update categoria set cantidad=cantidad+$c->cantidad where id='$c->padre'" );
+				}
+			}
+			$r = $this->db->query ( "SELECT sum(cantidad) as cantidad,padre FROM `categoria` where nivel=2 and cantidad >0 group by padre" )->result ();
+			if ($r && is_array ( $r ) && count ( $r ) > 0) {
+				foreach ( $r as $c ) {
+					$this->db->query ( "update categoria set cantidad=cantidad+$c->cantidad where id='$c->padre'" );
+				}
+			}
+		}
 	}
 	public function index($noExiste = false) {
 		parent::index ( true );
@@ -645,7 +814,9 @@ class Home extends BaseController {
 					"ubicacion" => $this->input->get ( "ubicacion" ),
 					"categoria" => $this->input->get ( "categoria" ) 
 			) );
-			$this->loadGUI ( "home", $data );
+			$this->loadGUI ( "home", $data, array (
+					"categorias" => $data ["categorias"] 
+			) );
 		} else {
 			$cats = $this->categoria->darCategoriasXNivel ( 1 );
 			$retcat = $this->parseCategories ( $cats );

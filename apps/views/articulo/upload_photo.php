@@ -35,7 +35,7 @@ if ($imagen) {
 		$(function () {
 			swfu = new SWFUpload({
 				upload_url: "<?=base_url();?>product/uploadImage",
-				post_params: {"quien": "<?php echo $quiencapaphoto ?>","llave":"<?$ss=$this->mysession->userdata("LVSESSION");print $ss["llave"];?>"},
+				post_params: {"quien": "<?php echo $quiencapaphoto ?>","llave":""},
 				file_post_name : "imagen",
 				file_size_limit : "4 MB",
 				file_types : "*.jpg;*.gif;*.png",

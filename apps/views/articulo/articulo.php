@@ -2,13 +2,9 @@
 define ( "NINGUNO", 0 );
 define ( "OTRO", 1 );
 define ( "MISMO", 2 );
-$baneado = ($articulo->usuario->estado == "Baneado" || $articulo->estado == "Baneado");
+$baneado = ($articulo->usuario && ($articulo->usuario->estado == "Baneado" || $articulo->estado == "Baneado"));
 $visible = false;
-if ($transaccion && $transaccion->comprador) {
-	$visible = $transaccion->comprador->id == $this->myuser->id;
-} elseif ($articulo->comprador) {
-	$visible = $articulo->comprador == $this->myuser->id;
-}
+
 if ($this->myuser && $this->myuser->estado == "Baneado") {
 	$articulo->terminado = 1;
 }
@@ -17,12 +13,14 @@ if ($baneado) {
 	$articulo->terminado = 1;
 }
 if (! $baneado || $visible) {
-	
-	$seudonimo = ucfirst ( $articulo->usuario->seudonimo );
+	$seudonimo = "";
+	if ($articulo->usuario) {
+		$seudonimo = ucfirst ( $articulo->usuario->seudonimo );
+	}
 	$tipo_usuario = NINGUNO; // 0 ninguno, 1 usuario no dueño del articulo, 2
-	// usuario
-	// dueño
-	// del articulo
+	                         // usuario
+	                         // dueño
+	                         // del articulo
 	$cantidadOfertas = 3;
 	if ($usuario) {
 		if ($usuario->id !== $articulo->usuario->id) {
@@ -38,19 +36,8 @@ if (! $baneado || $visible) {
 	$redirectLogin = "login/$b64tl";
 	$vencimientoOferta = intval ( $this->configuracion->variables ( "vencimientoOferta" ) ) * 86400;
 	$imagenes = explode ( ",", $articulo->foto );
-	$ruta = "files/" . $articulo->usuario->id . "/";
+	$ruta = "files/articulos/";
 	$file = BASEPATH . "../$ruta";
-	$paisobj = ($this->myuser ? $this->myuser->pais : $this->pais);
-	$pais = ($this->myuser && $this->myuser->pais && isset ( $this->myuser->pais->codigo2 ) ? $this->myuser->pais->codigo2 : $this->pais->codigo2);
-	$continente = ($this->myuser && $this->myuser->pais && isset ( $this->myuser->pais->continente ) ? $this->myuser->pais->continente : $this->pais->continente);
-	$gasto_envio = ($articulo->usuario->pais->codigo2 == $pais && $articulo->gastos_pais !== null ? $articulo->gastos_pais : false);
-	$gasto_envio = ($gasto_envio !== false ? $gasto_envio : ($articulo->usuario->pais->continente == $continente && $articulo->gastos_continente !== null ? $articulo->gastos_continente : false));
-	$gasto_envio = ($gasto_envio !== false ? $gasto_envio : ($articulo->gastos_todos !== null ? $articulo->gastos_todos : false));
-	$gasto_envio = ($gasto_envio !== false ? $gasto_envio : ($articulo->envio_local ? 0 : false));
-	$sincompra = false;
-	if ($gasto_envio === false) {
-		$sincompra = true;
-	}
 	?><link href="assets/css/articulo.css" type="text/css" rel="stylesheet" />
 <script src="assets/js/articulo/vista-articulo.js"
 	type="text/javascript"></script>
@@ -58,24 +45,6 @@ if (! $baneado || $visible) {
 <?php $this->load->view("usuario/cabecera-perfil",array("seccion"=>"articulo"))?>
 	<header class="cont-cab">
 		<h1><?=$articulo->titulo?></h1>
-		<p>
-			Vendedor <a
-				href="store/<?=strtolower($articulo->usuario->seudonimo);?>"
-				title="ver perfil de <?=$seudonimo?>"><strong><?=$seudonimo?></strong></a>
-			<a href="home/modal/votos/votos/<?=$articulo->usuario->id?>"
-				class="nmodal"><span class="green">+<?=$articulo->usuario->positivo?></span>
-			<?php if($articulo->usuario->negativo){?><span class="red">+<?=$articulo->usuario->negativo?></span><?php }?></a>
-				<?php
-	if ($tipo_usuario == OTRO) {
-		?>| <a
-				href="articulo/modal/enviar-mensaje-privado/mensaje/<?=$articulo->id?>"
-				class="nmodal" title="Enviar mensaje privado">enviar mensaje privado</a>
-			| <a href="store/<?=strtolower($articulo->usuario->seudonimo);?>"
-				title="Tienda de <?=$seudonimo?>">ver su tienda</a> <?php
-	}
-	?>| <a href="home/modal/denunciar/articulo/<?=$articulo->id?>"
-				title="denunciar" class="nmodal">denunciar</a>
-		</p>
 	</header>
 	<div class="product-file clearfix">
 		<div class="gallery">
@@ -95,22 +64,6 @@ if (! $baneado || $visible) {
 
 		<div class="data"><?php
 	$monto = $articulo->precio;
-	if ($articulo->tipo == "Fijo") {
-		$og = $this->articulo->darOfertaGanadora ( $articulo->id );
-		if ($og) {
-			$monto = $og->monto;
-		}
-	} else {
-		$c = $this->articulo->mayorOferta ( $articulo->id, true );
-		if ($c) {
-			$monto = $monto = $c->monto_automatico;
-			if ($usuario && $c->usuario === $usuario->id) {
-				$monto_min = $c->monto + 0.5;
-			} else {
-				$monto_min = $monto + 0.5;
-			}
-		}
-	}
 	?>
 			<h2>
 				<span id="montoFinal"><?=formato_moneda($monto);?></span> $us

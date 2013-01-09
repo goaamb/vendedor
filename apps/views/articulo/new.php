@@ -158,7 +158,13 @@ CKEDITOR.config.toolbar =
 			</p>
 			<p id="errorUploading" class="errorTxt"></p>
 			<?php
-			$this->load->view ( "articulo/upload_photo", array ("classcapaphoto" => "portada", "idcapaphoto" => "capaimagen1", "textocapaphoto" => "foto portada", "quiencapaphoto" => "1", "imagen" => $imagenes [0] ) );
+			$this->load->view ( "articulo/upload_photo", array (
+					"classcapaphoto" => "portada",
+					"idcapaphoto" => "capaimagen1",
+					"textocapaphoto" => "foto portada",
+					"quiencapaphoto" => "1",
+					"imagen" => $imagenes [0] 
+			) );
 			for($i = 2; $i <= 6; $i ++) {
 				$classcapaphoto = "";
 				if ($imagenes [$i - 2]) {
@@ -167,7 +173,13 @@ CKEDITOR.config.toolbar =
 				if ($i == 6) {
 					$classcapaphoto .= " mrn";
 				}
-				$this->load->view ( "articulo/upload_photo", array ("classcapaphoto" => $classcapaphoto, "idcapaphoto" => "capaimagen$i", "textocapaphoto" => "subir foto", "quiencapaphoto" => $i, "imagen" => $imagenes [$i - 1] ) );
+				$this->load->view ( "articulo/upload_photo", array (
+						"classcapaphoto" => $classcapaphoto,
+						"idcapaphoto" => "capaimagen$i",
+						"textocapaphoto" => "subir foto",
+						"quiencapaphoto" => $i,
+						"imagen" => $imagenes [$i - 1] 
+				) );
 			}
 			?>&nbsp;<?=form_error ( "imagenes" );?><span class="errorTxt"
 				id="imagenesError"></span>
@@ -334,9 +346,8 @@ CKEDITOR.config.toolbar =
 					?>
 					<input type="hidden" name="modo" value="1" /> <input type="submit"
 					value="<?=($modificar?"Actualizar":"Poner a la venta");?>"
-					class="bt" /><?php }?> <span class="mhm">o</span> <a
-					href="<?=(($modificar || $nuevo)?$productoLink:"store/{$this->myuser->seudonimo}");?>"
-					title="cancelar e ir al <?=(($modificar || $nuevo)?"producto":"store/{$this->myuser->seudonimo}");?>">cancelar</a>
+					class="bt" /><?php }?> <span class="mhm">o</span> <a href=""
+					title="cancelar e ir al Inicio">cancelar</a>
 			</div><?=form_close()?>
 </div>
 

@@ -435,16 +435,16 @@ class Articulo extends BaseController {
 				$result .= "  Error fatal en la línea $errline en el archivo $errfile";
 				$result .= ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
 				$result .= "Abortando...<br />\n";
-				break;
+			break;
 			case E_USER_WARNING :
 				$result .= "<b>Mi WARNING</b> [$errno] $errstr<br />\n";
-				break;
+			break;
 			case E_USER_NOTICE :
 				$result .= "<b>Mi NOTICE</b> [$errno] $errstr<br />\n";
-				break;
+			break;
 			default :
 				$result .= "Tipo de error desconocido: [$errno] $errstr<br />\n";
-				break;
+			break;
 		}
 		print json_encode ( array (
 				"error" => $result 
@@ -627,10 +627,10 @@ class Articulo extends BaseController {
 								}
 							}
 						}
-						break;
+					break;
 					case "rechazar" :
 						$res = $this->articulo->rechazarOferta ( $oferta, $articulo );
-						break;
+					break;
 				}
 				if ($json) {
 					$this->output->set_output ( json_encode ( array (
@@ -663,7 +663,7 @@ class Articulo extends BaseController {
 				if ($extra) {
 					$datos ["extra"] = intval ( $extra );
 				}
-				break;
+			break;
 			case "ofertas" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
@@ -675,22 +675,22 @@ class Articulo extends BaseController {
 				if ($this->myuser && $datos ["articulo"]->usuario == $this->myuser->id) {
 					$this->articulo->activarOfertasVistos ( $id );
 				}
-				break;
+			break;
 			case "ultimaOferta" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
 				$datos ["oferta"] = $this->articulo->ultimaOferta ( $id, $this->myuser->id );
-				break;
+			break;
 			case "mensaje" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
 				$datos ["receptor"] = $this->usuario->darUsuarioXId ( $datos ["articulo"]->usuario );
-				break;
+			break;
 			case "ultimaPuja" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
 				$datos ["oferta"] = $this->articulo->mayorOferta ( $id );
-				break;
+			break;
 		}
 		parent::modal ( $modal, $datos );
 	}
@@ -744,10 +744,10 @@ class Articulo extends BaseController {
 			switch ($c) {
 				case 1 :
 					$json ["exito"] = $o;
-					break;
+				break;
 				default :
 					$json ["error"] = "Llego al maximo de ofertas permitido.";
-					break;
+				break;
 			}
 		}
 		$this->output->set_output ( json_encode ( $json ) );
@@ -830,16 +830,16 @@ class Articulo extends BaseController {
 						$props ["rechazar"] = 1;
 						$props ["precio-oferta-inferior"] = $props ["precio_rechazo"];
 					}
-					break;
+				break;
 				case "Cantidad" :
 					$props ["tipo-precio"] = "precio-cantidad-box";
 					$props ["precio-cantidad"] = $props ["precio"];
 					$props ["cantidad-precio"] = $props ["cantidad"];
-					break;
+				break;
 				default :
 					$props ["tipo-precio"] = "subasta-box";
 					$props ["precio-subasta"] = $props ["precio"];
-					break;
+				break;
 			}
 			$props ["forma-pago"] = explode ( ",", $props ["pagos"] );
 			foreach ( $props as $k => $v ) {
@@ -943,16 +943,8 @@ class Articulo extends BaseController {
 			$this->edit ( $id, true );
 			return;
 		}
-		$x = $this->isLogged ();
-		if ($x) {
-			if ($this->myuser->estado !== "Baneado") {
-				$view = "articulo/new";
-			} else {
-				redirect ( "store/{$this->myuser->seudonimo}", "refresh" );
-			}
-		} else {
-			$view = "usuario/login";
-		}
+		$view = "articulo/new";
+		
 		$this->loadGUI ( $view );
 	}
 	public function registrarEvento($evento, $id) {
@@ -973,12 +965,7 @@ class Articulo extends BaseController {
 		return ob_get_clean ();
 	}
 	public function uploadImage($ouput = true) {
-		if (isset ( $this->myuser ) && $this->myuser) {
-			$s = $this->myuser;
-		} else {
-			$s = $this->usuario->darSesion ( $this->input->post ( "llave" ) );
-		}
-		return uploadImage ( $ouput, $s );
+		return uploadImage ( $ouput );
 	}
 	public function process() {
 		$this->load->model ( "categoria_model", "categoria" );
@@ -995,19 +982,19 @@ class Articulo extends BaseController {
 			switch ($this->input->post ( "__accion" )) {
 				case "ingresar" :
 					$data = array_merge ( $data, $this->post_ingresar () );
-					break;
+				break;
 				case "modificar" :
 					$data = array_merge ( $data, $this->post_modificar () );
-					break;
+				break;
 				case "comprar" :
 					$data = array_merge ( $data, $this->post_comprar () );
-					break;
+				break;
 				case "ofertar" :
 					$data = array_merge ( $data, $this->post_ofertar () );
-					break;
+				break;
 				case "pujar" :
 					$data = array_merge ( $data, $this->post_pujar () );
-					break;
+				break;
 			}
 		}
 		$cats = $this->categoria->darCategoriasXNivel ( 1 );
@@ -1032,19 +1019,19 @@ class Articulo extends BaseController {
 					switch ($c) {
 						case 1 :
 							$errores ["exito"] = true;
-							break;
+						break;
 						case 2 :
 							$errores ["ofertaError"] = "El articulo ya no se encuentra a la venta.";
-							break;
+						break;
 						case 3 :
 							$errores ["ofertaError"] = "Tu puja no puede ser menor a la que ya ofertaste antes.";
-							break;
+						break;
 						case 0 :
 							$errores ["ofertaError"] = "No alcanzo el Monto Minimo.";
-							break;
+						break;
 						default :
 							$errores ["ofertaError"] = "Ocurrio un error vuelva a intentarlo mas tarde.";
-							break;
+						break;
 					}
 				} else {
 					$errores ["ofertaError"] = "El monto debe ser mayor a 0.";
@@ -1132,16 +1119,16 @@ class Articulo extends BaseController {
 							}
 						}
 						redirect ( "product/$articulo->id-" . normalizarTexto ( $articulo->titulo ) . "-send", "refresh" );
-						break;
+					break;
 					case 2 :
 						$errores ["ofertaError"] = "El articulo ya no se encuentra a la venta.";
-						break;
+					break;
 					case 3 :
 						$errores ["ofertaError"] = "El debe colocar un monto mayor a su ultima oferta.";
-						break;
+					break;
 					default :
 						$errores ["ofertaError"] = "Llego al maximo de ofertas permitido.";
-						break;
+					break;
 				}
 			} else {
 				$errores ["ofertaError"] = "El monto debe ser mayor a 0.";
@@ -1235,7 +1222,7 @@ class Articulo extends BaseController {
 							}
 						}
 						$imagenes = implode ( ",", $imagenes );
-						break;
+					break;
 				}
 				
 				$this->articulo->foto = $imagenes;
@@ -1247,18 +1234,18 @@ class Articulo extends BaseController {
 						if ($this->input->post ( "rechazar" )) {
 							$this->articulo->precio_rechazo = $this->input->post ( "precio-oferta-inferior" );
 						}
-						break;
+					break;
 					case "precio-cantidad-box" :
 						$this->articulo->tipo = "Cantidad";
 						$this->articulo->precio = $this->input->post ( "precio-cantidad" );
 						$this->articulo->cantidad = $this->input->post ( "cantidad-precio" );
 						$this->articulo->cantidad_original = $this->input->post ( "cantidad-precio" );
-						break;
+					break;
 					default :
 						$this->articulo->tipo = "Subasta";
 						$this->articulo->precio = $this->input->post ( "precio-subasta" );
 						$this->articulo->duracion = $this->input->post ( "duracion" );
-						break;
+					break;
 				}
 				
 				$this->articulo->moneda = 1;

@@ -21,11 +21,15 @@ class Articulo_model extends CI_Model {
 	public $gastos_continente;
 	public $gastos_todos;
 	public $envio_local;
-	public static $formas_pago = array (1 => "Otros", 2 => "Pago contra reembolso", 3 => "Transferencia bancaria", 4 => "Paypal" );
+	public static $formas_pago = array (
+			1 => "Otros",
+			2 => "Pago contra reembolso",
+			3 => "Transferencia bancaria",
+			4 => "Paypal" 
+	);
 	public static $tarifa = array ();
 	public function __construct() {
 		parent::__construct ();
-		$this->cargarTarifas ();
 	}
 	public function listarSeguimientosPorFinalizar($tiempo) {
 		$tiempo = intval ( $tiempo ) * 3600;
@@ -43,7 +47,14 @@ class Articulo_model extends CI_Model {
 	}
 	public function modificarCantidad($a) {
 		if ($a && $a->tipo == "Cantidad") {
-			$this->db->update ( "articulo", array ("cantidad" => $a->cantidad, "cantidad_original" => $a->cantidad_original, "terminado" => 0, "fecha_terminado" => null ), array ("id" => $a->id ) );
+			$this->db->update ( "articulo", array (
+					"cantidad" => $a->cantidad,
+					"cantidad_original" => $a->cantidad_original,
+					"terminado" => 0,
+					"fecha_terminado" => null 
+			), array (
+					"id" => $a->id 
+			) );
 		}
 	}
 	public function cargarTarifas() {
@@ -61,16 +72,23 @@ class Articulo_model extends CI_Model {
 						if (! isset ( $tarifa [$tt] [$ta] )) {
 							$tarifa [$tt] [$ta] = array ();
 						}
-						$tarifa [$tt] [$ta] [] = array ("inicio" => $t->inicio, "porcentaje" => $t->porcentaje );
-						break;
+						$tarifa [$tt] [$ta] [] = array (
+								"inicio" => $t->inicio,
+								"porcentaje" => $t->porcentaje 
+						);
+					break;
 					case "Plana" :
-						$tarifa [$tt] [] = array ("inicio" => $t->inicio, "monto" => $t->monto, "nombre" => $t->nombre );
-						break;
+						$tarifa [$tt] [] = array (
+								"inicio" => $t->inicio,
+								"monto" => $t->monto,
+								"nombre" => $t->nombre 
+						);
+					break;
 				}
 			}
 		}
 		self::$tarifa = $tarifa;
-	
+		
 		// var_dump ( self::$tarifa );
 	}
 	public function darCuentasPorArticulos($articulos) {
@@ -115,7 +133,9 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		return false;
 	}
 	public function darFactura($factura) {
-		$r = $this->db->where ( array ("id" => $factura ) )->get ( "factura" )->result ();
+		$r = $this->db->where ( array (
+				"id" => $factura 
+		) )->get ( "factura" )->result ();
 		if ($r && is_array ( $r ) && count ( $r ) > 0) {
 			return $r [0];
 		}
@@ -125,7 +145,9 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		$this->load->model ( "Usuario_model", "usuarioM" );
 		$usuario = $this->usuarioM->darUsuarioXId ( $usuario );
 		if ($usuario) {
-			$this->db->where ( array ("usuario" => $usuario->id ) );
+			$this->db->where ( array (
+					"usuario" => $usuario->id 
+			) );
 			$this->db->order_by ( "mes desc" );
 			$inicio = intval ( $inicio );
 			$pagina = intval ( $pagina );
@@ -141,7 +163,9 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		$this->load->model ( "Usuario_model", "usuarioM" );
 		$usuario = $this->usuarioM->darUsuarioXId ( $usuario );
 		if ($usuario) {
-			$this->db->where ( array ("usuario" => $usuario->id ) );
+			$this->db->where ( array (
+					"usuario" => $usuario->id 
+			) );
 			$this->db->select ( "count(id) as cantidad" );
 			$r = $this->db->get ( "factura" )->result ();
 			if ($r && is_array ( $r ) && count ( $r ) > 0) {
@@ -151,12 +175,23 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		return 0;
 	}
 	public function listarSubastas() {
-		$this->db->where ( array ("tipo" => "Subasta", "terminado" => 0 ) );
+		$this->db->where ( array (
+				"tipo" => "Subasta",
+				"terminado" => 0 
+		) );
 		return $this->darTodos ( "articulo" );
 	}
 	public function actualizarPublicacion($articulo) {
-		if ($this->db->update ( "articulo", array ("fecha_registro" => date ( "Y-m-d H:i:s" ) ), array ("id" => $articulo ) )) {
-			return $this->db->update ( "siguiendo", array ("notificado" => "No" ), array ("articulo" => $articulo ) );
+		if ($this->db->update ( "articulo", array (
+				"fecha_registro" => date ( "Y-m-d H:i:s" ) 
+		), array (
+				"id" => $articulo 
+		) )) {
+			return $this->db->update ( "siguiendo", array (
+					"notificado" => "No" 
+			), array (
+					"articulo" => $articulo 
+			) );
 		}
 	}
 	private function calcularCantidades(&$arbol, $cantidades) {
@@ -184,7 +219,10 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 			$mes = "0" . $mes;
 		}
 		
-		$this->db->where ( array ("mes" => "$mes-$anio", "usuario" => $usuario->id ) );
+		$this->db->where ( array (
+				"mes" => "$mes-$anio",
+				"usuario" => $usuario->id 
+		) );
 		$r = $this->db->get ( "factura" )->result ();
 		if ($r && is_array ( $r ) && count ( $r ) > 0) {
 			// print "ya existe la factura del $mes-$anio y usuario:
@@ -220,7 +258,9 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 			}
 			
 			foreach ( $transacciones as $t ) {
-				$r = $this->db->where ( array ("id" => $t ) )->get ( "transaccion" )->result ();
+				$r = $this->db->where ( array (
+						"id" => $t 
+				) )->get ( "transaccion" )->result ();
 				if ($r && is_array ( $r ) && count ( $r ) > 0) {
 					$articulos2 [] = $r [0]->articulo;
 					$total += floatval ( $r [0]->precio * $r [0]->cantidad );
@@ -234,24 +274,41 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 			
 			$monto = 0;
 			foreach ( $as as $a ) {
-				$this->db->where ( array ("articulo" => $a->id ) );
+				$this->db->where ( array (
+						"articulo" => $a->id 
+				) );
 				$r = $this->db->get ( "cuenta" )->result ();
 				if ($r && is_array ( $r ) && count ( $r ) > 0) {
 					$tarifa = floatval ( $r [0]->monto );
 				} else {
 					$tarifa = $this->calcularTarifa ( $a, "Comision" );
-					$this->db->insert ( "cuenta", array ("articulo" => $a->id, "paquete" => $a->paquete, "monto" => $tarifa, "fecha" => date ( "Y-m-d H:i:s" ), "usuario" => $usuario->id ) );
+					$this->db->insert ( "cuenta", array (
+							"articulo" => $a->id,
+							"paquete" => $a->paquete,
+							"monto" => $tarifa,
+							"fecha" => date ( "Y-m-d H:i:s" ),
+							"usuario" => $usuario->id 
+					) );
 				}
 				$monto += $tarifa;
 			}
 			foreach ( $ts as $t ) {
-				$this->db->where ( array ("articulo" => $t->articulo ) );
+				$this->db->where ( array (
+						"articulo" => $t->articulo 
+				) );
 				$r = $this->db->get ( "cuenta" )->result ();
 				if ($r && is_array ( $r ) && count ( $r ) > 0) {
 					$tarifa = floatval ( $r [0]->monto );
 				} else {
 					$tarifa = $this->calcularTarifa ( $t, "Comision", false, true );
-					$this->db->insert ( "cuenta", array ("articulo" => $t->articulo, "paquete" => $t->paquete, "monto" => $tarifa, "fecha" => date ( "Y-m-d H:i:s" ), "usuario" => $usuario->id, "cantidad" => $t->cantidad ) );
+					$this->db->insert ( "cuenta", array (
+							"articulo" => $t->articulo,
+							"paquete" => $t->paquete,
+							"monto" => $tarifa,
+							"fecha" => date ( "Y-m-d H:i:s" ),
+							"usuario" => $usuario->id,
+							"cantidad" => $t->cantidad 
+					) );
 				}
 				$monto += $tarifa;
 			}
@@ -259,7 +316,10 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 			$monto = 0;
 			$tarifa = 0;
 			
-			$this->db->where ( array ("terminado" => 0, "usuario" => $usuario->id ) );
+			$this->db->where ( array (
+					"terminado" => 0,
+					"usuario" => $usuario->id 
+			) );
 			$rs = $this->db->get ( "articulo" )->result ();
 			$articulos = array ();
 			foreach ( $rs as $a ) {
@@ -267,13 +327,21 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 				$articulos [] = $a->id;
 				$tarifa = 0;
 				if ($a->tipo == "Subasta") {
-					$this->db->where ( array ("articulo" => $a->id ) );
+					$this->db->where ( array (
+							"articulo" => $a->id 
+					) );
 					$r = $this->db->get ( "cuenta" )->result ();
 					if ($r && is_array ( $r ) && count ( $r ) > 0) {
 						$tarifa = floatval ( $r [0]->monto );
 					} else {
 						$tarifa = $this->calcularTarifa ( $a, "Comision" );
-						$this->db->insert ( "cuenta", array ("articulo" => $a->id, "paquete" => null, "monto" => $tarifa, "fecha" => date ( "Y-m-d H:i:s" ), "usuario" => $usuario->id ) );
+						$this->db->insert ( "cuenta", array (
+								"articulo" => $a->id,
+								"paquete" => null,
+								"monto" => $tarifa,
+								"fecha" => date ( "Y-m-d H:i:s" ),
+								"usuario" => $usuario->id 
+						) );
 					}
 				}
 				$monto += $tarifa;
@@ -319,13 +387,31 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 				$a = $arbol [$i];
 				if ($i == 0) {
 					if (! isset ( $cR [$a ["id"]] )) {
-						$ret [$a ["id"]] = array ("datos" => array ("nombre" => $a ["nombre"], "cantidad" => $a ["cantidad"], "url" => $a ["url"], "nivel" => $a ["nivel"], "padre" => $a ["padre"] ), "hijos" => array () );
+						$ret [$a ["id"]] = array (
+								"datos" => array (
+										"nombre" => $a ["nombre"],
+										"cantidad" => $a ["cantidad"],
+										"url" => $a ["url"],
+										"nivel" => $a ["nivel"],
+										"padre" => $a ["padre"] 
+								),
+								"hijos" => array () 
+						);
 						$cR [$a ["id"]] = &$ret [$a ["id"]];
 					}
 				} else {
 					if (isset ( $cR [$a ["padre"]] )) {
 						if (! isset ( $cR [$a ["padre"]] ["hijos"] [$a ["id"]] )) {
-							$cR [$a ["padre"]] ["hijos"] [$a ["id"]] = array ("datos" => array ("nombre" => $a ["nombre"], "cantidad" => $a ["cantidad"], "url" => $a ["url"], "nivel" => $a ["nivel"], "padre" => $a ["padre"] ), "hijos" => array () );
+							$cR [$a ["padre"]] ["hijos"] [$a ["id"]] = array (
+									"datos" => array (
+											"nombre" => $a ["nombre"],
+											"cantidad" => $a ["cantidad"],
+											"url" => $a ["url"],
+											"nivel" => $a ["nivel"],
+											"padre" => $a ["padre"] 
+									),
+									"hijos" => array () 
+							);
 							$cR [$a ["id"]] = &$cR [$a ["padre"]] ["hijos"] [$a ["id"]];
 						}
 					}
@@ -389,7 +475,9 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 	private function encuentraHijo($arbol, $categoria) {
 		if ($arbol && is_array ( $arbol ) && count ( $arbol ) > 0) {
 			if (isset ( $arbol [$categoria] )) {
-				return array ($categoria => $arbol [$categoria] );
+				return array (
+						$categoria => $arbol [$categoria] 
+				);
 			} else {
 				foreach ( $arbol as $id => $v ) {
 					if ($c = $this->encuentraHijo ( $v ["hijos"], $categoria )) {
@@ -407,11 +495,20 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		do {
 			
 			if (! isset ( $contados [$id] )) {
-				$this->db->where ( array ("id" => $id ) );
+				$this->db->where ( array (
+						"id" => $id 
+				) );
 				$resp = $this->darUno ( "categoria" );
 				if ($resp) {
 					$cn = $CI->categoria->darCategoriaNombre ( $id, $this->idioma->language->id );
-					$contados [$id] = array ("nombre" => $cn->nombre, "cantidad" => $resp->cantidad, "url" => $cn->url_amigable, "nivel" => $resp->nivel, "padre" => $resp->padre, "id" => $resp->id );
+					$contados [$id] = array (
+							"nombre" => $cn->nombre,
+							"cantidad" => $resp->cantidad,
+							"url" => $cn->url_amigable,
+							"nivel" => $resp->nivel,
+							"padre" => $resp->padre,
+							"id" => $resp->id 
+					);
 					array_unshift ( $arbol, $contados [$id] );
 					$id = $resp->padre;
 				} else {
@@ -442,12 +539,22 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 				foreach ( $datos as $d ) {
 					$nc = $CI->categoria->darCategoriaNombre ( $d->id, $this->idioma->language->id );
 					if ($nc) {
-						$ret [$d->id] = array ("datos" => array ("url" => $nc->url_amigable, "nombre" => $nc->nombre, "cantidad" => (isset ( $cantidades [$d->id] ) ? $cantidades [$d->id] : 0), "nivel" => $d->nivel ), "hijos" => array () );
+						$ret [$d->id] = array (
+								"datos" => array (
+										"url" => $nc->url_amigable,
+										"nombre" => $nc->nombre,
+										"cantidad" => (isset ( $cantidades [$d->id] ) ? $cantidades [$d->id] : 0),
+										"nivel" => $d->nivel 
+								),
+								"hijos" => array () 
+						);
 					}
 				}
 				foreach ( $datos as $d ) {
 					if (! isset ( $ret [$d->padre] )) {
-						$padre = $CI->categoria->darCategoriasX ( array ("categoria.id" => $d->padre ) );
+						$padre = $CI->categoria->darCategoriasX ( array (
+								"categoria.id" => $d->padre 
+						) );
 						if ($padre && is_array ( $padre ) && count ( $padre ) > 0) {
 							$padre = $padre [0];
 							$nc = $CI->categoria->darCategoriaNombre ( $padre->id, $this->idioma->language->id );
@@ -455,7 +562,17 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 								$x = $ret [$d->id];
 								$x ["datos"] ["nivel"] = 2;
 								unset ( $ret [$d->id] );
-								$ret [$padre->id] = array ("datos" => array ("url" => $nc->url_amigable, "nombre" => $nc->nombre, "cantidad" => $x ["datos"] ["cantidad"], "nivel" => 1 ), "hijos" => array ($d->id => $x ) );
+								$ret [$padre->id] = array (
+										"datos" => array (
+												"url" => $nc->url_amigable,
+												"nombre" => $nc->nombre,
+												"cantidad" => $x ["datos"] ["cantidad"],
+												"nivel" => 1 
+										),
+										"hijos" => array (
+												$d->id => $x 
+										) 
+								);
 							}
 						}
 					} else {
@@ -473,34 +590,70 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		$CI->load->model ( "Categoria_model", "categoria" );
 		$ret = array ();
 		if (! $categoria) {
-			$datos = $CI->categoria->darCategoriasX ( array ("nivel" => 1, "activo" => 1, "cantidad >" => 0 ) );
+			$datos = $CI->categoria->darCategoriasX ( array (
+					"nivel" => 1,
+					"activo" => 1,
+					"cantidad >" => 0 
+			) );
 			if ($datos) {
 				foreach ( $datos as $d ) {
 					$nc = $CI->categoria->darCategoriaNombre ( $d->id, $this->idioma->language->id );
 					if ($nc) {
-						$ret [$d->id] = array ("datos" => array ("url" => $nc->url_amigable, "nombre" => $nc->nombre, "cantidad" => $d->cantidad, "nivel" => $d->nivel ), "hijos" => array () );
+						$ret [$d->id] = array (
+								"datos" => array (
+										"url" => $nc->url_amigable,
+										"nombre" => $nc->nombre,
+										"cantidad" => $d->cantidad,
+										"nivel" => $d->nivel 
+								),
+								"hijos" => array () 
+						);
 					}
 				}
 			}
 		} else {
-			$datos = $CI->categoria->darCategoriasX ( array ("categoria.id" => $categoria, "activo" => 1, "cantidad >" => 0 ) );
+			$datos = $CI->categoria->darCategoriasX ( array (
+					"categoria.id" => $categoria,
+					"activo" => 1,
+					"cantidad >" => 0 
+			) );
 			if ($datos) {
 				$d = $datos [0];
 				$nc = $CI->categoria->darCategoriaNombre ( $d->id, $this->idioma->language->id );
 				$x = $d;
 				if ($nc) {
-					$ret [$x->id] = array ("datos" => array ("url" => $nc->url_amigable, "nombre" => $nc->nombre, "cantidad" => $d->cantidad, "nivel" => 1 ), "hijos" => array () );
-					$hijos = $CI->categoria->darCategoriasX ( array ("padre" => $categoria, "activo" => 1, "cantidad >" => 0 ) );
+					$ret [$x->id] = array (
+							"datos" => array (
+									"url" => $nc->url_amigable,
+									"nombre" => $nc->nombre,
+									"cantidad" => $d->cantidad,
+									"nivel" => 1 
+							),
+							"hijos" => array () 
+					);
+					$hijos = $CI->categoria->darCategoriasX ( array (
+							"padre" => $categoria,
+							"activo" => 1,
+							"cantidad >" => 0 
+					) );
 					if ($hijos) {
-						//$hs = array ();
+						// $hs = array ();
 						foreach ( $hijos as $d ) {
 							$nc = $CI->categoria->darCategoriaNombre ( $d->id, $this->idioma->language->id );
 							if ($nc) {
-								$ret [$d->id] = array ("datos" => array ("url" => $nc->url_amigable, "nombre" => $nc->nombre, "cantidad" => $d->cantidad, "nivel" => 2 ), "hijos" => array () );
+								$ret [$d->id] = array (
+										"datos" => array (
+												"url" => $nc->url_amigable,
+												"nombre" => $nc->nombre,
+												"cantidad" => $d->cantidad,
+												"nivel" => 2 
+										),
+										"hijos" => array () 
+								);
 							}
 						}
-						//$ret [$x->id] ["hijos"] = $hs;
-						//$ret = array_merge ( $ret, $hs );
+						// $ret [$x->id] ["hijos"] = $hs;
+						// $ret = array_merge ( $ret, $hs );
 					}
 				}
 			}
@@ -509,74 +662,27 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		return $ret;
 	}
 	function totalVentas($usuario) {
-		$sql = "select sum(total) as  total from (
-(select count(total) as total from (SELECT count(id) as total  FROM `articulo` WHERE usuario='$usuario' and estado in('Sin gastos Envio','Sin Envio') group by paquete)as x)
-union
-(select count(total) as total from (SELECT count(transaccion.id) as total FROM `transaccion` inner join articulo on articulo.id=transaccion.articulo WHERE articulo.usuario='$usuario' and transaccion.estado in('Sin gastos Envio','Sin Envio') group by transaccion.paquete)as z)
-		union
-(SELECT count(oferta.id)as total FROM `oferta` inner join articulo on articulo.id=oferta.articulo and  articulo.usuario='$usuario' and articulo.tipo='Fijo' and articulo.terminado=0 where oferta.estado='Pendiente')
-		)as y";
-		$r = $this->db->query ( $sql )->result ();
-		if ($r && is_array ( $r ) && count ( $r ) > 0) {
-			return $r [0]->total;
-		}
 		return 0;
 	}
 	function soloPendientes($usuario) {
-		$sql = "select sum(total) as  total from (
-		(select count(total) as total from (SELECT count(id) as total  FROM `articulo` WHERE usuario='$usuario' and estado in('Sin gastos Envio','Sin Envio') group by paquete)as x)
-		union
-		(select count(total) as total from (SELECT count(transaccion.id) as total FROM `transaccion` inner join articulo on articulo.id=transaccion.articulo WHERE articulo.usuario='$usuario' and transaccion.estado in('Sin gastos Envio','Sin Envio') group by transaccion.paquete)as z)
-		)as y";
-		$r = $this->db->query ( $sql )->result ();
-		if ($r && is_array ( $r ) && count ( $r ) > 0) {
-			return $r [0]->total;
-		}
 		return 0;
 	}
 	function totalMensajes($usuario) {
-		$sql = "select sum(total) as total from ((select count(total) as total from (select count(id) as total from mensaje where receptor='$usuario' and estado='Pendiente' and visible=0 group by emisor) as y)
-union
-(select count(id) as total from notificacion where id not in (select notificacion from notificacion_leido where usuario='$usuario' and visible=0))
-		)as x";
-		$r = $this->db->query ( $sql )->result ();
-		if ($r && is_array ( $r ) && count ( $r ) > 0) {
-			return $r [0]->total;
-		}
 		return 0;
 	}
 	function totalCompras($usuario) {
-		$sql = "select sum(total) as  total from (
-(select count(total) as total from(SELECT count(id) as total FROM `articulo` WHERE comprador='$usuario' and estado in('Sin Pago','Enviado') group by paquete) as x)
-		union
-(select count(total) as total from(SELECT count(id) as total FROM `transaccion` WHERE comprador='$usuario' and estado in('Sin Pago','Enviado') group by paquete) as y)
-		)as z";
-		$r = $this->db->query ( $sql )->result ();
-		if ($r && is_array ( $r ) && count ( $r ) > 0) {
-			return $r [0]->total;
-		}
 		return 0;
 	}
 	function totalSeguimientos($usuario) {
-		$sql = "select count(id) as total from(select siguiendo.id,if(articulo.tipo='Subasta',articulo.duracion*86400-(unix_timestamp()-unix_timestamp(articulo.fecha_registro))," . $this->configuracion->variables ( "vencimientoOferta" ) . "*86400-(unix_timestamp()-unix_timestamp(articulo.fecha_registro))) as tiempo
-from siguiendo inner join articulo on siguiendo.articulo=articulo.id where siguiendo.usuario='$usuario' and articulo.terminado=0 
-				having tiempo<=" . (floatval ( $this->configuracion->variables ( "notificacionSeguimiento" ) ) * 3600) . " and tiempo>0) as x";
-		$r = $this->db->query ( $sql )->result ();
-		if ($r && is_array ( $r ) && count ( $r ) > 0) {
-			return $r [0]->total;
-		}
 		return 0;
 	}
 	function totalCuentas($usuario) {
-		$sql = "select count(id) as  total from factura where usuario='$usuario' and estado='Pendiente'";
-		$r = $this->db->query ( $sql )->result ();
-		if ($r && is_array ( $r ) && count ( $r ) > 0) {
-			return $r [0]->total;
-		}
 		return 0;
 	}
 	function darTransaccion($trasaccion) {
-		$r = $this->db->where ( array ("id" => $trasaccion ) )->get ( "transaccion" )->result ();
+		$r = $this->db->where ( array (
+				"id" => $trasaccion 
+		) )->get ( "transaccion" )->result ();
 		if ($r && is_array ( $r ) && count ( $r ) > 0) {
 			return $r [0];
 		}
@@ -604,10 +710,10 @@ from siguiendo inner join articulo on siguiendo.articulo=articulo.id where sigui
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-					break;
+				break;
 				default :
 					$asc = "desc";
-					break;
+				break;
 			}
 			switch ($orderby) {
 				case "charge" :
@@ -616,29 +722,29 @@ from siguiendo inner join articulo on siguiendo.articulo=articulo.id where sigui
 					$sextra .= ",if(articulo.estado='Sin Pago',1,if(articulo.estado='Sin Envio',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Pago',1,if(transaccion.estado='Sin Envio',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_terminado ";
-					break;
+				break;
 				case "shipping" :
 					// 1-,
 					// 2-,3
 					$sextra .= ",if(articulo.estado='Sin Envio',1,if(articulo.estado='Enviado',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Envio',1,if(transaccion.estado='Enviado',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_envio ";
-					break;
+				break;
 				case "time" :
 					$sextra .= ",ordernarFechaVendidos(articulo.paquete,'$asc',0) as fecha_conjunta";
 					$sextra2 .= ",ordernarFechaVendidos(transaccion.paquete,'$asc',1) as fecha_conjunta";
 					$orderby = "fecha_conjunta $asc,paquete asc,fecha_terminado ";
-					break;
+				break;
 				case "price" :
 					$sextra .= ",ordernarPrecioVendidos(articulo.paquete) as precio_total";
 					$sextra2 .= ",ordernarPrecioVendidos(transaccion.paquete) as precio_total";
 					$orderby = "precio_total $asc,paquete asc,precio_total ";
-					break;
+				break;
 				default :
 					$sextra .= ",if(articulo.estado='Sin gastos Envio',1,if(articulo.estado='Sin Pago',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin gastos Envio',1,if(transaccion.estado='Sin Pago',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,gastos_envio ";
-					break;
+				break;
 			}
 			return "select * from ((SELECT 
 null as transaccion,
@@ -719,13 +825,25 @@ ORDER BY $orderby $asc";
 		$CI = &get_instance ();
 		$CI->load->model ( "Usuario_model", "usuario" );
 		$usuario = $CI->usuario->darUsuarioXId ( $usuario );
-		if ($usuario && $this->db->insert ( "voto", array ("usuario" => $usuario->id, "tipo" => $utipo, "asunto" => $motivo, "fecha" => date ( "Y-m-d H:i:s" ) ) )) {
-			return $this->db->update ( "usuario", array ($tipo => intval ( $usuario->{$tipo} ) + $cantidad ), array ("id" => $usuario->id ) );
+		if ($usuario && $this->db->insert ( "voto", array (
+				"usuario" => $usuario->id,
+				"tipo" => $utipo,
+				"asunto" => $motivo,
+				"fecha" => date ( "Y-m-d H:i:s" ) 
+		) )) {
+			return $this->db->update ( "usuario", array (
+					$tipo => intval ( $usuario->{$tipo} ) + $cantidad 
+			), array (
+					"id" => $usuario->id 
+			) );
 		}
 		return false;
 	}
 	function confirmarRecepcion($tipo, $paquete) {
-		$this->db->where ( array ("id" => $paquete, "estado" => "Enviado" ) );
+		$this->db->where ( array (
+				"id" => $paquete,
+				"estado" => "Enviado" 
+		) );
 		$res = $this->db->get ( "paquete" )->result ();
 		if ($res && is_array ( $res ) && count ( $res ) > 0) {
 			$res = $res [0];
@@ -735,19 +853,40 @@ ORDER BY $orderby $asc";
 				$this->adicionarVoto ( $res->comprador, "Compra" );
 			} else {
 				$tipo = "Disputa";
-				$this->db->insert ( "reporte", array ("asunto" => "Artículo Recibido diferente de la descripción del anuncio", "paquete" => $paquete, "fecha" => date ( "Y-m-d H-i-s" ), "perfil" => $res->vendedor, "usuario" => $res->comprador ) );
+				$this->db->insert ( "reporte", array (
+						"asunto" => "Artículo Recibido diferente de la descripción del anuncio",
+						"paquete" => $paquete,
+						"fecha" => date ( "Y-m-d H-i-s" ),
+						"perfil" => $res->vendedor,
+						"usuario" => $res->comprador 
+				) );
 			}
-			if ($this->db->update ( "paquete", array ("estado" => $tipo, "fecha_recibido" => date ( "Y-m-d H:i:s" ), "denuncia3" => 0, "denuncia4" => 0 ), array ("id" => $paquete ) )) {
+			if ($this->db->update ( "paquete", array (
+					"estado" => $tipo,
+					"fecha_recibido" => date ( "Y-m-d H:i:s" ),
+					"denuncia3" => 0,
+					"denuncia4" => 0 
+			), array (
+					"id" => $paquete 
+			) )) {
 				if (trim ( $res->articulos ) !== "") {
 					$articulos = explode ( ",", $res->articulos );
 					foreach ( $articulos as $a ) {
-						$this->db->update ( "articulo", array ("estado" => $tipo ), array ("id" => $a ) );
+						$this->db->update ( "articulo", array (
+								"estado" => $tipo 
+						), array (
+								"id" => $a 
+						) );
 					}
 				}
 				if (trim ( $res->transacciones ) !== "") {
 					$transacciones = explode ( ",", $res->transacciones );
 					foreach ( $transacciones as $t ) {
-						$this->db->update ( "transaccion", array ("estado" => $tipo ), array ("id" => $t ) );
+						$this->db->update ( "transaccion", array (
+								"estado" => $tipo 
+						), array (
+								"id" => $t 
+						) );
 					}
 				}
 				return true;
@@ -777,7 +916,14 @@ ORDER BY $orderby $asc";
 			$CI = &get_instance ();
 			
 			$CI->load->library ( "Myemail" );
-			$CI->myemail->enviarTemplate ( $usuario->email, traducir ( "Su tarifa cambio" ), "mail/notificacion-cambio-tarifa-plana", $params = array ("total" => $total, "tarifa_anterior" => self::$tarifa ["Plana"] [$pos - 1] ["nombre"], "monto_anterior" => self::$tarifa ["Plana"] [$pos - 1] ["monto"], "final_anterior" => self::$tarifa ["Plana"] [$pos] ["inicio"], "tarifa_actual" => self::$tarifa ["Plana"] [$pos] ["nombre"], "monto_actual" => self::$tarifa ["Plana"] [$pos] ["monto"] ) );
+			$CI->myemail->enviarTemplate ( $usuario->email, traducir ( "Su tarifa cambio" ), "mail/notificacion-cambio-tarifa-plana", $params = array (
+					"total" => $total,
+					"tarifa_anterior" => self::$tarifa ["Plana"] [$pos - 1] ["nombre"],
+					"monto_anterior" => self::$tarifa ["Plana"] [$pos - 1] ["monto"],
+					"final_anterior" => self::$tarifa ["Plana"] [$pos] ["inicio"],
+					"tarifa_actual" => self::$tarifa ["Plana"] [$pos] ["nombre"],
+					"monto_actual" => self::$tarifa ["Plana"] [$pos] ["monto"] 
+			) );
 		}
 	}
 	function confirmarEnvio($paquete) {
@@ -792,7 +938,13 @@ ORDER BY $orderby $asc";
 				if (trim ( $paquete->transacciones ) !== "") {
 					$transaccion = explode ( ",", $paquete->transacciones );
 				}
-				$this->db->update ( "paquete", array ("estado" => "Enviado", "fecha_envio" => date ( "Y-m-d H:i:s" ), "denuncia3" => 0 ), array ("id" => $paquete->id ) );
+				$this->db->update ( "paquete", array (
+						"estado" => "Enviado",
+						"fecha_envio" => date ( "Y-m-d H:i:s" ),
+						"denuncia3" => 0 
+				), array (
+						"id" => $paquete->id 
+				) );
 				
 				$CI = &get_instance ();
 				$vendedor = $CI->usuario->darUsuarioXId ( $paquete->vendedor );
@@ -803,26 +955,47 @@ ORDER BY $orderby $asc";
 							
 							foreach ( $articulos as $a ) {
 								$tarifa = $this->calcularTarifa ( $a, $vendedor->tipo_tarifa );
-								$this->db->insert ( "cuenta", array ("articulo" => $a->id, "paquete" => $a->paquete, "monto" => $tarifa, "fecha" => date ( "Y-m-d H:i:s" ), "usuario" => $vendedor->id ) );
+								$this->db->insert ( "cuenta", array (
+										"articulo" => $a->id,
+										"paquete" => $a->paquete,
+										"monto" => $tarifa,
+										"fecha" => date ( "Y-m-d H:i:s" ),
+										"usuario" => $vendedor->id 
+								) );
 							}
 						}
 						if (count ( $transaccion ) > 0) {
 							$transacciones = $this->db->where_in ( "id", $transaccion )->get ( "transaccion" )->result ();
 							foreach ( $transacciones as $t ) {
 								$tarifa = $this->calcularTarifa ( $t, $vendedor->tipo_tarifa, false, true );
-								$this->db->insert ( "cuenta", array ("articulo" => $t->articulo, "paquete" => $t->paquete, "monto" => $tarifa, "fecha" => date ( "Y-m-d H:i:s" ), "usuario" => $vendedor->id, "cantidad" => $t->cantidad ) );
+								$this->db->insert ( "cuenta", array (
+										"articulo" => $t->articulo,
+										"paquete" => $t->paquete,
+										"monto" => $tarifa,
+										"fecha" => date ( "Y-m-d H:i:s" ),
+										"usuario" => $vendedor->id,
+										"cantidad" => $t->cantidad 
+								) );
 							}
 						}
 					}
 				}
 				if ($articulo && is_array ( $articulo ) && count ( $articulo ) > 0) {
 					foreach ( $articulo as $a ) {
-						$this->db->update ( "articulo", array ("estado" => "Enviado" ), array ("id" => $a ) );
+						$this->db->update ( "articulo", array (
+								"estado" => "Enviado" 
+						), array (
+								"id" => $a 
+						) );
 					}
 				}
 				if ($transaccion && is_array ( $transaccion ) && count ( $transaccion ) > 0) {
 					foreach ( $transaccion as $t ) {
-						$this->db->update ( "transaccion", array ("estado" => "Enviado" ), array ("id" => $t ) );
+						$this->db->update ( "transaccion", array (
+								"estado" => "Enviado" 
+						), array (
+								"id" => $t 
+						) );
 					}
 				}
 				return true;
@@ -899,10 +1072,10 @@ ORDER BY $orderby $asc";
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-					break;
+				break;
 				default :
 					$asc = "desc";
-					break;
+				break;
 			}
 			switch ($orderby) {
 				case "charge" :
@@ -911,29 +1084,29 @@ ORDER BY $orderby $asc";
 					$sextra .= ",if(articulo.estado='Sin Pago',1,if(articulo.estado='Sin Envio',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Pago',1,if(transaccion.estado='Sin Envio',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_terminado ";
-					break;
+				break;
 				case "shipping" :
 					// 1-,
 					// 2-,3
 					$sextra .= ",if(articulo.estado='Sin Envio',1,if(articulo.estado='Enviado',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Envio',1,if(transaccion.estado='Enviado',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_envio ";
-					break;
+				break;
 				case "time" :
 					$sextra .= ",ordernarFechaVendidos(articulo.paquete,'$asc',0) as fecha_conjunta";
 					$sextra2 .= ",ordernarFechaVendidos(transaccion.paquete,'$asc',1) as fecha_conjunta";
 					$orderby = "fecha_conjunta $asc,paquete asc,fecha_terminado ";
-					break;
+				break;
 				case "price" :
 					$sextra .= ",ordernarPrecioVendidos(articulo.paquete) as precio_total";
 					$sextra2 .= ",ordernarPrecioVendidos(transaccion.paquete) as precio_total";
 					$orderby = "precio_total $asc,paquete asc,precio_total ";
-					break;
+				break;
 				default :
 					$sextra .= ",if(articulo.estado='Sin gastos Envio',1,2) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin gastos Envio',1,2) as aEstado";
 					$orderby = "aEstado $asc,gastos_envio $asc,paquete ";
-					break;
+				break;
 			}
 			
 			return "select * from ((SELECT
@@ -1021,29 +1194,29 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "title" :
 					$orderby = "articulo.titulo";
-					break;
+				break;
 				case "status" :
 					// 1-maximo pujador,
 					// 2-sobrepujado,3-ofertaenviada,4-ofertarechazada
 					$sextra .= ",if(articulo.tipo='Subasta',if((select usuario from oferta where oferta.articulo=articulo.id order by monto_automatico desc,fecha asc limit 0,1)='$usuario',1,2),if((select estado from oferta where oferta.articulo=articulo.id and oferta.usuario='$usuario' order by monto desc limit 0,1 )='Pendiente',3,4))as oEstado";
 					$orderby = "oEstado";
-					break;
+				break;
 				case "price" :
 					$sextra = ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-					break;
+				break;
 				default :
 					$sextra .= ",if(articulo.tipo='Fijo',unix_timestamp(articulo.fecha_registro)+$vencimientoOferta- unix_timestamp(),unix_timestamp(articulo.fecha_registro)+articulo.duracion*86400 - unix_timestamp())as tiempo";
 					$orderby = "tiempo";
-					break;
+				break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-					break;
+				break;
 				default :
 					$asc = "desc";
-					break;
+				break;
 			}
 			$vencimientoOferta = intval ( $this->configuracion->variables ( "vencimientoOferta" ) ) * 86400;
 			return "SELECT articulo.cantidad,articulo.id,articulo.titulo,articulo.tipo,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,(select usuario from oferta where oferta.articulo=articulo.id order by monto desc limit 0,1) as maximoPujador ,(select estado from oferta where oferta.articulo=articulo.id and oferta.usuario='$usuario' order by monto desc limit 0,1) as estadoOferta $sextra
@@ -1072,27 +1245,27 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "follower" :
 					$orderby = "seguidores";
-					break;
+				break;
 				case "deals" :
 					$orderby = "nOfertas";
 					$sextra .= ",(select count(oferta.id) from oferta inner join usuario on usuario.id=oferta.usuario and usuario.estado<>'Baneado' where articulo.id=oferta.articulo) as nOfertas";
-					break;
+				break;
 				case "price" :
 					$sextra .= ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-					break;
+				break;
 				default :
 					$sextra .= ",if(articulo.tipo='Fijo',unix_timestamp(articulo.fecha_registro)+$vencimientoOferta- unix_timestamp(),unix_timestamp(articulo.fecha_registro)+articulo.duracion*86400 - unix_timestamp())as tiempo";
 					$orderby = "tiempo";
-					break;
+				break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-					break;
+				break;
 				default :
 					$asc = "desc";
-					break;
+				break;
 			}
 			if ($new) {
 				$fextra = "INNER JOIN (select count(oferta.id) as cantidad,oferta.articulo from oferta inner join articulo on oferta.articulo=articulo.id inner join usuario on usuario.id=oferta.usuario and usuario.estado<>'Baneado' where oferta.estado='Pendiente' and articulo.tipo='Fijo' group by oferta.articulo ) as s on s.articulo=articulo.id and s.cantidad>0";
@@ -1126,22 +1299,22 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "title" :
 					$orderby = "articulo.titulo";
-					break;
+				break;
 				case "price" :
 					$sextra = ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-					break;
+				break;
 				default :
 					$orderby = "articulo.terminado";
-					break;
+				break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-					break;
+				break;
 				default :
 					$asc = "desc";
-					break;
+				break;
 			}
 			return "SELECT articulo.id,articulo.titulo,articulo.tipo,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,articulo.fecha_terminado $sextra
 			FROM articulo
@@ -1165,25 +1338,25 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "title" :
 					$orderby = "articulo.titulo";
-					break;
+				break;
 				case "type" :
 					$orderby = "articulo.tipo";
-					break;
+				break;
 				case "price" :
 					$sextra .= ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-					break;
+				break;
 				default :
 					$orderby = "articulo.terminado";
-					break;
+				break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-					break;
+				break;
 				default :
 					$asc = "desc";
-					break;
+				break;
 			}
 			
 			return "SELECT articulo.cantidad,articulo.id,articulo.titulo,articulo.tipo,articulo.precio,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,articulo.fecha_terminado $sextra
@@ -1218,7 +1391,10 @@ ORDER BY $orderby $asc ";
 					}
 					$count ++;
 				} while ( $count < $totalRes && $grupos + 1 <= $total );
-				return array ($totalRes, $datos );
+				return array (
+						$totalRes,
+						$datos 
+				);
 			}
 		}
 		return false;
@@ -1253,7 +1429,10 @@ ORDER BY $orderby $asc ";
 					}
 					$count ++;
 				} while ( $count < $totalRes && $grupos + 1 <= $total );
-				return array ($totalRes, $datos );
+				return array (
+						$totalRes,
+						$datos 
+				);
 			}
 		}
 		return false;
@@ -1269,7 +1448,10 @@ ORDER BY $orderby $asc ";
 				for($i = $inicio; $i < $inicio + $total; $i ++) {
 					$datos [] = $res->row ( $i );
 				}
-				return array ($totalRes, $datos );
+				return array (
+						$totalRes,
+						$datos 
+				);
 			}
 		}
 		return false;
@@ -1285,7 +1467,10 @@ ORDER BY $orderby $asc ";
 				for($i = $inicio; $i < $inicio + $total; $i ++) {
 					$datos [] = $res->row ( $i );
 				}
-				return array ($totalRes, $datos );
+				return array (
+						$totalRes,
+						$datos 
+				);
 			}
 		}
 		return false;
@@ -1301,7 +1486,10 @@ ORDER BY $orderby $asc ";
 				for($i = $inicio; $i < $inicio + $total; $i ++) {
 					$datos [] = $res->row ( $i );
 				}
-				return array ($totalRes, $datos );
+				return array (
+						$totalRes,
+						$datos 
+				);
 			}
 		}
 		return false;
@@ -1317,7 +1505,10 @@ ORDER BY $orderby $asc ";
 				for($i = $inicio; $i < $inicio + $total; $i ++) {
 					$datos [] = $res->row ( $i );
 				}
-				return array ($totalRes, $datos );
+				return array (
+						$totalRes,
+						$datos 
+				);
 			}
 		}
 		return false;
@@ -1413,7 +1604,9 @@ ORDER BY $orderby $asc ";
 	}
 	function contarOfertasPendientes($usuario) {
 		$this->db->select ( "count(oferta.id) as cantidad" );
-		$this->db->where ( array ("oferta.estado" => "Pendiente" ) );
+		$this->db->where ( array (
+				"oferta.estado" => "Pendiente" 
+		) );
 		$this->db->join ( "articulo", "articulo.id=oferta.articulo and articulo.usuario='$usuario' and articulo.terminado=0 and articulo.tipo='Fijo'", "inner" );
 		$this->db->group_by ( "oferta.articulo" );
 		$res = $this->darTodos ( "oferta" );
@@ -1477,13 +1670,13 @@ ORDER BY $orderby $asc ";
 		switch ($section) {
 			case "item" :
 				$tipo = "Fijo";
-				break;
+			break;
 			case "auction" :
 				$tipo = "Subasta";
-				break;
+			break;
 			default :
 				$tipo = false;
-				break;
+			break;
 		}
 		
 		$x = $this->listarArticulosXCriterioFecha ( $criterio, $tipo, $orden, $ubicacion, $categoria, $idioma, $usuario, $inicio, $totalpagina );
@@ -1504,11 +1697,16 @@ ORDER BY $orderby $asc ";
 	public function listarArticulosPendientes() {
 		$this->db->select ( "*,if(tipo<>'Subasta',unix_timestamp ( fecha_registro ) + " . $this->configuracion->variables ( "vencimientoOferta" ) . " * 86400,unix_timestamp ( fecha_registro ) + duracion * 86400) as tiempo" );
 		$this->db->having ( "tiempo<=unix_timestamp()" );
-		$this->db->where ( array ("terminado" => 0 ) );
+		$this->db->where ( array (
+				"terminado" => 0 
+		) );
 		return $this->darTodos ( "articulo" );
 	}
 	public function cantidadOfertasPendientes($articulo) {
-		$this->db->where ( array ("articulo" => $articulo, "estado" => "Pendiente" ) );
+		$this->db->where ( array (
+				"articulo" => $articulo,
+				"estado" => "Pendiente" 
+		) );
 		$this->db->from ( "oferta" );
 		return $this->db->count_all_results ();
 	}
@@ -1517,10 +1715,14 @@ ORDER BY $orderby $asc ";
 		$this->db->join ( "articulo", "oferta.articulo=articulo.id and articulo.terminado=0", "inner" );
 		$this->db->select ( "oferta.id as id, oferta.monto as monto, oferta.usuario as usuario_id, usuario.seudonimo as seudonimo, usuario.codigo_oculto as codigo,oferta.articulo as articulo_id,oferta.monto_automatico as monto_automatico" );
 		if ($articulo) {
-			$this->db->where ( array ("articulo" => $articulo ) );
+			$this->db->where ( array (
+					"articulo" => $articulo 
+			) );
 		}
 		if ($subasta) {
-			$this->db->where ( array ("articulo.tipo" => "Subasta" ) );
+			$this->db->where ( array (
+					"articulo.tipo" => "Subasta" 
+			) );
 		}
 		if (is_array ( $nolist ) && count ( $nolist ) > 0) {
 			$this->db->where_not_in ( "oferta.id", $nolist );
@@ -1533,20 +1735,31 @@ ORDER BY $orderby $asc ";
 		return $this->darTodos ( "oferta" );
 	}
 	public function siguiendo($articulo, $usuario) {
-		$this->db->where ( array ("articulo" => $articulo, "usuario" => $usuario ) );
+		$this->db->where ( array (
+				"articulo" => $articulo,
+				"usuario" => $usuario 
+		) );
 		return $this->darUno ( "siguiendo" );
 	}
 	public function seguir($articulo, $usuario) {
 		if (! $this->siguiendo ( $articulo, $usuario )) {
-			return $this->db->insert ( "siguiendo", array ("usuario" => $usuario, "articulo" => $articulo, "fecha" => date ( "Y-m-d H:s:i" ) ) );
+			return $this->db->insert ( "siguiendo", array (
+					"usuario" => $usuario,
+					"articulo" => $articulo,
+					"fecha" => date ( "Y-m-d H:s:i" ) 
+			) );
 		}
 		return false;
 	}
 	public function cantidadOfertas($articulo, $usuario = false) {
 		$this->db->select ( "count(oferta.id) as cantidad" );
-		$this->db->where ( array ("articulo" => $articulo ) );
+		$this->db->where ( array (
+				"articulo" => $articulo 
+		) );
 		if ($usuario) {
-			$this->db->where ( array ("usuario" => $usuario ) );
+			$this->db->where ( array (
+					"usuario" => $usuario 
+			) );
 		}
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario and usuario.estado<>'Baneado'" );
 		return $this->darUno ( "oferta" );
@@ -1574,7 +1787,9 @@ ORDER BY $orderby $asc ";
 			}
 		}
 		if ($articulo) {
-			$this->db->where ( array ("articulo" => $articulo ) );
+			$this->db->where ( array (
+					"articulo" => $articulo 
+			) );
 		}
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario and usuario.estado<>'Baneado'", "inner" );
 		$orderby = "oferta.monto desc, oferta.id asc";
@@ -1586,16 +1801,22 @@ ORDER BY $orderby $asc ";
 	}
 	public function maximaOferta($articulo, $usuario = false) {
 		$this->db->select ( "max(monto) as cantidad" );
-		$this->db->where ( array ("articulo" => $articulo ) );
+		$this->db->where ( array (
+				"articulo" => $articulo 
+		) );
 		if ($usuario) {
-			$this->db->where ( array ("usuario" => $usuario ) );
+			$this->db->where ( array (
+					"usuario" => $usuario 
+			) );
 		}
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario and usuario.estado<>'Baneado'", "inner" );
 		return $this->darUno ( "oferta" );
 	}
 	public function mayorOferta($articulo, $subasta = false) {
 		$this->db->select ( "oferta.id,monto,usuario,monto_automatico" );
-		$this->db->where ( array ("articulo" => $articulo ) );
+		$this->db->where ( array (
+				"articulo" => $articulo 
+		) );
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario && usuario.estado<>'Baneado'", "inner" );
 		if (! $subasta) {
 			$this->db->order_by ( "monto desc" );
@@ -1614,7 +1835,10 @@ ORDER BY $orderby $asc ";
 	}
 	public function ultimaOferta($articulo, $usuario) {
 		$this->db->select ( "oferta.*" );
-		$this->db->where ( array ("articulo" => $articulo, "usuario" => $usuario ) );
+		$this->db->where ( array (
+				"articulo" => $articulo,
+				"usuario" => $usuario 
+		) );
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario && usuario.estado<>'Baneado'", "inner" );
 		$this->db->order_by ( "oferta.id desc" );
 		$o = $this->darUno ( "oferta" );
@@ -1653,7 +1877,13 @@ ORDER BY $orderby $asc ";
 				} else {
 					$gastos += floatval ( $articulo->gastos_todos );
 				}
-				$this->db->update ( "paquete", array ("articulos" => implode ( ",", $articulos ), "gastos_envio" => $gastos, "monto" => $monto ), array ("id" => $p->id ) );
+				$this->db->update ( "paquete", array (
+						"articulos" => implode ( ",", $articulos ),
+						"gastos_envio" => $gastos,
+						"monto" => $monto 
+				), array (
+						"id" => $p->id 
+				) );
 				return $p->id;
 			} else {
 				$articulos [] = $articulo->id;
@@ -1668,7 +1898,14 @@ ORDER BY $orderby $asc ";
 				} else {
 					$gastos += floatval ( $articulo->gastos_todos );
 				}
-				$this->db->insert ( "paquete", array ("vendedor" => $articulo->usuario->id, "comprador" => $articulo->comprador->id, "fecha" => date ( "Y-m-d H:i:s" ), "articulos" => implode ( ",", $articulos ), "gastos_envio" => $gastos, "monto" => $monto ) );
+				$this->db->insert ( "paquete", array (
+						"vendedor" => $articulo->usuario->id,
+						"comprador" => $articulo->comprador->id,
+						"fecha" => date ( "Y-m-d H:i:s" ),
+						"articulos" => implode ( ",", $articulos ),
+						"gastos_envio" => $gastos,
+						"monto" => $monto 
+				) );
 				return $this->db->insert_id ();
 			}
 		}
@@ -1711,7 +1948,13 @@ ORDER BY $orderby $asc ";
 				 * var_dump ( $gastos ); var_dump ( $monto ); var_dump ( $p->id
 				 * );
 				 */
-				$this->db->update ( "paquete", array ("transacciones" => implode ( ",", $transacciones ), "gastos_envio" => $gastos, "monto" => $monto ), array ("id" => $p->id ) );
+				$this->db->update ( "paquete", array (
+						"transacciones" => implode ( ",", $transacciones ),
+						"gastos_envio" => $gastos,
+						"monto" => $monto 
+				), array (
+						"id" => $p->id 
+				) );
 				$pid = $p->id;
 			} else {
 				$transacciones [] = $transaccion->id;
@@ -1729,11 +1972,22 @@ ORDER BY $orderby $asc ";
 				/*
 				 * var_dump ( $gastos ); var_dump ( $monto );
 				 */
-				$this->db->insert ( "paquete", array ("vendedor" => $articulo->usuario->id, "comprador" => $transaccion->comprador->id, "fecha" => date ( "Y-m-d H:i:s" ), "transacciones" => implode ( ",", $transacciones ), "gastos_envio" => $gastos, "monto" => $monto ) );
+				$this->db->insert ( "paquete", array (
+						"vendedor" => $articulo->usuario->id,
+						"comprador" => $transaccion->comprador->id,
+						"fecha" => date ( "Y-m-d H:i:s" ),
+						"transacciones" => implode ( ",", $transacciones ),
+						"gastos_envio" => $gastos,
+						"monto" => $monto 
+				) );
 				$pid = $this->db->insert_id ();
 			}
 			if ($pid) {
-				$this->db->update ( "transaccion", array ("paquete" => $pid ), array ("id" => $transaccion->id ) );
+				$this->db->update ( "transaccion", array (
+						"paquete" => $pid 
+				), array (
+						"id" => $transaccion->id 
+				) );
 			}
 			return $pid;
 		}
@@ -1745,13 +1999,25 @@ ORDER BY $orderby $asc ";
 		if ($p) {
 			$articulos = explode ( ",", $p->articulos );
 			foreach ( $articulos as $a ) {
-				$this->db->update ( "articulo", array ("estado" => "Sin gastos Envio", "paquete" => null ), array ("id" => $a ) );
+				$this->db->update ( "articulo", array (
+						"estado" => "Sin gastos Envio",
+						"paquete" => null 
+				), array (
+						"id" => $a 
+				) );
 			}
 			$transacciones = explode ( ",", $p->transacciones );
 			foreach ( $transacciones as $t ) {
-				$this->db->update ( "transaccion", array ("estado" => "Sin gastos Envio", "paquete" => null ), array ("id" => $t ) );
+				$this->db->update ( "transaccion", array (
+						"estado" => "Sin gastos Envio",
+						"paquete" => null 
+				), array (
+						"id" => $t 
+				) );
 			}
-			$this->db->delete ( "paquete", array ("id" => $p->id ) );
+			$this->db->delete ( "paquete", array (
+					"id" => $p->id 
+			) );
 		}
 	}
 	public function paqueteSimilar($articulo) {
@@ -1786,7 +2052,9 @@ WHERE paquete.estado='Sin pago' and paquete.vendedor='$articulo->usuario' and pa
 		return ($r && is_array ( $r ) && count ( $r ) > 0) ? $r [0] : false;
 	}
 	public function darPaquete($paquete) {
-		$this->db->where ( array ("id" => $paquete ) );
+		$this->db->where ( array (
+				"id" => $paquete 
+		) );
 		return $this->darUno ( "paquete" );
 	}
 	function prepararArticulosPorComprar($comprador, $vendedor, $paquete = false, $pagos = false) {
@@ -1880,7 +2148,9 @@ ORDER BY articulo.titulo desc";
 		return $data;
 	}
 	public function obtenerVendidosDeCantidad($articulo) {
-		$this->db->where ( array ("articulo" => $articulo ) );
+		$this->db->where ( array (
+				"articulo" => $articulo 
+		) );
 		$this->db->select ( "count(id) as cantidad" );
 		$r = $this->db->get ( "transaccion" )->result ();
 		return ($r && is_array ( $r ) && count ( $r ) > 0) ? $r [0]->cantidad : 0;
@@ -1889,12 +2159,24 @@ ORDER BY articulo.titulo desc";
 		$a = $this->darArticulo ( $articulo );
 		if ($a && $a->terminado !== 1 && $a->estado == "A la venta") {
 			if ($a->tipo !== "Cantidad") {
-				$res = $this->db->update ( "oferta", array ("estado" => "Rechazado" ), array ("articulo" => $articulo ) );
+				$res = $this->db->update ( "oferta", array (
+						"estado" => "Rechazado" 
+				), array (
+						"articulo" => $articulo 
+				) );
 				if ($res) {
 					$a->comprador = $usuario;
 					$pid = $this->adicionarPaqueteSimilar ( $a );
 					// $this->eliminarPaqueteSimilar ( $a );
-					if ($this->db->update ( "articulo", array ("paquete" => $pid, "estado" => "Sin Pago", "fecha_terminado" => date ( "Y-m-d H:i:s" ), "terminado" => 1, "comprador" => $usuario ), array ("id" => $articulo ) )) {
+					if ($this->db->update ( "articulo", array (
+							"paquete" => $pid,
+							"estado" => "Sin Pago",
+							"fecha_terminado" => date ( "Y-m-d H:i:s" ),
+							"terminado" => 1,
+							"comprador" => $usuario 
+					), array (
+							"id" => $articulo 
+					) )) {
 						return $articulo;
 					}
 				}
@@ -1908,29 +2190,58 @@ ORDER BY articulo.titulo desc";
 					return false;
 				}
 				$a->comprador = $usuario;
-				$this->db->where ( array ("articulo" => $a->id, "comprador" => $usuario, "estado" => "Sin Pago" ) );
+				$this->db->where ( array (
+						"articulo" => $a->id,
+						"comprador" => $usuario,
+						"estado" => "Sin Pago" 
+				) );
 				$r = $this->db->get ( "transaccion" )->result ();
 				$tid = false;
 				if ($r && is_array ( $r ) && count ( $r ) > 0) {
 					$t = $r [0];
-					$this->db->update ( "transaccion", array ("fecha_terminado" => date ( "Y-m-d H:i:s" ), "cantidad" => $t->cantidad + $cantidad ), array ("id" => $t->id ) );
+					$this->db->update ( "transaccion", array (
+							"fecha_terminado" => date ( "Y-m-d H:i:s" ),
+							"cantidad" => $t->cantidad + $cantidad 
+					), array (
+							"id" => $t->id 
+					) );
 					$t->cantidad = $cantidad;
 					$pid = $this->adicionarPaqueteSimilarTransaccion ( $t );
 					$tid = $t->id;
 				} else {
-					$this->db->insert ( "transaccion", array ("articulo" => $articulo, "precio" => $a->precio, "moneda" => $a->moneda, "estado" => "Sin Pago", "fecha_terminado" => date ( "Y-m-d H:i:s" ), "comprador" => $usuario, "cantidad" => $cantidad ) );
+					$this->db->insert ( "transaccion", array (
+							"articulo" => $articulo,
+							"precio" => $a->precio,
+							"moneda" => $a->moneda,
+							"estado" => "Sin Pago",
+							"fecha_terminado" => date ( "Y-m-d H:i:s" ),
+							"comprador" => $usuario,
+							"cantidad" => $cantidad 
+					) );
 					$tid = $this->db->insert_id ();
-					$rr = $this->db->where ( array ("id" => $tid ) )->get ( "transaccion" )->result ();
+					$rr = $this->db->where ( array (
+							"id" => $tid 
+					) )->get ( "transaccion" )->result ();
 					if ($rr && is_array ( $rr ) && count ( $rr ) > 0) {
 						$pid = $this->adicionarPaqueteSimilarTransaccion ( $rr [0] );
 					}
 				}
 				if ($a->cantidad - $cantidad > 0) {
-					if ($this->db->update ( "articulo", array ("cantidad" => $a->cantidad - $cantidad ), array ("id" => $articulo ) )) {
+					if ($this->db->update ( "articulo", array (
+							"cantidad" => $a->cantidad - $cantidad 
+					), array (
+							"id" => $articulo 
+					) )) {
 						return $tid;
 					}
 				} else {
-					if ($this->db->update ( "articulo", array ("cantidad" => 0, "terminado" => 1, "fecha_terminado" => date ( "Y-m-d H:i:S" ) ), array ("id" => $articulo ) )) {
+					if ($this->db->update ( "articulo", array (
+							"cantidad" => 0,
+							"terminado" => 1,
+							"fecha_terminado" => date ( "Y-m-d H:i:S" ) 
+					), array (
+							"id" => $articulo 
+					) )) {
 						return $tid;
 					}
 				}
@@ -1940,25 +2251,42 @@ ORDER BY articulo.titulo desc";
 	}
 	public function datosOferta($articulo, $usuario) {
 		$this->db->select ( "count(oferta.id) as cantidad,max(monto) as maximo" );
-		$this->db->where ( array ("articulo" => $articulo, "usuario" => $usuario ) );
+		$this->db->where ( array (
+				"articulo" => $articulo,
+				"usuario" => $usuario 
+		) );
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario and usuario.estado<>'Baneado'", "inner" );
 		return $this->darUno ( "oferta" );
 	}
 	public function darOfertaGanadora($articulo) {
 		$this->db->select ( "monto,monto_automatico" );
-		$this->db->where ( array ("articulo" => $articulo, "oferta.estado" => "Aceptado" ) );
+		$this->db->where ( array (
+				"articulo" => $articulo,
+				"oferta.estado" => "Aceptado" 
+		) );
 		$this->db->join ( "usuario", "usuario.id=oferta.usuario and usuario.estado<>'Baneado'", "inner" );
 		return $this->darUno ( "oferta" );
 	}
 	public function aceptarOferta($oferta, $articulo, $subasta = false) {
 		$a = $this->darArticulo ( $articulo );
 		if ($a && $a->terminado !== 1) {
-			$res = $this->db->update ( "oferta", array ("estado" => "Rechazado" ), array ("articulo" => $articulo, "id !=" => $oferta ) );
+			$res = $this->db->update ( "oferta", array (
+					"estado" => "Rechazado" 
+			), array (
+					"articulo" => $articulo,
+					"id !=" => $oferta 
+			) );
 			if ($res) {
-				$res = $this->db->update ( "oferta", array ("estado" => "Aceptado" ), array ("id" => $oferta ) );
+				$res = $this->db->update ( "oferta", array (
+						"estado" => "Aceptado" 
+				), array (
+						"id" => $oferta 
+				) );
 				if ($res) {
 					$this->db->select ( "usuario,monto,monto_automatico" );
-					$this->db->where ( array ("id" => $oferta ) );
+					$this->db->where ( array (
+							"id" => $oferta 
+					) );
 					$oferta = $this->darUno ( "oferta" );
 					
 					// var_dump($expression);
@@ -1966,7 +2294,16 @@ ORDER BY articulo.titulo desc";
 						$CI = &get_instance ();
 						$a->comprador = $oferta->usuario;
 						$pid = $this->adicionarPaqueteSimilar ( $a );
-						return $this->db->update ( "articulo", array ("paquete" => $pid, "estado" => "Sin Pago", "fecha_terminado" => date ( "Y-m-d H:i:s" ), "terminado" => 1, "comprador" => $oferta->usuario, "precio_oferta" => ($subasta ? $oferta->monto_automatico : $oferta->monto) ), array ("id" => $articulo ) );
+						return $this->db->update ( "articulo", array (
+								"paquete" => $pid,
+								"estado" => "Sin Pago",
+								"fecha_terminado" => date ( "Y-m-d H:i:s" ),
+								"terminado" => 1,
+								"comprador" => $oferta->usuario,
+								"precio_oferta" => ($subasta ? $oferta->monto_automatico : $oferta->monto) 
+						), array (
+								"id" => $articulo 
+						) );
 					}
 				}
 			}
@@ -1976,7 +2313,11 @@ ORDER BY articulo.titulo desc";
 	public function rechazarOferta($oferta, $articulo) {
 		$a = $this->darArticulo ( $articulo );
 		if ($a && $a->terminado !== 1) {
-			return $this->db->update ( "oferta", array ("estado" => "Rechazado" ), array ("id =" => $oferta ) );
+			return $this->db->update ( "oferta", array (
+					"estado" => "Rechazado" 
+			), array (
+					"id =" => $oferta 
+			) );
 		}
 		return false;
 	}
@@ -2001,21 +2342,42 @@ ORDER BY articulo.titulo desc";
 			if ($c && $c->cantidad < $m) {
 				$uo = $this->ultimaOferta ( $articulo, $usuario );
 				if (! $uo || ($uo && $uo->monto < $monto)) {
-					$datos = array ("monto" => $monto, "usuario" => $usuario, "articulo" => $articulo, "fecha" => date ( "Y-m-d H:i:s" ) );
+					$datos = array (
+							"monto" => $monto,
+							"usuario" => $usuario,
+							"articulo" => $articulo,
+							"fecha" => date ( "Y-m-d H:i:s" ) 
+					);
 					if ($a->precio_rechazo && $a->precio_rechazo > $monto) {
 						$datos ["estado"] = "Rechazado";
 					}
 					if ($this->db->insert ( "oferta", $datos )) {
 						$this->desactivarOfertasVistos ( $articulo );
-						return array (1, $m - 1 - $c->cantidad, $a->precio_rechazo && $a->precio_rechazo > $monto );
+						return array (
+								1,
+								$m - 1 - $c->cantidad,
+								$a->precio_rechazo && $a->precio_rechazo > $monto 
+						);
 					}
 				} else {
-					return array (3, 0, false );
+					return array (
+							3,
+							0,
+							false 
+					);
 				}
 			}
-			return array (0, 0, false );
+			return array (
+					0,
+					0,
+					false 
+			);
 		}
-		return array (2, 0, false );
+		return array (
+				2,
+				0,
+				false 
+		);
 	}
 	private function enviarMailSobrepujados($articulo, $usuario) {
 		$emails = $this->db->query ( "SELECT usuario.email as email FROM `oferta` inner join usuario on oferta.usuario=usuario.id WHERE oferta.articulo=$articulo->id and oferta.usuario<>$usuario group by oferta.usuario" );
@@ -2024,7 +2386,10 @@ ORDER BY articulo.titulo desc";
 			if ($emails && is_array ( $emails ) && count ( $emails ) > 0) {
 				$this->load->library ( "myemail" );
 				foreach ( $emails as $e ) {
-					$this->myemail->enviarTemplate ( $e->email, "Te han sobrepujado", "mail/sobre-pujado", array ("url" => base_url () . "product/$articulo->id - " . normalizarTexto ( $articulo->titulo ), "titulo" => $articulo->titulo ) );
+					$this->myemail->enviarTemplate ( $e->email, "Te han sobrepujado", "mail/sobre-pujado", array (
+							"url" => base_url () . "product/$articulo->id - " . normalizarTexto ( $articulo->titulo ),
+							"titulo" => $articulo->titulo 
+					) );
 				}
 			}
 		}
@@ -2042,7 +2407,7 @@ ORDER BY articulo.titulo desc";
 			if ($c) {
 				if ($m->cantidad >= $monto) {
 					return 3; // tu oferta no puede ser menor a la que ofertaste
-				// antes;
+						          // antes;
 				}
 				
 				if ($c->cantidad > 0) {
@@ -2050,11 +2415,25 @@ ORDER BY articulo.titulo desc";
 						return 0; // no se alcanzo el minimo
 					} else {
 						if ($c->monto > $monto) {
-							$datos = array ("monto" => $c->monto, "usuario" => $c->usuario, "articulo" => $articulo, "fecha" => date ( "Y-m-d H:i:s" ), "tipo" => "Subasta", "monto_automatico" => $monto + 0.5 );
+							$datos = array (
+									"monto" => $c->monto,
+									"usuario" => $c->usuario,
+									"articulo" => $articulo,
+									"fecha" => date ( "Y-m-d H:i:s" ),
+									"tipo" => "Subasta",
+									"monto_automatico" => $monto + 0.5 
+							);
 							$this->db->insert ( "oferta", $datos );
 							$monto_automatico = $monto;
 						} elseif ($c->monto == $monto) {
-							$datos = array ("monto" => $c->monto, "usuario" => $c->usuario, "articulo" => $articulo, "fecha" => date ( "Y-m-d H:i:s" ), "tipo" => "Subasta", "monto_automatico" => $monto );
+							$datos = array (
+									"monto" => $c->monto,
+									"usuario" => $c->usuario,
+									"articulo" => $articulo,
+									"fecha" => date ( "Y-m-d H:i:s" ),
+									"tipo" => "Subasta",
+									"monto_automatico" => $monto 
+							);
 							$this->db->insert ( "oferta", $datos );
 							$monto_automatico = $monto;
 						} else {
@@ -2074,7 +2453,14 @@ ORDER BY articulo.titulo desc";
 				}
 			}
 			if (! $mismoMonto) {
-				$datos = array ("monto" => $monto, "usuario" => $usuario, "articulo" => $articulo, "fecha" => date ( "Y-m-d H:i:s" ), "tipo" => "Subasta", "monto_automatico" => $monto_automatico );
+				$datos = array (
+						"monto" => $monto,
+						"usuario" => $usuario,
+						"articulo" => $articulo,
+						"fecha" => date ( "Y-m-d H:i:s" ),
+						"tipo" => "Subasta",
+						"monto_automatico" => $monto_automatico 
+				);
 				$exito = false;
 				if ($this->db->insert ( "oferta", $datos )) {
 					if ($c && $ganador) {
@@ -2082,13 +2468,20 @@ ORDER BY articulo.titulo desc";
 						$u = $this->umodel->darUsuarioXId ( $c->usuario );
 						if ($u) {
 							$this->load->library ( "myemail" );
-							$this->myemail->enviarTemplate ( $u->email, "Te han sobrepujado", "mail/sobre-pujado", array ("url" => base_url () . "product/$a->id - " . normalizarTexto ( $a->titulo ), "titulo" => $a->titulo ) );
+							$this->myemail->enviarTemplate ( $u->email, "Te han sobrepujado", "mail/sobre-pujado", array (
+									"url" => base_url () . "product/$a->id - " . normalizarTexto ( $a->titulo ),
+									"titulo" => $a->titulo 
+							) );
 						}
 					}
 					$exito = true;
 				}
 			} else {
-				if ($this->db->update ( "oferta", array ("monto" => $monto ), array ("id" => $c->id ) )) {
+				if ($this->db->update ( "oferta", array (
+						"monto" => $monto 
+				), array (
+						"id" => $c->id 
+				) )) {
 					$exito = true;
 				}
 			}
@@ -2105,21 +2498,41 @@ ORDER BY articulo.titulo desc";
 			if ($a) {
 				if ($a->terminado == 0) {
 					$this->quitarCantidad ( $a->categoria );
-					$x = array ("terminado" => 1, "fecha_terminado" => date ( "Y-m-d H:i:s" ) );
+					$x = array (
+							"terminado" => 1,
+							"fecha_terminado" => date ( "Y-m-d H:i:s" ) 
+					);
 					if ($estado) {
 						$x ["estado"] = $estado;
 					}
-					$x = $this->db->update ( "articulo", $x, array ("id" => $articulo ) );
+					$x = $this->db->update ( "articulo", $x, array (
+							"id" => $articulo 
+					) );
 					if ($x && $a->estado = "A la venta" && ! $estado) {
-						$this->db->update ( "oferta", array ("estado" => "Rechazado" ), array ("articulo" => $a->id ) );
+						$this->db->update ( "oferta", array (
+								"estado" => "Rechazado" 
+						), array (
+								"articulo" => $a->id 
+						) );
 					}
 					return $x;
 				} else {
-					$this->db->update ( "articulo", array ("terminado" => 1, "fecha_terminado" => date ( "Y-m-d H:i:s" ), "estado" => $estado ), array ("id" => $articulo ) );
+					$this->db->update ( "articulo", array (
+							"terminado" => 1,
+							"fecha_terminado" => date ( "Y-m-d H:i:s" ),
+							"estado" => $estado 
+					), array (
+							"id" => $articulo 
+					) );
 				}
 			}
 		} else {
-			$this->db->update ( "transaccion", array ("fecha_terminado" => date ( "Y-m-d H:i:s" ), "estado" => $estado ), array ("id" => $articulo ) );
+			$this->db->update ( "transaccion", array (
+					"fecha_terminado" => date ( "Y-m-d H:i:s" ),
+					"estado" => $estado 
+			), array (
+					"id" => $articulo 
+			) );
 		}
 		return false;
 	}
@@ -2127,8 +2540,15 @@ ORDER BY articulo.titulo desc";
 		$a = $this->darArticulo ( $articulo );
 		if ($a && $a->terminado == 1) {
 			$this->adicionarCantidad ( $a->categoria );
-			if ($this->db->update ( "articulo", array ("terminado" => 0, "fecha_registro" => date ( "Y-m-d H:i:s" ) ), array ("id" => $articulo ) )) {
-				$this->db->delete ( "oferta", array ("articulo" => $a->id ) );
+			if ($this->db->update ( "articulo", array (
+					"terminado" => 0,
+					"fecha_registro" => date ( "Y-m-d H:i:s" ) 
+			), array (
+					"id" => $articulo 
+			) )) {
+				$this->db->delete ( "oferta", array (
+						"articulo" => $a->id 
+				) );
 				return $a;
 			}
 		}
@@ -2140,15 +2560,29 @@ ORDER BY articulo.titulo desc";
 		}
 		return $n;
 	}
-	public function registrar($modificar = false) {
+	public function listarDirectorio() {
+		$f = scandir ( BASEPATH . "../files/temporal/" );
+		array_shift ( $f );
+		array_shift ( $f );
+		return $f;
+	}
+	public function registrar($modificar = false, $vehiculo = false, $mascota = false) {
 		$this->precio = $this->parseDecimal ( $this->precio );
-		$this->precio_rechazo = $this->parseDecimal ( $this->precio_rechazo );
-		$this->gastos_pais = $this->parseDecimal ( $this->gastos_pais );
-		$this->gastos_continente = $this->parseDecimal ( $this->gastos_continente );
-		$this->gastos_todos = $this->parseDecimal ( $this->gastos_todos );
-		$datos = array ("usuario" => $this->usuario, "titulo" => $this->titulo, "descripcion" => strip_not_allowed ( $this->descripcion, "form,marquee,script,input,textarea,button" ), "categoria" => $this->categoria, "foto" => $this->foto, "tipo" => $this->tipo, "precio" => $this->precio, "precio_rechazo" => $this->precio_rechazo, "moneda" => $this->moneda, "duracion" => $this->duracion, "pagos" => $this->pagos, "cantidad" => $this->cantidad, "cantidad_original" => $this->cantidad_original, "gastos_pais" => $this->gastos_pais, "gastos_continente" => $this->gastos_continente, "gastos_todos" => $this->gastos_todos, "envio_local" => $this->envio_local );
+		$datos = array (
+				"usuario" => $this->usuario,
+				"titulo" => $this->titulo,
+				"descripcion" => strip_not_allowed ( $this->descripcion, "form,marquee,script,input,textarea,button" ),
+				"categoria" => $this->categoria,
+				"foto" => $this->foto,
+				"precio" => $this->precio,
+				"moneda" => $this->moneda,
+				"contactar_con" => $this->contactar_con,
+				"ciudad" => $this->ciudad 
+		);
 		if ($modificar) {
-			$this->db->where ( array ("id" => $this->id ) );
+			$this->db->where ( array (
+					"id" => $this->id 
+			) );
 			$this->db->select ( "categoria" );
 			$c = $this->darUno ( "articulo" );
 			if ($c) {
@@ -2157,16 +2591,36 @@ ORDER BY articulo.titulo desc";
 					$this->adicionarCantidad ( $this->categoria );
 				}
 			}
-			return $this->db->update ( "articulo", $datos, array ("id" => $this->id ) );
+			if (is_object ( $vehiculo )) {
+				if (! $mascota) {
+					$this->db->update ( "vehiculo", $vehiculo, array (
+							"articulo" => $this->id 
+					) );
+				} else {
+					$this->db->update ( "mascota", $vehiculo, array (
+							"articulo" => $this->id 
+					) );
+				}
+			}
+			return $this->db->update ( "articulo", $datos, array (
+					"id" => $this->id 
+			) );
 		} else {
 			$datos ["fecha_registro"] = $this->fecha_registro;
 			$datos ["estado"] = $this->estado;
-			$datos ["fecha_alta"] = $this->fecha_alta;
 			if ($this->categoria) {
 				$this->adicionarCantidad ( $this->categoria );
 			}
 			if ($this->db->insert ( "articulo", $datos )) {
 				$this->id = $this->db->insert_id ();
+				if (is_object ( $vehiculo )) {
+					$vehiculo->articulo = $this->id;
+					if (! $mascota) {
+						$this->db->insert ( "vehiculo", $vehiculo );
+					} else {
+						$this->db->insert ( "mascota", $vehiculo );
+					}
+				}
 				return $this->id;
 			}
 		}
@@ -2174,20 +2628,31 @@ ORDER BY articulo.titulo desc";
 		return false;
 	}
 	public function darArticulo($id) {
-		$this->db->where ( array ("id" => $id ) );
+		$this->db->where ( array (
+				"id" => $id 
+		) );
 		return $this->darUno ( "articulo" );
 	}
 	function listarArticulosXUsuarioXNoventa($usuario, $categoria = false, $inicio = 0, $total = 10) {
-		$this->db->where ( array ("usuario" => $usuario, "terminado" => 1, "articulo.estado" => "A la venta" ) );
+		$this->db->where ( array (
+				"usuario" => $usuario,
+				"terminado" => 1,
+				"articulo.estado" => "A la venta" 
+		) );
 		return $this->listarArticulos ( $categoria, $inicio, $total );
 	}
 	function listarArticulosXUsuario($usuario, $categoria = false, $inicio = 0, $total = 10) {
-		$this->db->where ( array ("usuario" => $usuario, "terminado" => 0 ) );
+		$this->db->where ( array (
+				"usuario" => $usuario,
+				"terminado" => 0 
+		) );
 		return $this->listarArticulos ( $categoria, $inicio, $total );
 	}
 	public function listarArticulos($categoria = false, $inicio = 0, $total = 10) {
 		if ($categoria) {
-			$this->db->where ( array ("categoria" => $categoria ) );
+			$this->db->where ( array (
+					"categoria" => $categoria 
+			) );
 		}
 		$this->db->select ( "articulo.*,pais.nombre as pais_nombre" );
 		$this->db->join ( "usuario", "usuario.id=articulo.usuario", "inner" );
@@ -2277,11 +2742,11 @@ ORDER BY articulo.titulo desc";
 					switch ($ubicacion [0]) {
 						case "P" :
 							$extra .= " and pais.codigo3='" . $ubicacion [1] . "' ";
-							break;
+						break;
 						
 						default :
 							$extra .= " and pais.continente='" . $ubicacion [1] . "' ";
-							break;
+						break;
 					}
 				}
 			}
@@ -2289,16 +2754,16 @@ ORDER BY articulo.titulo desc";
 				case "finaliza" :
 					$orderby = "ORDER BY tiempo asc";
 					$vencimientoOferta = intval ( $this->configuracion->variables ( "vencimientoOferta" ) ) * 86400;
-					$adicionalSelect = ",if(articulo.tipo='Fijo' or articulo.tipo='Cantidad',unix_timestamp(articulo.fecha_registro-now())+$vencimientoOferta,unix_timestamp(articulo.fecha_registro- unix_timestamp())+articulo.duracion*86400 )as tiempo";
-					break;
+					$adicionalSelect = ",unix_timestamp(articulo.fecha_registro) as tiempo";
+				break;
 				case "mas-alto" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio desc";
-					break;
+				break;
 				case "mas-bajo" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio asc";
-					break;
+				break;
 			}
 			$ors = array_merge ( array (), $criterio );
 			if (count ( $ors ) > 0) {
@@ -2331,12 +2796,11 @@ ORDER BY articulo.titulo desc";
 					$extra .= " and categoria in(" . implode ( ",", $ids ) . ")";
 				}
 			}
-			$query = "SELECT articulo.cantidad,articulo.id,articulo.titulo,articulo.tipo,$precio,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto, pais.nombre as pais_nombre, ciudad.nombre as ciudad_nombre, articulo.categoria as categoria $adicionalSelect
+			$query = "SELECT articulo.id,articulo.titulo,$precio,articulo.fecha_registro,articulo.usuario,articulo.foto, ciudad.nombre as ciudad_nombre, articulo.categoria as categoria $adicionalSelect
 			FROM (articulo)
-			INNER JOIN usuario ON usuario.id=articulo.usuario and usuario.estado<>'Baneado'
-			INNER JOIN pais ON pais.codigo3=usuario.pais
-			INNER JOIN ciudad ON ciudad.id=usuario.ciudad
-			WHERE terminado = 0 and articulo.estado<>'Baneado'
+			LEFT JOIN usuario ON usuario.id=articulo.usuario and usuario.estado<>'Baneado'
+			INNER JOIN ciudad ON ciudad.id=articulo.ciudad
+			WHERE articulo.estado<>'Finalizado'
 			$extra
 			$orderby";
 			return $query;
@@ -2358,25 +2822,37 @@ ORDER BY articulo.titulo desc";
 				$query = "select categoria,count(categoria)as cantidad from ($query) as s group by categoria";
 				$res = $this->db->query ( $query );
 				$categorias = $this->darResuts ( $res );
-				return array ($totalRes, $datos, $categorias );
+				return array (
+						$totalRes,
+						$datos,
+						$categorias 
+				);
 			}
 		}
 		return false;
 	}
 	public function listarArticulosXCriterio($criterio = false, $tipo = false, $categoria = false, $inicio = 0, $total = 10) {
 		if ($criterio) {
-			$this->db->like ( array ("titulo" => $criterio ) );
+			$this->db->like ( array (
+					"titulo" => $criterio 
+			) );
 		}
 		if ($tipo) {
-			$this->db->like ( array ("tipo" => $tipo ) );
+			$this->db->like ( array (
+					"tipo" => $tipo 
+			) );
 		}
 		return $this->listarArticulosXFecha ( $categoria, $inicio, $total );
 	}
 	public function listarArticulosXFecha($categoria = false, $inicio = 0, $total = 10) {
 		if ($categoria) {
-			$this->db->where ( array ("categoria" => $categoria ) );
+			$this->db->where ( array (
+					"categoria" => $categoria 
+			) );
 		}
-		$this->db->where ( array ("terminado" => 0 ) );
+		$this->db->where ( array (
+				"terminado" => 0 
+		) );
 		$this->db->select ( "articulo.*,pais.nombre as pais_nombre" );
 		$this->db->join ( "usuario", "usuario.id=articulo.usuario", "inner" );
 		$this->db->join ( "pais", "pais.codigo3=usuario.pais", "inner" );
@@ -2395,26 +2871,6 @@ ORDER BY articulo.titulo desc";
 				if (! isset ( $usuarios [$u] )) {
 					$usuarios [$u] = $this->usuarioM->darUsuarioXId ( $u );
 				}
-				$articulo->usuario = $usuarios [$u];
-				if ($articulo->tipo == "Subasta") {
-					$c = $this->mayorOferta ( $articulo->id, true );
-					if ($c) {
-						$articulo->mayorPuja = $c->monto_automatico;
-						$articulo->cantidadPujas = $c->cantidad;
-					} else {
-						$articulo->mayorPuja = $articulo->precio;
-						$articulo->cantidadPujas = 0;
-					}
-				} else {
-					$c = $this->mayorOferta ( $articulo->id );
-					if ($c) {
-						$articulo->mayorOferta = $c->monto_automatico;
-						$articulo->cantidadOfertas = $c->cantidad;
-					} else {
-						$articulo->mayorOferta = 0;
-						$articulo->cantidadOfertas = 0;
-					}
-				}
 				if (isset ( $articulo->comprador ) && $articulo->comprador) {
 					$u = $articulo->comprador;
 					if (is_object ( $u )) {
@@ -2430,9 +2886,13 @@ ORDER BY articulo.titulo desc";
 	}
 	public function contarArticulosXFecha($categoria = false) {
 		if ($categoria) {
-			$this->db->where ( array ("categoria" => $categoria ) );
+			$this->db->where ( array (
+					"categoria" => $categoria 
+			) );
 		}
-		$this->db->where ( array ("terminado" => 0 ) );
+		$this->db->where ( array (
+				"terminado" => 0 
+		) );
 		$this->db->select ( "articulo.*,pais.nombre as pais_nombre" );
 		$this->db->join ( "usuario", "usuario.id=articulo.usuario", "inner" );
 		$this->db->join ( "pais", "pais.codigo3=usuario.pais", "inner" );
@@ -2441,11 +2901,17 @@ ORDER BY articulo.titulo desc";
 		return $this->db->count_all_results ();
 	}
 	public function adicionarCantidad($categoria) {
-		$this->db->where ( array ("id" => $categoria ) );
+		$this->db->where ( array (
+				"id" => $categoria 
+		) );
 		$this->db->select ( "cantidad,padre" );
 		$c = $this->darUno ( "categoria" );
 		if ($c) {
-			if ($this->db->update ( "categoria", array ("cantidad" => intval ( $c->cantidad ) + 1 ), array ("id" => $categoria ) )) {
+			if ($this->db->update ( "categoria", array (
+					"cantidad" => intval ( $c->cantidad ) + 1 
+			), array (
+					"id" => $categoria 
+			) )) {
 				if ($c->padre) {
 					return $this->adicionarCantidad ( $c->padre );
 				}
@@ -2455,11 +2921,17 @@ ORDER BY articulo.titulo desc";
 		return false;
 	}
 	public function quitarCantidad($categoria) {
-		$this->db->where ( array ("id" => $categoria ) );
+		$this->db->where ( array (
+				"id" => $categoria 
+		) );
 		$this->db->select ( "cantidad,padre" );
 		$c = $this->darUno ( "categoria" );
 		if ($c) {
-			if ($this->db->update ( "categoria", array ("cantidad" => intval ( $c->cantidad ) - 1 ), array ("id" => $categoria ) )) {
+			if ($this->db->update ( "categoria", array (
+					"cantidad" => intval ( $c->cantidad ) - 1 
+			), array (
+					"id" => $categoria 
+			) )) {
 				if ($c->padre) {
 					return $this->quitarCantidad ( $c->padre );
 				}
@@ -2469,21 +2941,35 @@ ORDER BY articulo.titulo desc";
 		return false;
 	}
 	public function listarNotas($articulo) {
-		$this->db->where ( array ("articulo" => $articulo ) );
+		$this->db->where ( array (
+				"articulo" => $articulo 
+		) );
 		return $this->darTodos ( "aclaracion" );
 	}
 	public function adicionarNota($articulo, $nota) {
-		return $this->db->insert ( "aclaracion", array ("articulo" => $articulo, "texto" => strip_tags ( $nota ), "fecha" => date ( "Y-m-d H:i:s" ) ) );
+		return $this->db->insert ( "aclaracion", array (
+				"articulo" => $articulo,
+				"texto" => strip_tags ( $nota ),
+				"fecha" => date ( "Y-m-d H:i:s" ) 
+		) );
 	}
 	public function adicionarVisita($articulo, $usuario) {
-		$this->db->where ( array ("id" => $articulo ) );
+		$this->db->where ( array (
+				"id" => $articulo 
+		) );
 		if ($usuario) {
-			$this->db->where ( array ("usuario !=" => $usuario->id ) );
+			$this->db->where ( array (
+					"usuario !=" => $usuario->id 
+			) );
 		}
 		$this->db->select ( "visita" );
 		$v = $this->darUno ( "articulo" );
 		if ($v) {
-			return $this->db->update ( "articulo", array ("visita" => intval ( $v->visita ) + 1 ), array ("id" => $articulo ) );
+			return $this->db->update ( "articulo", array (
+					"visita" => intval ( $v->visita ) + 1 
+			), array (
+					"id" => $articulo 
+			) );
 		}
 		return false;
 	}
@@ -2547,13 +3033,13 @@ ORDER BY articulo.titulo desc";
 		switch ($section) {
 			case "item" :
 				$tipo = "Fijo";
-				break;
+			break;
 			case "auction" :
 				$tipo = "Subasta";
-				break;
+			break;
 			default :
 				$tipo = false;
-				break;
+			break;
 		}
 		
 		$x = $this->listarArticulosXCriterioFecha2 ( $criterio, $tipo, $orden, $ubicacion, $categoria, false, $usuario, $inicio, $totalpagina, $limite );
@@ -2586,7 +3072,11 @@ ORDER BY articulo.titulo desc";
 				$query = "select categoria,count(categoria)as cantidad from ($query) as s group by categoria";
 				$res = $this->db->query ( $query );
 				$categorias = $this->darResuts ( $res );
-				return array ($totalRes, $datos, $categorias );
+				return array (
+						$totalRes,
+						$datos,
+						$categorias 
+				);
 			}
 		}
 		return false;
@@ -2607,11 +3097,11 @@ ORDER BY articulo.titulo desc";
 					switch ($ubicacion [0]) {
 						case "P" :
 							$extra .= " and pais.codigo3='" . $ubicacion [1] . "' ";
-							break;
+						break;
 						
 						default :
 							$extra .= " and pais.continente='" . $ubicacion [1] . "' ";
-							break;
+						break;
 					}
 				}
 			}
@@ -2620,11 +3110,11 @@ ORDER BY articulo.titulo desc";
 				case "mas-alto" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio desc";
-					break;
+				break;
 				case "mas-bajo" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio asc";
-					break;
+				break;
 			}
 			$ors = array_merge ( array (), $criterio );
 			if (count ( $ors ) > 0) {

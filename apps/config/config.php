@@ -14,9 +14,6 @@ if (! defined ( 'BASEPATH' ))
  */
 $saddress = isset ( $_SERVER ["SERVER_ADDR"] ) ? $_SERVER ["SERVER_ADDR"] : "";
 switch ($saddress) {
-	case "96.125.165.49":
-		$config ['base_url'] = 'http://' . $_SERVER ["SERVER_NAME"] . '/';
-		break;
 	case "66.7.193.86" :
 		$config ['base_url'] = 'http://' . $_SERVER ["SERVER_NAME"] . '/vendedor/';
 		break;

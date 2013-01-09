@@ -19,53 +19,33 @@ $profile = (isset ( $profile ) ? $profile : null);
 	</header><?php
 	if (isset ( $articulos ) && is_array ( $articulos ) && count ( $articulos ) > 0) {
 		foreach ( $articulos as $i => $articulo ) {
-			if ($articulo->usuario) {
-				$imagen = array_shift ( explode ( ",", $articulo->foto ) );
-				$imagen = imagenArticulo ( $articulo->usuario, $imagen, "thumb" );
-				if ($imagen) {
-					list ( , $h ) = getimagesize ( BASEPATH . "../$imagen" );
-					$furl = "product/" . $articulo->id . "-" . normalizarTexto ( $articulo->titulo );
-					?><div
+			$imagen = array_shift ( explode ( ",", $articulo->foto ) );
+			$imagen = imagenArticulo ( $articulo->usuario, $imagen, "thumb" );
+			if ($imagen) {
+				list ( , $h ) = getimagesize ( BASEPATH . "../$imagen" );
+				$furl = "product/" . $articulo->id . "-" . normalizarTexto ( $articulo->titulo );
+				?><div
 		class="item clearfix <?php
-					if ($i + 1 == count ( $articulos )) {
-						print "last-child";
-						if ($total <= $totalpagina) {
-							print " border";
-						}
+				if ($i + 1 == count ( $articulos )) {
+					print "last-child";
+					if ($total <= $totalpagina) {
+						print " border";
 					}
-					
-					?>">
+				}
+				
+				?>">
 		<a href="<?=$furl?>" title="<?=$articulo->titulo?>"><span class="imagen" style="background: white url(<?=$imagen?>) no-repeat top right scroll;width:140px;height:<?=$h?>px;"></span></a>
 		<div class="meta">
 			<p>
-				<strong><?=formato_moneda($articulo->tipo=="Fijo" || $articulo->tipo=="Cantidad"?$articulo->precio:$articulo->mayorPuja)." \$us"?></strong>
+				<strong><?=formato_moneda($articulo->precio)." \$us"?></strong>
 			</p>
-			<p><?php
-					if ($articulo->tipo == "Fijo" || $articulo->tipo == "Cantidad") {
-					
-					} else if (intval ( $articulo->cantidadPujas ) > 0) {
-						?><span class="italic"><?php
-						print (isset ( $articulo->cantidadPujas )) ? intval ( $articulo->cantidadPujas ) . " " . traducir ( "pujas" ) : "";
-						?></span><?php
-					}
-					?></p>
-			<p class="grey"><?
-					if ($articulo->tipo == "Fijo" || $articulo->tipo == "Cantidad") {
-						print calculaTiempoDiferencia ( date ( "Y-m-d H:i:s" ), strtotime ( $articulo->fecha_registro ) + $vencimientoOferta, true );
-					} else {
-						print calculaTiempoDiferencia ( date ( "Y-m-d H:i:s" ), strtotime ( $articulo->fecha_registro ) + $articulo->duracion * 86400, true );
-					}
-					?></p>
-
 		</div>
 		<ul>
 			<li><h2>
 					<a href="<?=$furl?>" title="<?=$articulo->titulo?>"><?=$articulo->titulo?></a>
 				</h2></li>
-			<li class="grey"><?=traducir("Ubicación").": ".(isset($articulo->pais_nombre)?$articulo->pais_nombre:"")?></li>
 		</ul>
 	</div><?php
-				}
 			}
 		}
 		if ($total > $totalpagina) {
