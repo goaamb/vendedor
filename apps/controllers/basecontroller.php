@@ -47,7 +47,6 @@ class BaseController extends CI_Controller {
 		if (isset ( $this->idioma ) && $this->idioma) {
 			$this->idioma->darLenguaje ();
 		}
-		
 		$this->load->helper ( 'url' );
 		$this->load->helper ( 'idioma' );
 		

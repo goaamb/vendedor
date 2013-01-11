@@ -1,7 +1,7 @@
 <?php
 
 if ($imagen) {
-	$dir = "files/" . $usuario->id . "/";
+	$dir = "files/articulos/";
 	$name = pathinfo ( $imagen, PATHINFO_FILENAME );
 	$ext = pathinfo ( $imagen, PATHINFO_EXTENSION );
 	$classcapaphoto .= " uploaded";

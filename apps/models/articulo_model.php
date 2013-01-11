@@ -6,21 +6,12 @@ class Articulo_model extends CI_Model {
 	public $descripcion;
 	public $categoria;
 	public $foto;
-	public $tipo;
 	public $precio;
-	public $precio_rechazo;
 	public $moneda;
-	public $duracion;
-	public $pagos;
 	public $fecha_registro;
 	public $estado;
-	public $fecha_alta;
-	public $cantidad;
-	public $cantidad_original;
-	public $gastos_pais;
-	public $gastos_continente;
-	public $gastos_todos;
-	public $envio_local;
+	public $contactar_con;
+	public $ciudad;
 	public static $formas_pago = array (
 			1 => "Otros",
 			2 => "Pago contra reembolso",
@@ -2566,7 +2557,7 @@ ORDER BY articulo.titulo desc";
 		array_shift ( $f );
 		return $f;
 	}
-	public function registrar($modificar = false, $vehiculo = false, $mascota = false) {
+	public function registrar($modificar = false, $vehiculo = false, $mascota = false, $vivienda = false) {
 		$this->precio = $this->parseDecimal ( $this->precio );
 		$datos = array (
 				"usuario" => $this->usuario,
@@ -2592,12 +2583,16 @@ ORDER BY articulo.titulo desc";
 				}
 			}
 			if (is_object ( $vehiculo )) {
-				if (! $mascota) {
+				if (! $mascota && ! $vivienda) {
 					$this->db->update ( "vehiculo", $vehiculo, array (
 							"articulo" => $this->id 
 					) );
-				} else {
+				} elseif (! $vivienda) {
 					$this->db->update ( "mascota", $vehiculo, array (
+							"articulo" => $this->id 
+					) );
+				} else {
+					$this->db->update ( "vivienda", $vehiculo, array (
 							"articulo" => $this->id 
 					) );
 				}
@@ -2615,10 +2610,12 @@ ORDER BY articulo.titulo desc";
 				$this->id = $this->db->insert_id ();
 				if (is_object ( $vehiculo )) {
 					$vehiculo->articulo = $this->id;
-					if (! $mascota) {
+					if (! $mascota && ! $vivienda) {
 						$this->db->insert ( "vehiculo", $vehiculo );
-					} else {
+					} elseif (! $vivienda) {
 						$this->db->insert ( "mascota", $vehiculo );
+					} else {
+						$this->db->insert ( "vivienda", $vehiculo );
 					}
 				}
 				return $this->id;

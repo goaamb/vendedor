@@ -53,10 +53,8 @@ function editorUnaVes() {
 function actualizarEditor() {
 	if (CKEDITOR && CKEDITOR.instances.descripcion) {
 		CKEDITOR.instances.descripcion.updateElement();
-		$("#formItem textarea[name='descripcion']").val(
-				CKEDITOR.instances.descripcion.getData());
-		$("#formItem textarea[name='descripcion']").html(
-				CKEDITOR.instances.descripcion.getData());
+		$("#formItem textarea[name='descripcion']").val(CKEDITOR.instances.descripcion.getData());
+		$("#formItem textarea[name='descripcion']").html(CKEDITOR.instances.descripcion.getData());
 	}
 	if ($("input[name='modo']").val() == "2") {
 		if (alMenosUnValor()) {
@@ -71,8 +69,7 @@ function actualizarEditor() {
 		}
 	}
 	var x = $("#formItem input[name='cantidad-precio']");
-	if ($("#formItem").find("input[name='tipo-precio']:checked").val() !== "precio-cantidad-box"
-			&& G.util.trim(x.val()) === "") {
+	if ($("#formItem").find("input[name='tipo-precio']:checked").val() !== "precio-cantidad-box" && G.util.trim(x.val()) === "") {
 		x.val("1");
 	}
 	setTimeout(actualizarEditor, 1000);
@@ -105,21 +102,8 @@ function validFormItem() {
 			return false;
 		}
 	}
-	var nc = $("input.c-b:checked").length;
-	nc += $("input[name='envio_local']:checked").length;
-	if (nc <= 0) {
-		$("#gastosError").html($("#gastosError").data("error"));
-		return false;
-	}
-	var x = $("input[name='forma-pago[]']:checked");
-	console.log(x.length);
-	if (x.length <= 0) {
-		$("#forma-pagoError").html($("#forma-pagoError").data("error"));
-		return false;
-	}
 	CKEDITOR.instances.descripcion.updateElement();
-	$("textarea[name='descripcion']").val(
-			CKEDITOR.instances.descripcion.getData());
+	$("textarea[name='descripcion']").val(CKEDITOR.instances.descripcion.getData());
 	if (!completoUsuario) {
 		$(".user-box .nmodal").click();
 	}
@@ -145,8 +129,7 @@ function eliminarImagen() {
 				d.data("name", "");
 				d.data("thumb", "");
 				d.removeClass("loading").removeClass("progress");
-				d.find("span").css("filter", "alpha(opacity=100)").css(
-						"opacity", "1");
+				d.find("span").css("filter", "alpha(opacity=100)").css("opacity", "1");
 				d.find(".block").hide();
 				var st = d.find(".spanTxt");
 				st.html(st.data("html"));
@@ -161,12 +144,8 @@ function imageReady(json) {
 		if (json.quien) {
 			if (!json.error) {
 				d.addClass("uploaded");
-				d.removeClass("loading").removeClass("progress").css(
-						"background",
-						"transparent url(" + json.path + json.name + ".thumb."
-								+ json.ext + ") center center no-repeat");
-				d.find("span").css("filter", "alpha(opacity=0)").css("opacity",
-						"0");
+				d.removeClass("loading").removeClass("progress").css("background", "transparent url(" + json.path + json.name + ".thumb." + json.ext + ") center center no-repeat");
+				d.find("span").css("filter", "alpha(opacity=0)").css("opacity", "0");
 				var st = d.find(".spanTxt");
 				st.html(st.data("html"));
 				d.data("name", json.name + "." + json.ext);
@@ -182,8 +161,7 @@ function imageReady(json) {
 			p.esconder();
 		} else {
 			d.removeClass("loading").removeClass("progress");
-			d.find("span").css("filter", "alpha(opacity=100)").css("opacity",
-					"1");
+			d.find("span").css("filter", "alpha(opacity=100)").css("opacity", "1");
 			var st = d.find(".spanTxt");
 			st.html(st.data("html"));
 		}
@@ -204,17 +182,9 @@ function verificarOrden() {
 					var th = $(z).data("thumb");
 					var na = $(z).data("name");
 					if (th && na) {
-						$(d).data("name", na).data("thumb", th).css(
-								"background",
-								"transparent url(" + th
-										+ ") center center no-repeat")
-								.addClass("uploaded").find("span").css(
-										"opacity", "0").css("filter",
-										"alpha(opacity=0)");
+						$(d).data("name", na).data("thumb", th).css("background", "transparent url(" + th + ") center center no-repeat").addClass("uploaded").find("span").css("opacity", "0").css("filter", "alpha(opacity=0)");
 						$(d).find(".block").show();
-						$(z).data("name", "").data("thumb", "").removeClass(
-								"uploaded").find("span").css("opacity", "1")
-								.css("filter", "alpha(opacity=100)");
+						$(z).data("name", "").data("thumb", "").removeClass("uploaded").find("span").css("opacity", "1").css("filter", "alpha(opacity=100)");
 						$(z).find(".block").hide();
 						$(z).removeAttr("style");
 						break;
@@ -255,17 +225,30 @@ function aplicarClickCategorias() {
 	var nivel = (parseInt(el.data('nivel'), 10) + 1);
 	nivel = (isNaN(nivel) ? 1 : nivel);
 	var id = el.data('id');
-	var padre = el.parent('li').parent('ul').parent('div.cat').parent(
-			'div.line-category');
+	switch (id) {
+	case 1:
+		$("#vehiculoCaracteristicas").show();
+		$("#mascotaCaracteristicas").hide();
+		$("#viviendaCaracteristicas").hide();
+		break;
+	case 3:
+		$("#vehiculoCaracteristicas").hide();
+		$("#mascotaCaracteristicas").hide();
+		$("#viviendaCaracteristicas").show();
+		break;
+	case 2:
+		$("#vehiculoCaracteristicas").hide();
+		$("#mascotaCaracteristicas").show();
+		$("#viviendaCaracteristicas").hide();
+		break;
+	}
+	var padre = el.parent('li').parent('ul').parent('div.cat').parent('div.line-category');
 	padre.children('div.cat').hide();
 	var category = el.data('value');
 	padre.children('span.choice').text(category);
 	padre.addClass('l-cat-selected');
 	if (nivel < 4) {
-		$("#lista" + nivel)
-				.html(
-						"<img src='assets/images/ico/ajax-loader-see-more.gif' alt='...'/>")
-				.show();
+		$("#lista" + nivel).html("<img src='assets/images/ico/ajax-loader-see-more.gif' alt='...'/>").show();
 	}
 	$("#lista" + nivel).load("product/getCategory/" + id, function(response) {
 		if ($.trim(response) !== "") {
@@ -299,8 +282,7 @@ function processResponse() {
 			eval("json=" + res);
 		} catch (e) {
 		}
-		if (json && this.formRequest && this.formRequest.onjsonready
-				&& this.formRequest.onjsonready.call) {
+		if (json && this.formRequest && this.formRequest.onjsonready && this.formRequest.onjsonready.call) {
 			this.formRequest.onjsonready(json);
 		}
 	}
@@ -309,8 +291,7 @@ function processResponse() {
 
 function validarPrecioRechazo() {
 	var f = this.form;
-	if (f && f["rechazar"] && f["rechazar"].checked
-			&& !f["tipo-precio"][1].checked && G.util.trim(this.value) === "") {
+	if (f && f["rechazar"] && f["rechazar"].checked && !f["tipo-precio"][1].checked && G.util.trim(this.value) === "") {
 		return false;
 	}
 	return true;

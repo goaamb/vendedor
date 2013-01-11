@@ -1,4 +1,5 @@
 <?php
+$padre = isset($padre)?$padre[0]["id"]:0;
 $imagenes = $this->input->post ( "imagenes" );
 if (trim ( $imagenes ) !== "") {
 	$imagenes = explode ( ",", $imagenes );
@@ -268,63 +269,192 @@ CKEDITOR.config.toolbar =
 			<?php
 			if ($editable) {
 				?><p class="durac">
-						<label>Año:</label> <input type="text"
-							class="t-r entero min-value texto " data-min-value="0"
-							name="anio" data-min-value-equal="true"
-							data-error-min-value="Añade un número entero superior a 0."
-							data-error-entero="Añade un número entero superior a 0"
-							value="<?=my_set_value("anio",date("Y"))?>" />
-					</p>
-					<span class="errorTxt" id="anioError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Marca:</label> <input type="text" class="t-r texto "
-							name="marca" value="<?=my_set_value("marca","")?>" />
-					</p>
-					<span class="errorTxt" id="marcaError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Modelo:</label> <input type="text" class="t-r texto "
-							name="modelo" value="<?=my_set_value("modelo","")?>" />
-					</p>
-					<span class="errorTxt" id="modeloError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Tipo:</label> <input type="text" class="t-r texto "
-							name="tipo" value="<?=my_set_value("tipo","")?>" />
-					</p>
-					<span class="errorTxt" id="tipoError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Kilometraje:</label> <input type="text" class="t-r texto "
-							name="kilometraje" value="<?=my_set_value("kilometraje","")?>" />
-					</p>
-					<span class="errorTxt" id="kilometrajeError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Cilindrada:</label> <input type="text" class="t-r texto "
-							name="cilindrada" value="<?=my_set_value("cilindrada","")?>" />
-					</p>
-					<span class="errorTxt" id="cilindradaError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
 						<label>Contactar con:</label> <input type="text"
-							class="t-r texto " name="contacto"
-							value="<?=my_set_value("contacto","")?>" />
+							class="t-r texto " name="contactar_con"
+							value="<?=my_set_value("contactar_con","")?>" />
 					</p>
 					<span class="errorTxt" id="contactoError"></span>
 					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Teléfono:</label> <input type="text" class="t-r texto "
-							name="telefono" value="<?=my_set_value("telefono","")?>" />
-					</p>
-					<span class="errorTxt" id="telefonoError"></span>
-					<div style="clear: both;"></div>
-					<p class="durac">
-						<label>Ciudad:</label> <input type="text" class="t-r texto "
-							name="ciudad" value="<?=my_set_value("ciudad","")?>" />
-					</p>
-					<span class="errorTxt" id="ciudadError"></span><?php
+					<input type="hidden" name="ciudad"
+						value="196" />
+
+					<div id="vehiculoCaracteristicas" style="<?php
+				if (! isset ( $padre ) || (isset ( $padre ) && $padre !== "1")) {
+					print "display: none;";
+				}
+				?>">
+						<p class="durac">
+							<label>Año:</label> <input type="text"
+								class="t-r entero min-value texto " data-min-value="0"
+								name="anio" data-min-value-equal="true"
+								data-error-min-value="Añade un número entero superior a 0."
+								data-error-entero="Añade un número entero superior a 0"
+								value="<?=my_set_value("anio",date("Y"))?>" />
+						</p>
+						<span class="errorTxt" id="anioError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Marca:</label> <input type="text" class="t-r texto "
+								name="marca" value="<?=my_set_value("marca","")?>" />
+						</p>
+						<span class="errorTxt" id="marcaError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Modelo:</label> <input type="text" class="t-r texto "
+								name="modelo" value="<?=my_set_value("modelo","")?>" />
+						</p>
+						<span class="errorTxt" id="modeloError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Tipo:</label> <input type="text" class="t-r texto "
+								name="tipo" value="<?=my_set_value("tipo","")?>" />
+						</p>
+						<span class="errorTxt" id="tipoError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Kilometraje:</label> <input type="text" class="t-r texto "
+								name="kilometraje" value="<?=my_set_value("kilometraje","")?>" />
+						</p>
+						<span class="errorTxt" id="kilometrajeError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Cilindrada:</label> <input type="text" class="t-r texto "
+								name="cilindrada" value="<?=my_set_value("cilindrada","")?>" />
+						</p>
+						<span class="errorTxt" id="cilindradaError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Combustible:</label> <input type="text" class="t-r texto "
+								name="combustible" value="<?=my_set_value("combustible","")?>" />
+						</p>
+						<span class="errorTxt" id="combustibleError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Combustible:</label> <input type="text" class="t-r texto "
+								name="combustible" value="<?=my_set_value("combustible","")?>" />
+						</p>
+						<span class="errorTxt" id="combustibleError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Caja:</label> <input type="text" class="t-r texto "
+								name="caja" value="<?=my_set_value("caja","")?>" />
+						</p>
+						<span class="errorTxt" id="cajaError"></span>
+						<div style="clear: both;"></div>
+					</div>
+					<div id="mascotaCaracteristicas" style="<?php
+				if (! isset ( $padre ) || (isset ( $padre ) && $padre !== "2")) {
+					print "display: none;";
+				}
+				?>">
+						<p class="durac">
+							<label>Raza:</label> <input type="text" class="t-r texto "
+								name="raza" value="<?=my_set_value("raza","")?>" />
+						</p>
+						<span class="errorTxt" id="razaError"></span>
+						<div style="clear: both;"></div>
+						<div class="opciones">
+							<p>
+								<label>Pedigri:</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="pedigri" value="Si"
+									<?=my_set_radio("pedigri","",true)?> /> Si</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="pedigri" value="No"
+									<?=my_set_radio("pedigri","")?> /> No</label>
+							</p>
+						</div>
+						<span class="errorTxt" id="pedigriError"></span>
+						<div style="clear: both;"></div>
+						<div class="opciones">
+							<p>
+								<label>Sexo:</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="sexo" value="Macho"
+									<?=my_set_radio("sexo","",true)?> /> Macho</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="sexo"
+									value="Hembra" <?=my_set_radio("sexo","")?> /> Hembra</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="sexo"
+									value="Hembra y Macho" <?=my_set_radio("sexo","")?> /> Hembra y
+									Macho</label>
+							</p>
+						</div>
+						<span class="errorTxt" id="pedigriError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Observación:</label> <input type="text" class="t-r texto "
+								name="observacion" value="<?=my_set_value("observacion","")?>" />
+						</p>
+						<span class="errorTxt" id="observacionError"></span>
+						<div style="clear: both;"></div>
+					</div>
+					<div id="viviendaCaracteristicas" style="<?php
+				if (! isset ( $padre ) || (isset ( $padre ) && $padre !== "3")) {
+					print "display: none;";
+				}
+				?>">
+						<div class="opciones">
+							<p>
+								<label>Tipo venta:</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="tipo_venta"
+									value="Alquiler" <?=my_set_radio("tipo_venta","",true)?> />
+									Alquiler</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="tipo_venta"
+									value="Anticretico" <?=my_set_radio("tipo_venta","")?> />
+									Anticretico</label>
+							</p>
+							<p>
+								<label><input type="radio" class="t-r" name="tipo_venta"
+									value="Venta" <?=my_set_radio("tipo_venta","")?> /> Venta</label>
+							</p>
+						</div>
+						<span class="errorTxt" id="tipo_ventaError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Direccion:</label> <input type="text" class="t-r texto "
+								name="direccion" value="<?=my_set_value("direccion","")?>" />
+						</p>
+						<span class="errorTxt" id="direccionError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Superficie:</label> <input type="text"
+								class="t-r texto entero" name="superficie"
+								value="<?=my_set_value("superficie","")?>" />
+						</p>
+						<span class="errorTxt" id="superficieError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Dormitorios:</label> <input type="text"
+								class="t-r texto entero" name="dormitorios"
+								value="<?=my_set_value("dormitorios","")?>" />
+						</p>
+						<span class="errorTxt" id="dormitoriosError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Baños:</label> <input type="text" class="t-r texto entero"
+								name="banos" value="<?=my_set_value("banos","")?>" />
+						</p>
+						<span class="errorTxt" id="banosError"></span>
+						<div style="clear: both;"></div>
+						<p class="durac">
+							<label>Antigüedad:</label> <input type="text"
+								class="t-r texto entero" name="antiguedad"
+								value="<?=my_set_value("antiguedad","")?>" />
+						</p>
+						<span class="errorTxt" id="antiguedadError"></span>
+						<div style="clear: both;"></div>
+					</div><?php
 			}
 			?></div>
 			</div>

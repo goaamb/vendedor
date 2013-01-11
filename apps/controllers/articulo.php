@@ -804,11 +804,11 @@ class Articulo extends BaseController {
 						$this->bindArticulo ( $data ["articulo"], $new );
 					}
 				} else {
-					redirect ( "store/{$this->myuser->seudonimo}" );
+					redirect ( "/" );
 					return;
 				}
 			} else {
-				redirect ( "store/{$this->myuser->seudonimo}" );
+				redirect ( "/" );
 				return;
 			}
 		} else {
@@ -861,6 +861,7 @@ class Articulo extends BaseController {
 			) );
 			return;
 		} else {
+			$data["padre"]=$this->categoria->darArbolCategoria("");
 			$header ["headerTitle"] = $this->configuracion->variables ( "defaultHeaderTitle" ) . " - " . $data ["articulo"]->titulo;
 			$header ["extraMeta"] = "<meta property='og:title' content='" . $data ["articulo"]->titulo . "'/>";
 			$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $data ["articulo"]->descripcion ) ), 0, 150 ) . "'/>";
@@ -978,27 +979,21 @@ class Articulo extends BaseController {
 					"arbol" => $arbol 
 			);
 		}
-		if ($this->myuser) {
-			switch ($this->input->post ( "__accion" )) {
-				case "ingresar" :
-					$data = array_merge ( $data, $this->post_ingresar () );
-				break;
-				case "modificar" :
+		switch ($this->input->post ( "__accion" )) {
+			case "ingresar" :
+				$data = array_merge ( $data, $this->post_ingresar () );
+			break;
+			case "modificar" :
+				if ($this->myuser) {
 					$data = array_merge ( $data, $this->post_modificar () );
-				break;
-				case "comprar" :
-					$data = array_merge ( $data, $this->post_comprar () );
-				break;
-				case "ofertar" :
-					$data = array_merge ( $data, $this->post_ofertar () );
-				break;
-				case "pujar" :
-					$data = array_merge ( $data, $this->post_pujar () );
-				break;
-			}
+				}
+			break;
 		}
 		$cats = $this->categoria->darCategoriasXNivel ( 1 );
 		$retcat = $this->parseCategories ( $cats );
+		if ($this->input->post ( "categoria" )) {
+			$data ["padre"] = $this->categoria->darArbolCategoria ( $this->input->post ( "categoria" ), $this->idioma->language->id );
+		}
 		return array_merge ( parent::process (), $data, array (
 				"categorias" => $retcat 
 		) );
@@ -1141,21 +1136,12 @@ class Articulo extends BaseController {
 	}
 	public function post_ingresar($modificar = false) {
 		if ($modificar && ! $this->input->post ( "id" )) {
-			redirect ( "store/{$this->myuser->seudonimo}" );
+			redirect ( "/" );
 			return array ();
 		}
 		$errores = array ();
 		$a = $this->articulo->darArticulo ( $this->input->post ( "id" ) );
-		$cantidadVendidos = 0;
-		if ($a) {
-			if ($this->myuser && $a->usuario !== $this->myuser->id) {
-				redirect ( "store/" . $this->myuser->seudonimo );
-				return $errores;
-			}
-			$cantidadVendidos = $this->articulo->obtenerVendidosDeCantidad ( $a->id );
-		}
-		
-		if (! $a || ($a && ($a->tipo !== "Cantidad" || ($a->tipo === "Cantidad" && $cantidadVendidos == 0)))) {
+		if (! $a) {
 			$this->load->library ( 'form_validation' );
 			$config = array (
 					array (
@@ -1177,16 +1163,6 @@ class Articulo extends BaseController {
 							'field' => 'imagenes',
 							'label' => 'Portada',
 							'rules' => 'required' 
-					),
-					array (
-							'field' => 'tipo-precio',
-							'label' => 'Tipo de Precio',
-							'rules' => 'required' 
-					),
-					array (
-							'field' => 'forma-pago[]',
-							'label' => 'Forma de pago',
-							'rules' => 'required' 
 					) 
 			);
 			
@@ -1203,6 +1179,8 @@ class Articulo extends BaseController {
 				}
 				$this->articulo->descripcion = $this->input->post ( "descripcion" );
 				$this->articulo->categoria = $this->input->post ( "categoria" );
+				$this->articulo->contactar_con = $this->input->post ( "contactar_con" );
+				$this->articulo->ciudad = $this->input->post ( "ciudad" );
 				$modo = $this->input->post ( "modo" );
 				$imagenes = $this->input->post ( "imagenes" );
 				switch ($modo) {
@@ -1224,103 +1202,56 @@ class Articulo extends BaseController {
 						$imagenes = implode ( ",", $imagenes );
 					break;
 				}
-				
-				$this->articulo->foto = $imagenes;
-				$tipo = $this->input->post ( "tipo-precio" );
-				switch ($tipo) {
-					case "precio-fijo-box" :
-						$this->articulo->tipo = "Fijo";
-						$this->articulo->precio = $this->input->post ( "precio-oferta" );
-						if ($this->input->post ( "rechazar" )) {
-							$this->articulo->precio_rechazo = $this->input->post ( "precio-oferta-inferior" );
-						}
+				$padre = $this->categoria->darArbolCategoria ( $this->articulo->categoria, $this->idioma->language->id );
+				$objeto = new stdClass ();
+				$mascota = false;
+				$vivienda = false;
+				switch ($padre) {
+					case 1 :
+						$objeto->marca = $this->input->post ( "marca" );
+						$objeto->modelo = $this->input->post ( "modelo" );
+						$objeto->anio = $this->input->post ( "anio" );
+						$objeto->tipo = $this->input->post ( "tipo" );
+						$objeto->kilometraje = $this->input->post ( "kilometraje" );
+						$objeto->cilindrada = $this->input->post ( "cilindrada" );
+						$objeto->combustible = $this->input->post ( "combustible" );
+						$objeto->caja = $this->input->post ( "caja" );
 					break;
-					case "precio-cantidad-box" :
-						$this->articulo->tipo = "Cantidad";
-						$this->articulo->precio = $this->input->post ( "precio-cantidad" );
-						$this->articulo->cantidad = $this->input->post ( "cantidad-precio" );
-						$this->articulo->cantidad_original = $this->input->post ( "cantidad-precio" );
+					case 2 :
+						$objeto->raza = $this->input->post ( "raza" );
+						$objeto->pedigri = $this->input->post ( "pedigri" );
+						$objeto->sexo = $this->input->post ( "sexo" );
+						$objeto->observacion = $this->input->post ( "observacion" );
+						$mascota = true;
+					break;
+					case 3 :
+						$objeto->tipo_venta = $this->input->post ( "tipo_venta" );
+						$objeto->direccion = $this->input->post ( "direccion" );
+						$objeto->superficie = $this->input->post ( "superficie" );
+						$objeto->dormitorios = $this->input->post ( "dormitorios" );
+						$objeto->banos = $this->input->post ( "banos" );
+						$objeto->antiguedad = $this->input->post ( "antiguedad" );
+						$vivienda = true;
 					break;
 					default :
-						$this->articulo->tipo = "Subasta";
-						$this->articulo->precio = $this->input->post ( "precio-subasta" );
-						$this->articulo->duracion = $this->input->post ( "duracion" );
+						;
 					break;
 				}
+				$this->articulo->foto = $imagenes;
+				$this->articulo->precio = $this->input->post ( "precio-subasta" );
 				
 				$this->articulo->moneda = 1;
-				$this->articulo->pagos = implode ( ",", $this->input->post ( "forma-pago" ) );
 				if (! $modificar) {
 					$this->articulo->fecha_registro = date ( "Y-m-d H:i:s" );
 					$this->articulo->estado = "A la venta";
 				}
-				$this->articulo->gastos_pais = $this->input->post ( "gastos_pais" );
-				$this->articulo->gastos_continente = $this->input->post ( "gastos_continente" );
-				$this->articulo->gastos_todos = $this->input->post ( "gastos_todos" );
-				$this->articulo->envio_local = $this->input->post ( "envio_local" );
-				
-				if ($this->articulo->gastos_pais === false && $this->articulo->gastos_continente === false && $this->articulo->gastos_todos === false && $this->articulo->envio_local === false) {
-					$errores ["errorGastosEnvio"] = traducir ( "Debe ingresar almenos un gasto de envio" );
-				}
-				$this->articulo->gastos_pais = $this->articulo->gastos_pais !== false ? $this->articulo->gastos_pais : null;
-				$this->articulo->gastos_continente = $this->articulo->gastos_continente !== false ? $this->articulo->gastos_continente : null;
-				$this->articulo->gastos_todos = $this->articulo->gastos_todos !== false ? $this->articulo->gastos_todos : null;
-				if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar )) {
-					if ($this->myuser->tipo_tarifa !== "Comision") {
-						$vendedor = $this->myuser;
-						$total = $this->articulo->sumarArticulosEnVentaFijo ( $vendedor->id );
-						$tp = Articulo_model::$tarifa ["Plana"];
-						$pos = 0;
-						foreach ( $tp as $i => $p ) {
-							$s = (isset ( $tp [$i + 1] )) ? floatval ( $tp [$i + 1] ["inicio"] ) : false;
-							if ($s) {
-								if (floatval ( $p ["inicio"] ) < $total && $s >= $total) {
-									$pos = $i;
-								}
-							} else {
-								if (floatval ( $p ["inicio"] ) < $total) {
-									$pos = $i;
-								}
-							}
-						}
-						if ($pos > 0 && $vendedor->plana_actual < $pos) {
-							$this->db->update ( "usuario", array (
-									"plana_actual" => $pos 
-							), array (
-									"id" => $vendedor->id 
-							) );
-							
-							$this->articulo->enviarNotificacionCambioTarifaPlana ( $vendedor, $total, $pos );
-						}
-					}
+				if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
 					$seccion = "nuevo";
 					if ($modificar) {
 						$seccion = "actualizado";
 					}
 					redirect ( "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) . "/$seccion" );
 				}
-			}
-		} else {
-			$this->load->library ( 'form_validation' );
-			$config = array (
-					array (
-							'field' => 'cantidad-precio',
-							'label' => 'Cantidad',
-							'rules' => 'required|integer|greater_than[0]' 
-					) 
-			);
-			$cc = intval ( $this->input->post ( "cantidad-precio" ) );
-			$c = intval ( $a->cantidad );
-			$dif = $cc - $c;
-			$a->cantidad = $cc;
-			$a->cantidad_original = $a->cantidad_original + $dif;
-			$this->bindArticulo ( $a );
-			$errores = array ();
-			$this->form_validation->set_error_delimiters ( '<span class="errorTxt">', '</span>' );
-			$this->form_validation->set_rules ( $config );
-			if ($this->form_validation->run ()) {
-				$this->articulo->modificarCantidad ( $a );
-				redirect ( "product/" . $a->id . "-" . normalizarTexto ( $a->titulo ) . "/actualizado" );
 			}
 		}
 		return $errores;
