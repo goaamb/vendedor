@@ -778,6 +778,7 @@ table.naked td {
 .product-file .data h2 {
 	font-weight: bold;
 	font-size: 36px;
+	margin-top: 10px;
 }
 
 .product-file .data .countdown {

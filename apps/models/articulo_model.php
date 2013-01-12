@@ -2628,7 +2628,23 @@ ORDER BY articulo.titulo desc";
 		$this->db->where ( array (
 				"id" => $id 
 		) );
-		return $this->darUno ( "articulo" );
+		
+		$a = $this->darUno ( "articulo" );
+		if (is_object ( $a )) {
+			$this->db->where ( array (
+					"articulo" => $id 
+			) );
+			$a->vehiculo = $this->darUno ( "vehiculo" );
+			$this->db->where ( array (
+					"articulo" => $id 
+			) );
+			$a->mascota = $this->darUno ( "mascota" );
+			$this->db->where ( array (
+					"articulo" => $id 
+			) );
+			$a->vivienda = $this->darUno ( "vivienda" );
+		}
+		return $a;
 	}
 	function listarArticulosXUsuarioXNoventa($usuario, $categoria = false, $inicio = 0, $total = 10) {
 		$this->db->where ( array (

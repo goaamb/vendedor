@@ -861,10 +861,18 @@ class Articulo extends BaseController {
 			) );
 			return;
 		} else {
-			$data["padre"]=$this->categoria->darArbolCategoria("");
+			$data ["padre"] = $this->categoria->darArbolCategoria ( $data ["articulo"]->categoria, $this->idioma->language->id );
 			$header ["headerTitle"] = $this->configuracion->variables ( "defaultHeaderTitle" ) . " - " . $data ["articulo"]->titulo;
 			$header ["extraMeta"] = "<meta property='og:title' content='" . $data ["articulo"]->titulo . "'/>";
-			$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $data ["articulo"]->descripcion ) ), 0, 150 ) . "'/>";
+			$foto = array_shift ( explode ( ",", $data ["articulo"]->foto ) );
+			$header ["extraMeta"] .= "<meta property='og:image' content='" . base_url () . "files/articulos/$foto'/>";
+			if ($data ["articulo"]->descripcion) {
+				$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $data ["articulo"]->descripcion ) ), 0, 150 ) . "'/>";
+			} else {
+				$articulo = $data ["articulo"];
+				$descripcion = "MARCA:{$articulo->vehiculo->marca}; MODELO:{$articulo->vehiculo->modelo}; TIPO:{$articulo->vehiculo->tipo}; KILOMETRAJE:{$articulo->vehiculo->kilometraje}; CILINDRADA:{$articulo->vehiculo->cilindrada}; COMBUSTIBLE:{$articulo->vehiculo->combustible}; CAJA:{$articulo->vehiculo->caja}; CONTACTAR CON:{$articulo->contactar_con}";
+				$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $descripcion ) ), 0, 150 ) . "'/>";
+			}
 			$data ["articulo"]->usuario = $this->usuario->darUsuarioXId ( $data ["articulo"]->usuario );
 			if ($data ["articulo"]->usuario) {
 				$c = $this->articulo->cantidadOfertas ( $id );
@@ -1206,11 +1214,10 @@ class Articulo extends BaseController {
 				$objeto = new stdClass ();
 				$mascota = false;
 				$vivienda = false;
-				switch ($padre) {
+				switch ($padre[0]["id"]) {
 					case 1 :
 						$objeto->marca = $this->input->post ( "marca" );
 						$objeto->modelo = $this->input->post ( "modelo" );
-						$objeto->anio = $this->input->post ( "anio" );
 						$objeto->tipo = $this->input->post ( "tipo" );
 						$objeto->kilometraje = $this->input->post ( "kilometraje" );
 						$objeto->cilindrada = $this->input->post ( "cilindrada" );
@@ -1238,7 +1245,7 @@ class Articulo extends BaseController {
 					break;
 				}
 				$this->articulo->foto = $imagenes;
-				$this->articulo->precio = $this->input->post ( "precio-subasta" );
+				$this->articulo->precio = $this->input->post ( "precio-oferta" );
 				
 				$this->articulo->moneda = 1;
 				if (! $modificar) {

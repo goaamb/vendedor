@@ -37,7 +37,7 @@ $profile = (isset ( $profile ) ? $profile : null);
 		<a href="<?=$furl?>" title="<?=$articulo->titulo?>"><span class="imagen" style="background: white url(<?=$imagen?>) no-repeat top right scroll;width:140px;height:<?=$h?>px;"></span></a>
 		<div class="meta">
 			<p>
-				<strong><?=formato_moneda($articulo->precio)." \$us"?></strong>
+				<strong><?=$articulo->precio!=0?formato_moneda($articulo->precio)." \$us":"Preguntar"?></strong>
 			</p>
 		</div>
 		<ul>

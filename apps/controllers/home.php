@@ -206,6 +206,7 @@ class Home extends BaseController {
 					$articulo->estado = "A la venta";
 					$vehiculo = new stdClass ();
 					$vehiculo->marca = $marca;
+					$vehiculo->modelo = $modelo;
 					$vehiculo->cilindrada = $cilindrada;
 					$vehiculo->caja = $caja;
 					$vehiculo->combustible = $combustible;
@@ -222,6 +223,25 @@ class Home extends BaseController {
 			}
 		}
 		$this->loadGUI ( "importar_articulos", $data );
+	}
+	public function fixVehiculos() {
+		$r = $this->db->query ( "select a.titulo,v.id
+				from vehiculo v
+				inner join articulo a on a.id=v.articulo" )->result ();
+		if (is_array ( $r ) && count ( $r ) > 0) {
+			foreach ( $r as $v ) {
+				$t = explode ( " - ", $v->titulo );
+				if (count ( $t ) >= 2) {
+					list ( , $modelo ) = $t;
+					$modelo = intval ( trim ( $modelo ) );
+					$this->db->update ( "vehiculo", array (
+							"modelo" => $modelo 
+					), array (
+							"id" => $v->id 
+					) );
+				}
+			}
+		}
 	}
 	public function importarMascotas() {
 		$data = array ();

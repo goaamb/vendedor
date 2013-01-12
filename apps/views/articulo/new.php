@@ -284,16 +284,6 @@ CKEDITOR.config.toolbar =
 				}
 				?>">
 						<p class="durac">
-							<label>Año:</label> <input type="text"
-								class="t-r entero min-value texto " data-min-value="0"
-								name="anio" data-min-value-equal="true"
-								data-error-min-value="Añade un número entero superior a 0."
-								data-error-entero="Añade un número entero superior a 0"
-								value="<?=my_set_value("anio",date("Y"))?>" />
-						</p>
-						<span class="errorTxt" id="anioError"></span>
-						<div style="clear: both;"></div>
-						<p class="durac">
 							<label>Marca:</label> <input type="text" class="t-r texto "
 								name="marca" value="<?=my_set_value("marca","")?>" />
 						</p>
