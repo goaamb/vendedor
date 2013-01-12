@@ -84,9 +84,9 @@ google_ad_height = 90;
 					?><a href="administration/dashboard" title="ir a la administración"
 							class="sep">Dashboard</a> <?php
 				}
-				?><a href="product/nuevo" title="vender" class="sep">Vender</a> <a
-							href="logout" title="Salir">Salir</a>
-			<?php }else {?><a href="product/nuevo" title="vender" class="sep">Vender</a><a
+				?><a href="product/nuevo" title="Publicar" class="sep">Publicar</a>
+						<a href="logout" title="Salir">Salir</a>
+			<?php }else {?><a href="product/nuevo" title="Publicar" class="sep">Publicar</a><a
 							href="login" title="Ingresa con tu cuenta" class="sep">Entrar</a>
 						<a href="register" title="Registrate" class="">Registrarse</a>
 			<?php }?>
@@ -132,8 +132,11 @@ google_ad_height = 90;
 				<a href="#" onclick="cambiarBusquedaCategoria(16);return false;"><img
 					src="assets/images/html/perro.png" /><span>Mascotas</span></a> <a
 					href="#" onclick="cambiarBusquedaCategoria(3);return false;"><img
-					src="assets/images/html/casa.png" /><span>Viviendas</span></a>
+					src="assets/images/html/casa.png" /><span>Viviendas</span></a> <a
+					href="product/nuevo" title="Publicar" class="ultimo"><img
+					src="assets/images/html/publicar.png" /><span>Publicar</span></a>
 			</div>
+
 			<div class="search-box">
 				<div class="fondo gradiente"></div>
 				<form action="" method="get"

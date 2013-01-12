@@ -240,8 +240,13 @@ header.header .icon-box {
 	position: absolute;
 	left: 0px;
 	bottom: 80px;
+	width: 100%;
 }
 
+header.header .icon-box a.ultimo{
+	position:absolute;
+	right:0px;
+}
 header.header .icon-box a {
 	text-align: center;
 	display: inline-block;
