@@ -424,7 +424,7 @@ class Home extends BaseController {
 				$imagenes [$i] = strtolower ( $imagenes [$i] );
 			}
 			do {
-				$numero = trim ( $h->getCellByColumnAndRow ( $c, $r )->getValue () );
+				$numero = trim ( $h->getCellByColumnAndRow ( $c, $r )->getCalculatedValue() );
 				if (trim ( $numero ) != "") {
 					$foto = $numero . "." . strtolower ( trim ( $h->getCellByColumnAndRow ( $c + 1, $r )->getValue () ) );
 					$pos = array_search ( $foto, $imagenes );
