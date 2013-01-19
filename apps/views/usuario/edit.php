@@ -11,9 +11,6 @@
 			<li><a href="edit/account" title="Información de la cuenta"
 				<?php if($pos==3){?> class="edit-active" <?php }?>>Información de la
 					cuenta</a></li>
-			<li><a href="edit/buy-sell" title="Información de compra-venta"
-				<?php if($pos==2){?> class="edit-active" <?php }?>>Información de
-					compra-venta</a></li>
 		</ul>
 	</aside>
 

@@ -822,28 +822,28 @@ class Articulo extends BaseController {
 			if (! $new) {
 				$props ["imagenes"] = $props ["foto"];
 			}
-			switch ($props ["tipo"]) {
-				case "Fijo" :
-					$props ["tipo-precio"] = "precio-fijo-box";
-					$props ["precio-oferta"] = $props ["precio"];
-					if ($props ["precio_rechazo"] && intval ( $props ["precio_rechazo"] ) > 0) {
-						$props ["rechazar"] = 1;
-						$props ["precio-oferta-inferior"] = $props ["precio_rechazo"];
-					}
-				break;
-				case "Cantidad" :
-					$props ["tipo-precio"] = "precio-cantidad-box";
-					$props ["precio-cantidad"] = $props ["precio"];
-					$props ["cantidad-precio"] = $props ["cantidad"];
-				break;
-				default :
-					$props ["tipo-precio"] = "subasta-box";
-					$props ["precio-subasta"] = $props ["precio"];
-				break;
-			}
-			$props ["forma-pago"] = explode ( ",", $props ["pagos"] );
+			$props ["tipo-precio"] = "precio-fijo-box";
+			$props ["precio-oferta"] = $props ["precio"];
 			foreach ( $props as $k => $v ) {
 				$_POST [$k] = $v;
+			}
+			if (is_object ( $a->vehiculo )) {
+				$props = (get_object_vars ( $a->vehiculo ));
+				foreach ( $props as $k => $v ) {
+					$_POST [$k] = $v;
+				}
+			}
+			if (is_object ( $a->mascota )) {
+				$props = (get_object_vars ( $a->mascota ));
+				foreach ( $props as $k => $v ) {
+					$_POST [$k] = $v;
+				}
+			}
+			if (is_object ( $a->vivienda )) {
+				$props = (get_object_vars ( $a->vivienda ));
+				foreach ( $props as $k => $v ) {
+					$_POST [$k] = $v;
+				}
 			}
 		}
 	}
@@ -870,16 +870,25 @@ class Articulo extends BaseController {
 				$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $data ["articulo"]->descripcion ) ), 0, 150 ) . "'/>";
 			} else {
 				$articulo = $data ["articulo"];
-				$descripcion = "MARCA:{$articulo->vehiculo->marca}; MODELO:{$articulo->vehiculo->modelo}; TIPO:{$articulo->vehiculo->tipo}; KILOMETRAJE:{$articulo->vehiculo->kilometraje}; CILINDRADA:{$articulo->vehiculo->cilindrada}; COMBUSTIBLE:{$articulo->vehiculo->combustible}; CAJA:{$articulo->vehiculo->caja}; CONTACTAR CON:{$articulo->contactar_con}";
+				switch ($data ["padre"]) {
+					case "1" :
+						$descripcion = "MARCA:{$articulo->vehiculo->marca}; MODELO:{$articulo->vehiculo->modelo}; TIPO:{$articulo->vehiculo->tipo}; KILOMETRAJE:{$articulo->vehiculo->kilometraje}; CILINDRADA:{$articulo->vehiculo->cilindrada}; COMBUSTIBLE:{$articulo->vehiculo->combustible}; CAJA:{$articulo->vehiculo->caja}; CONTACTAR CON:{$articulo->contactar_con}";
+					break;
+					
+					case "2" :
+						$descripcion = "Raza:{$articulo->mascota->raza}; Pedigri:{$articulo->mascota->pedigri}; Sexo:{$articulo->mascota->sexo}; CONTACTAR CON:{$articulo->contactar_con}";
+					break;
+					case "3" :
+						;
+					break;
+					default :
+						$descripcion = "CONTACTAR CON:{$articulo->contactar_con}";
+					break;
+				}
 				$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $descripcion ) ), 0, 150 ) . "'/>";
 			}
 			$data ["articulo"]->usuario = $this->usuario->darUsuarioXId ( $data ["articulo"]->usuario );
 			if ($data ["articulo"]->usuario) {
-				$c = $this->articulo->cantidadOfertas ( $id );
-				$data ["articulo"]->ofertas = 0;
-				if ($c) {
-					$data ["articulo"]->ofertas = $c->cantidad;
-				}
 				$images = explode ( ",", $data ["articulo"]->foto );
 				$baseruta = "files/" . $data ["articulo"]->usuario->seudonimo . "/";
 				$dir = BASEPATH . "../$baseruta";
@@ -889,7 +898,6 @@ class Articulo extends BaseController {
 						$header ["extraMeta"] .= "<meta property='og:image' content='" . base_url () . "$imagen' />";
 					}
 				}
-				$data ["aclaraciones"] = $this->articulo->listarNotas ( $id );
 				$data ["articulo"]->usuario->pais = $data ["articulo"]->usuario->darPais ();
 				$data ["articulo"]->usuario->ciudad = $data ["articulo"]->usuario->darCiudad ();
 				if ($this->myuser) {
@@ -902,10 +910,6 @@ class Articulo extends BaseController {
 				if (! $data ["articulo"]->usuario->ciudad) {
 					$data ["articulo"]->usuario->ciudad = new stdClass ();
 					$data ["articulo"]->usuario->ciudad->nombre = "";
-				}
-				$data ["transaccion"] = $this->articulo->darTransaccion ( $transaccion );
-				if ($data ["transaccion"]) {
-					$data ["transaccion"]->comprador = $this->usuario->darUsuarioXId ( $data ["transaccion"]->comprador );
 				}
 			}
 		}
@@ -1149,116 +1153,109 @@ class Articulo extends BaseController {
 		}
 		$errores = array ();
 		$a = $this->articulo->darArticulo ( $this->input->post ( "id" ) );
-		if (! $a) {
-			$this->load->library ( 'form_validation' );
-			$config = array (
-					array (
-							'field' => 'titulo',
-							'label' => 'Título',
-							'rules' => 'required' 
-					),
-					array (
-							'field' => 'categoria',
-							'label' => 'Categoría',
-							'rules' => 'required' 
-					),
-					array (
-							'field' => 'descripcion',
-							'label' => 'Descripción',
-							'rules' => 'required' 
-					),
-					array (
-							'field' => 'imagenes',
-							'label' => 'Portada',
-							'rules' => 'required' 
-					) 
-			);
-			
-			$this->form_validation->set_error_delimiters ( '<span class="errorTxt">', '</span>' );
-			$this->form_validation->set_rules ( $config );
-			if ($this->form_validation->run ()) {
-				if ($modificar) {
-					$this->articulo->id = $this->input->post ( "id" );
-				}
-				$session = $this->mysession->userdata ( "LVSESSION" );
-				$this->articulo->titulo = $this->input->post ( "titulo" );
-				if ($this->myuser) {
-					$this->articulo->usuario = $this->myuser->id;
-				}
-				$this->articulo->descripcion = $this->input->post ( "descripcion" );
-				$this->articulo->categoria = $this->input->post ( "categoria" );
-				$this->articulo->contactar_con = $this->input->post ( "contactar_con" );
-				$this->articulo->ciudad = $this->input->post ( "ciudad" );
-				$modo = $this->input->post ( "modo" );
-				$imagenes = $this->input->post ( "imagenes" );
-				switch ($modo) {
-					case 2 :
-						$files = isset ( $_FILES ) ? $_FILES : false;
-						$imagenes = array ();
-						if ($files && is_array ( $files ) && count ( $files ) > 0) {
-							foreach ( $files as $f ) {
-								if ($f ["error"] == 0) {
-									$_FILES ["imagen"] = $f;
-									$return = $this->uploadImage ( false );
-									
-									if ($return && ! isset ( $return ["error"] )) {
-										$imagenes [] = $return ["name"] . "." . $return ["ext"];
-									}
+		$this->load->library ( 'form_validation' );
+		$config = array (
+				array (
+						'field' => 'titulo',
+						'label' => 'Título',
+						'rules' => 'required' 
+				),
+				array (
+						'field' => 'categoria',
+						'label' => 'Categoría',
+						'rules' => 'required' 
+				),
+				array (
+						'field' => 'imagenes',
+						'label' => 'Portada',
+						'rules' => 'required' 
+				) 
+		);
+		
+		$this->form_validation->set_error_delimiters ( '<span class="errorTxt">', '</span>' );
+		$this->form_validation->set_rules ( $config );
+		if ($this->form_validation->run ()) {
+			if ($modificar) {
+				$this->articulo->id = $this->input->post ( "id" );
+			}
+			$session = $this->mysession->userdata ( "LVSESSION" );
+			$this->articulo->titulo = $this->input->post ( "titulo" );
+			if ($this->myuser) {
+				$this->articulo->usuario = $this->myuser->id;
+			}
+			$this->articulo->descripcion = $this->input->post ( "descripcion" );
+			$this->articulo->categoria = $this->input->post ( "categoria" );
+			$this->articulo->contactar_con = $this->input->post ( "contactar_con" );
+			$this->articulo->ciudad = $this->input->post ( "ciudad" );
+			$modo = $this->input->post ( "modo" );
+			$imagenes = $this->input->post ( "imagenes" );
+			switch ($modo) {
+				case 2 :
+					$files = isset ( $_FILES ) ? $_FILES : false;
+					$imagenes = array ();
+					if ($files && is_array ( $files ) && count ( $files ) > 0) {
+						foreach ( $files as $f ) {
+							if ($f ["error"] == 0) {
+								$_FILES ["imagen"] = $f;
+								$return = $this->uploadImage ( false );
+								
+								if ($return && ! isset ( $return ["error"] )) {
+									$imagenes [] = $return ["name"] . "." . $return ["ext"];
 								}
 							}
 						}
-						$imagenes = implode ( ",", $imagenes );
-					break;
-				}
-				$padre = $this->categoria->darArbolCategoria ( $this->articulo->categoria, $this->idioma->language->id );
-				$objeto = new stdClass ();
-				$mascota = false;
-				$vivienda = false;
-				switch ($padre[0]["id"]) {
-					case 1 :
-						$objeto->marca = $this->input->post ( "marca" );
-						$objeto->modelo = $this->input->post ( "modelo" );
-						$objeto->tipo = $this->input->post ( "tipo" );
-						$objeto->kilometraje = $this->input->post ( "kilometraje" );
-						$objeto->cilindrada = $this->input->post ( "cilindrada" );
-						$objeto->combustible = $this->input->post ( "combustible" );
-						$objeto->caja = $this->input->post ( "caja" );
-					break;
-					case 2 :
-						$objeto->raza = $this->input->post ( "raza" );
-						$objeto->pedigri = $this->input->post ( "pedigri" );
-						$objeto->sexo = $this->input->post ( "sexo" );
-						$objeto->observacion = $this->input->post ( "observacion" );
-						$mascota = true;
-					break;
-					case 3 :
-						$objeto->tipo_venta = $this->input->post ( "tipo_venta" );
-						$objeto->direccion = $this->input->post ( "direccion" );
-						$objeto->superficie = $this->input->post ( "superficie" );
-						$objeto->dormitorios = $this->input->post ( "dormitorios" );
-						$objeto->banos = $this->input->post ( "banos" );
-						$objeto->antiguedad = $this->input->post ( "antiguedad" );
-						$vivienda = true;
-					break;
-					default :
-						;
-					break;
-				}
-				$this->articulo->foto = $imagenes;
-				$this->articulo->precio = $this->input->post ( "precio-oferta" );
-				
-				$this->articulo->moneda = 1;
-				if (! $modificar) {
-					$this->articulo->fecha_registro = date ( "Y-m-d H:i:s" );
-					$this->articulo->estado = "A la venta";
-				}
-				if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
-					$seccion = "nuevo";
-					if ($modificar) {
-						$seccion = "actualizado";
 					}
-					redirect ( "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) . "/$seccion" );
+					$imagenes = implode ( ",", $imagenes );
+				break;
+			}
+			$padre = $this->categoria->darArbolCategoria ( $this->articulo->categoria, $this->idioma->language->id );
+			$objeto = new stdClass ();
+			$mascota = false;
+			$vivienda = false;
+			switch ($padre [0] ["id"]) {
+				case 1 :
+					$objeto->marca = $this->input->post ( "marca" );
+					$objeto->modelo = $this->input->post ( "modelo" );
+					$objeto->tipo = $this->input->post ( "tipo" );
+					$objeto->kilometraje = $this->input->post ( "kilometraje" );
+					$objeto->cilindrada = $this->input->post ( "cilindrada" );
+					$objeto->combustible = $this->input->post ( "combustible" );
+					$objeto->caja = $this->input->post ( "caja" );
+				break;
+				case 2 :
+					$objeto->raza = $this->input->post ( "raza" );
+					$objeto->pedigri = $this->input->post ( "pedigri" );
+					$objeto->sexo = $this->input->post ( "sexo" );
+					$objeto->observacion = $this->input->post ( "observacion" );
+					$mascota = true;
+				break;
+				case 3 :
+					$objeto->tipo_venta = $this->input->post ( "tipo_venta" );
+					$objeto->direccion = $this->input->post ( "direccion" );
+					$objeto->superficie = $this->input->post ( "superficie" );
+					$objeto->dormitorios = $this->input->post ( "dormitorios" );
+					$objeto->banos = $this->input->post ( "banos" );
+					$objeto->antiguedad = $this->input->post ( "antiguedad" );
+					$vivienda = true;
+				break;
+				default :
+					;
+				break;
+			}
+			$this->articulo->foto = $imagenes;
+			$this->articulo->precio = $this->input->post ( "precio-oferta" );
+			
+			$this->articulo->moneda = 1;
+			if (! $modificar) {
+				$this->articulo->fecha_registro = date ( "Y-m-d H:i:s" );
+				$this->articulo->estado = "A la venta";
+			}
+			if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
+				$seccion = "nuevo";
+				if ($modificar) {
+					$seccion = "actualizado";
 				}
+				redirect ( "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) . "/$seccion" );
 			}
 		}
 		return $errores;

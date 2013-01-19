@@ -1,5 +1,5 @@
 <?php
-$padre = isset($padre)?$padre[0]["id"]:0;
+$padre = isset ( $arbol ) ? $arbol [0] ["id"] : 0;
 $imagenes = $this->input->post ( "imagenes" );
 if (trim ( $imagenes ) !== "") {
 	$imagenes = explode ( ",", $imagenes );
@@ -15,24 +15,12 @@ $nuevo = isset ( $nuevo ) ? $nuevo : false;
 $modificar = isset ( $articulo ) && ! $nuevo;
 $postFile = $modificar ? "product/edit/$articulo->id" : ($nuevo ? "product/nuevo/$articulo->id" : "product/nuevo");
 if (isset ( $articulo )) {
-	$terminado = $articulo->terminado;
+	$terminado = 0;
 	$productoLink = "product/$articulo->id-" . normalizarTexto ( $articulo->titulo );
 }
 $tipo_precio = $this->input->post ( "tipo-precio" ) ? $this->input->post ( "tipo-precio" ) : "precio-cantidad-box";
 $cantidadVendidos = 0;
 $editable = true;
-if (isset ( $articulo )) {
-	$cantidadVendidos = $this->articulo->obtenerVendidosDeCantidad ( $articulo->id );
-	$editable = ($articulo->tipo !== "Cantidad" || ($articulo->tipo == "Cantidad" && $cantidadVendidos <= 0));
-	$gastos_pais = ($articulo->gastos_pais !== null ? my_set_value ( "gastos_pais", (isset ( $articulo ) ? $articulo->gastos_pais : 0) ) : "");
-	$gastos_continente = ($articulo->gastos_continente !== null ? my_set_value ( "gastos_continente", (isset ( $articulo ) ? $articulo->gastos_continente : 0) ) : "");
-	$gastos_todos = ($articulo->gastos_todos !== null ? my_set_value ( "gastos_todos", (isset ( $articulo ) ? $articulo->gastos_todos : 0) ) : "");
-} else {
-	$gastos_pais = my_set_value ( "gastos_pais", "" );
-	$gastos_continente = my_set_value ( "gastos_continente", "" );
-	$gastos_todos = my_set_value ( "gastos_todos", "" );
-}
-$envio_local = my_set_value ( "envio_local" );
 ?>
 <script type="text/javascript"
 	src="<?=base_url()?>assets/js/uploadprogress.js"></script>
@@ -136,9 +124,8 @@ CKEDITOR.config.toolbar =
 				<?php
 				if ($editable) {
 					?><p>
-					<textarea class="enfoque required ckeditor" data-consejo="consejo2"
-						rows="5" cols="" name="descripcion"
-						data-error-required="El campo Descripción es requerido"><?=set_value("descripcion");?></textarea>
+					<textarea class="enfoque ckeditor" data-consejo="consejo2" rows="5"
+						cols="" name="descripcion"><?=set_value("descripcion");?></textarea>
 					<?=form_error("descripcion");?><span class="errorTxt"
 						id="descripcionError"></span>
 				</p><?php
@@ -229,7 +216,7 @@ CKEDITOR.config.toolbar =
 			data-error-required="Añade un título." /> <input type="hidden"
 			name="categoria" class="required" value="<?=set_value("categoria")?>"
 			data-error-required="Añade una categoría." />
-		<textarea class="required" name="descripcion" style="display: none;"
+		<textarea name="descripcion" style="display: none;"
 			data-error-required="Añade una descripción."><?=set_value("descripcion")?></textarea>
 		<input type="hidden" name="imagenes"
 			value="<?=set_value("imagenes")?>" class="required"
@@ -275,8 +262,7 @@ CKEDITOR.config.toolbar =
 					</p>
 					<span class="errorTxt" id="contactoError"></span>
 					<div style="clear: both;"></div>
-					<input type="hidden" name="ciudad"
-						value="196" />
+					<input type="hidden" name="ciudad" value="196" />
 
 					<div id="vehiculoCaracteristicas" style="<?php
 				if (! isset ( $padre ) || (isset ( $padre ) && $padre !== "1")) {
@@ -312,12 +298,6 @@ CKEDITOR.config.toolbar =
 								name="cilindrada" value="<?=my_set_value("cilindrada","")?>" />
 						</p>
 						<span class="errorTxt" id="cilindradaError"></span>
-						<div style="clear: both;"></div>
-						<p class="durac">
-							<label>Combustible:</label> <input type="text" class="t-r texto "
-								name="combustible" value="<?=my_set_value("combustible","")?>" />
-						</p>
-						<span class="errorTxt" id="combustibleError"></span>
 						<div style="clear: both;"></div>
 						<p class="durac">
 							<label>Combustible:</label> <input type="text" class="t-r texto "
@@ -459,14 +439,10 @@ CKEDITOR.config.toolbar =
 			<input type="hidden" name="__accion"
 					value="<?=($modificar?"modificar":"ingresar");?>" /> 
 				<?php
-				if ($usuario && $usuario->estado === "Incompleto") {
-					?><a href="#"
-					onclick="$('.user-box .nmodal').click();return false;" class="bt"><?=($modificar?"Actualizar":"Poner a la venta");?></a><?php
-				} else {
-					?>
+				?>
 					<input type="hidden" name="modo" value="1" /> <input type="submit"
 					value="<?=($modificar?"Actualizar":"Poner a la venta");?>"
-					class="bt" /><?php }?> <span class="mhm">o</span> <a href=""
+					class="bt" /> <span class="mhm">o</span> <a href=""
 					title="cancelar e ir al Inicio">cancelar</a>
 			</div><?=form_close()?>
 </div>

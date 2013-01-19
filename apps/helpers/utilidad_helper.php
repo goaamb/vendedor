@@ -217,7 +217,7 @@ if (! function_exists ( "imagenArticulo" )) {
 	function imagenArticulo($usuario, $imagen = false, $tipo = "") {
 		$noimagen = ! $imagen;
 		if ($noimagen) {
-			$imagen = $usuario->imagen;
+			$imagen = false;
 		}
 		$ext = pathinfo ( $imagen, PATHINFO_EXTENSION );
 		$name = pathinfo ( $imagen, PATHINFO_FILENAME );

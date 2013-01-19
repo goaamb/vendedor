@@ -104,10 +104,7 @@ function validFormItem() {
 	}
 	CKEDITOR.instances.descripcion.updateElement();
 	$("textarea[name='descripcion']").val(CKEDITOR.instances.descripcion.getData());
-	if (!completoUsuario) {
-		$(".user-box .nmodal").click();
-	}
-	return completoUsuario;
+	return true;
 }
 function eliminarImagen() {
 	var padre = $(this).parent();

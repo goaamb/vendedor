@@ -9,6 +9,7 @@ $visible = false;
 if ($this->myuser && $this->myuser->estado == "Baneado") {
 	$articulo->terminado = 1;
 }
+$propietario = isset ( $this->myuser )&& is_object ( $this->myuser ) &&  ($this->myuser->tipo == "Administrador" ||( isset ( $articulo->usuario ) && is_object ( $articulo->usuario ) && $this->myuser->id == $articulo->usuario->id));
 $visible = ($visible && $articulo->estado !== "Baneado");
 if ($baneado) {
 	$articulo->terminado = 1;
@@ -27,7 +28,12 @@ if (! $baneado || $visible) {
 	type="text/javascript"></script>
 <div class="wrapper clearfix">
 	<header class="cont-cab">
-		<h1><?=$articulo->titulo?></h1>
+		<h1><?php
+	print $articulo->titulo;
+	if ($propietario) {
+		?><a style="float: right;" href="product/edit/<?=$articulo->id?>">Editar</a><?php
+	}
+	?></h1>
 	</header>
 	<div class="product-file clearfix">
 		<div class="gallery">

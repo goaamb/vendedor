@@ -6,6 +6,87 @@ class Home extends BaseController {
 		$this->load->model ( "Categoria_model", "categoria" );
 		$this->load->model ( "Articulo_model", "articulo" );
 	}
+	public function renameFiles() {
+		$imagenes = $this->articulo->listarDirectorio ();
+		$regexp = "/([^\)]+)/";
+		$fdir = BASEPATH . "../files/temporal/";
+		foreach ( $imagenes as $img ) {
+			$matches = array ();
+			preg_match ( $regexp, $img, $matches );
+			if (count ( $matches ) > 1) {
+				rename ( $fdir . $img, $fdir . str_pad ( $matches [1], 3, "0", STR_PAD_LEFT ) . ".jpg" );
+				print "$img=>" . str_pad ( $matches [1], 3, "0", STR_PAD_LEFT ) . ".jpg<br/>";
+			}
+		}
+	}
+	public function sitemap() {
+		$r = false;
+		$url = array ();
+		$c = 0;
+		$limit = 40000;
+		$cnames = 0;
+		$anames = array ();
+		do {
+			unset ( $r );
+			$r = $this->db->select ( "articulo.id,articulo.titulo,articulo.foto,articulo.usuario" )->join ( "usuario", "usuario.id=articulo.usuario and usuario.estado not in('Inactivo','Baneado')", "left" )->get ( "articulo", 1000, $c )->result ();
+			if (($r && is_array ( $r ) && count ( $r ) > 0)) {
+				foreach ( $r as $a ) {
+					$arr = array ();
+					$arr ["url"] = base_url () . "product/$a->id-" . normalizarTexto ( $a->titulo );
+					
+					$imgs = explode ( ",", $a->foto );
+					if (count ( $imgs ) > 0) {
+						$arr ["images"] = array ();
+						foreach ( $imgs as $img ) 
+
+						{
+							$arr ["images"] [] = base_url () . "files/articulos/$img";
+						}
+					}
+					
+					$url [] = $arr;
+					if (count ( $url ) == $limit) {
+						$cnames ++;
+						$anames [] = $this->createSitemap ( $url, $cnames );
+						unset ( $url );
+						$url = array ();
+					}
+				}
+			}
+			$c += 1000;
+		} while ( $r && is_array ( $r ) && count ( $r ) > 0 );
+		
+		if (count ( $url ) > 0) {
+			$cnames ++;
+			$anames [] = $this->createSitemap ( $url, $cnames );
+			unset ( $url );
+			$url = array ();
+		}
+		$xml = $this->load->view ( "sitemap_index", array (
+				"sitemaps" => $anames 
+		), true );
+		file_put_contents ( BASEPATH . "../sitemap_index.xml", $xml );
+		$xmlgz = gzencode ( $xml, 9 );
+		unset ( $xml );
+		file_put_contents ( BASEPATH . "../sitemap_index.xml.gz", $xmlgz );
+	}
+	public function createSitemap($urls, $cname) {
+		$xml = $this->load->view ( "sitemap", array (
+				"urls" => $urls 
+		), true );
+		
+		if ($cname > 1) {
+			$cname = ".$cname";
+		} else {
+			$cname = "";
+		}
+		$fname = "sitemap$cname.xml";
+		file_put_contents ( BASEPATH . "../$fname", $xml );
+		$xmlgz = gzencode ( $xml, 9 );
+		unset ( $xml );
+		file_put_contents ( BASEPATH . "../$fname.gz", $xmlgz );
+		return $fname;
+	}
 	public function cancelarEnviosPendientes() {
 		$exito = false;
 		$id = $this->input->post ( "id" );
@@ -171,6 +252,7 @@ class Home extends BaseController {
 			do {
 				$marca = $h->getCellByColumnAndRow ( $c, $r )->getValue ();
 				if (trim ( $marca ) != "") {
+					$articulo = $this->articulo;
 					if (isset ( $imagenes [$count] )) {
 						$file = BASEPATH . "../files/temporal/" . $imagenes [$count];
 						$_FILES = array (
@@ -182,7 +264,6 @@ class Home extends BaseController {
 										"name" => pathinfo ( $file, PATHINFO_BASENAME ) 
 								) 
 						);
-						$articulo = $this->articulo;
 						$image = uploadImage ( false );
 						if (is_array ( $image ) && isset ( $image ["name"] ) && isset ( $image ["ext"] )) {
 							$articulo->foto = $image ["name"] . "." . $image ["ext"];
@@ -258,6 +339,7 @@ class Home extends BaseController {
 			do {
 				$raza = $h->getCellByColumnAndRow ( $c, $r )->getValue ();
 				if (trim ( $raza ) != "") {
+					$articulo = $this->articulo;
 					if (isset ( $imagenes [$count] )) {
 						$file = BASEPATH . "../files/temporal/" . $imagenes [$count];
 						$_FILES = array (
@@ -269,7 +351,6 @@ class Home extends BaseController {
 										"name" => pathinfo ( $file, PATHINFO_BASENAME ) 
 								) 
 						);
-						$articulo = $this->articulo;
 						$image = uploadImage ( false );
 						if (is_array ( $image ) && isset ( $image ["name"] ) && isset ( $image ["ext"] )) {
 							$articulo->foto = $image ["name"] . "." . $image ["ext"];
@@ -318,6 +399,94 @@ class Home extends BaseController {
 				}
 				$r ++;
 			} while ( trim ( $raza ) !== "" );
+			if ($count > 0) {
+				$data ["Mensaje"] = "Se importaron $count Categorías";
+			} else {
+				$data ["Error"] = "No se importo ninguna Categoría";
+			}
+		}
+		$this->loadGUI ( "importar_articulos", $data );
+	}
+	public function importarVivienda() {
+		ini_set ( "max_execution_time", "3600" );
+		$data = array ();
+		$archivo = (isset ( $_FILES ) && isset ( $_FILES ["archivo"] )) ? $_FILES ["archivo"] : false;
+		if ($archivo && is_file ( $archivo ["tmp_name"] )) {
+			require_once (BASEPATH . "../apps/libraries/PHPExcel/IOFactory.php");
+			$objPHPExcel = PHPExcel_IOFactory::load ( $archivo ["tmp_name"] );
+			$h = $objPHPExcel->getActiveSheet ();
+			$r = 2;
+			$c = 0;
+			$count = 0;
+			$imagenes = $this->articulo->listarDirectorio ();
+			$imagenesReal = array_merge ( $imagenes, array () );
+			for($i = 0; $i < count ( $imagenes ); $i ++) {
+				$imagenes [$i] = strtolower ( $imagenes [$i] );
+			}
+			do {
+				$numero = trim ( $h->getCellByColumnAndRow ( $c, $r )->getValue () );
+				if (trim ( $numero ) != "") {
+					$foto = $numero . "." . strtolower ( trim ( $h->getCellByColumnAndRow ( $c + 1, $r )->getValue () ) );
+					$pos = array_search ( $foto, $imagenes );
+					$articulo = $this->articulo;
+					if ($pos !== false) {
+						$file = BASEPATH . "../files/temporal/" . $imagenesReal [$pos];
+						$_FILES = array (
+								"imagen" => array (
+										"size" => filesize ( $file ),
+										"error" => 0,
+										"type" => "image/jpeg",
+										"tmp_name" => $file,
+										"name" => pathinfo ( $file, PATHINFO_BASENAME ) 
+								) 
+						);
+						$image = uploadImage ( false );
+						if (is_array ( $image ) && isset ( $image ["name"] ) && isset ( $image ["ext"] )) {
+							$articulo->foto = $image ["name"] . "." . $image ["ext"];
+						}
+					}
+					$codigo = $h->getCellByColumnAndRow ( $c + 3, $r )->getValue ();
+					$detalle = $h->getCellByColumnAndRow ( $c + 4, $r )->getValue ();
+					$superficie = $h->getCellByColumnAndRow ( $c + 5, $r )->getValue ();
+					$precio = $h->getCellByColumnAndRow ( $c + 6, $r )->getValue ();
+					$titulo = array_shift ( explode ( ",", $detalle ) );
+					$articulo->titulo = $titulo ? $titulo : $codigo;
+					switch (strtolower ( $codigo )) {
+						case "terreno" :
+							$articulo->categoria = 25;
+						break;
+						case "propiedad comercial" :
+							$articulo->categoria = 24;
+						break;
+						case "oficina" :
+							$articulo->categoria = 26;
+						break;
+						case "edificio" :
+							$articulo->categoria = 21;
+						break;
+						case "departamento" :
+							$articulo->categoria = 19;
+						break;
+						default :
+							$articulo->categoria = 20;
+						break;
+					}
+					
+					$articulo->precio = $precio;
+					$articulo->descripcion = $detalle;
+					$articulo->moneda = 2;
+					$articulo->fecha_registro = date ( "Y-m-d H:i:s" );
+					$articulo->ciudad = 196;
+					$articulo->estado = "A la venta";
+					$vivienda = new stdClass ();
+					$vivienda->tipo_venta = "Venta";
+					$vivienda->superficie = $superficie;
+					$this->articulo->registrar ( false, $vivienda, false, true );
+					
+					$count ++;
+				}
+				$r ++;
+			} while ( trim ( $numero ) !== "" );
 			if ($count > 0) {
 				$data ["Mensaje"] = "Se importaron $count Categorías";
 			} else {
