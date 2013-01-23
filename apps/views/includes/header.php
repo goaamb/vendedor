@@ -127,11 +127,14 @@ google_ad_height = 90;
 			</div>
 			<!--user-box-->
 			<div class="icon-box">
-				<a href="?categoria=1" onclick="cambiarBusquedaCategoria(1);return false;"><img
+				<a href="?categoria=1"
+					onclick="cambiarBusquedaCategoria(1);return false;"><img
 					src="assets/images/html/automovil.png" /><span>Vehículos</span></a>
-				<a href="?categoria=2" onclick="cambiarBusquedaCategoria(2);return false;"><img
+				<a href="?categoria=2"
+					onclick="cambiarBusquedaCategoria(2);return false;"><img
 					src="assets/images/html/perro.png" /><span>Mascotas</span></a> <a
-					href="?categoria=3" onclick="cambiarBusquedaCategoria(3);return false;"><img
+					href="?categoria=3"
+					onclick="cambiarBusquedaCategoria(3);return false;"><img
 					src="assets/images/html/casa.png" /><span>Viviendas</span></a> <a
 					href="product/nuevo" title="Publicar" class="ultimo"><img
 					src="assets/images/html/publicar.png" /><span>Publicar</span></a>

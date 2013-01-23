@@ -315,3 +315,25 @@ form#formPaypalPago.error {
 	height: auto;
 	border: none;
 }
+
+.ver-mas a,.ver-mas span {
+	border: 1px solid #035f8d;
+	padding: 3px 5px;
+	margin: 2px;
+	display: inline-block;
+	font-size: 1.5em;
+	background-color: #F4AA00;
+	color: white;
+	box-shadow: 2px 2px gray;
+	border-radius:3px;
+}
+
+.ver-mas a:hover {
+	background-color: transparent;
+	border-color: #F4AA00;
+	color: #035f8d;
+}
+
+.ver-mas span {
+	border: none;
+}

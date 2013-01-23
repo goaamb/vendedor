@@ -12,14 +12,18 @@ if (! defined ( 'BASEPATH' ))
  * CodeIgniter will guess the protocol, domain and | path to your installation.
  * |
  */
+$protocolo = (isset ( $_SERVER ["HTTPS"] ) && $_SERVER ["HTTPS"] == "on" ? "https" : "http");
 $saddress = isset ( $_SERVER ["SERVER_ADDR"] ) ? $_SERVER ["SERVER_ADDR"] : "";
 switch ($saddress) {
 	case "66.7.193.86" :
-		$config ['base_url'] = 'http://' . $_SERVER ["SERVER_NAME"] . '/vendedor/';
+		$config ['base_url'] = $protocolo . '://' . $_SERVER ["SERVER_NAME"] . '/vendedor/';
 		break;
 	
+	case "96.125.165.72" :
+		$config ['base_url'] = $protocolo . '://' . $_SERVER ["SERVER_NAME"] . '/';
+		break;
 	default :
-		$config ['base_url'] = 'http://localhost/vendedor/';
+		$config ['base_url'] = $protocolo . '://localhost/vendedor/';
 		break;
 }
 

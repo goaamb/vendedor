@@ -9,6 +9,8 @@ $categoria = (isset ( $categoria ) ? $categoria : "");
 $articulos = (isset ( $articulos ) ? $articulos : null);
 $vencimientoOferta = intval ( $this->configuracion->variables ( "vencimientoOferta" ) ) * 86400;
 $profile = (isset ( $profile ) ? $profile : null);
+$pagina = (isset ( $pagina ) && intval ( $pagina ) > 0 ? intval ( $pagina ) : 1);
+$npagina = $totalpagina > 0 ? ceil ( $total / $totalpagina ) : 1;
 ?><section class="result-list">
 	<header class="cont-cab">
 		<h1><?=(isset($criterio) && trim($criterio)!==""?traducir("Búsqueda:")." ".$criterio:($profile?traducir("Tienda de")." ".$usuario->seudonimo:traducir("Últimos artículos")))?></h1>
@@ -48,7 +50,7 @@ $profile = (isset ( $profile ) ? $profile : null);
 	</div><?php
 			}
 		}
-		if ($total > $totalpagina) {
+		if (false && $total > $totalpagina) {
 			?><p class="ver-mas">
 		<img src="assets/images/ico/ajax-loader-see-more.gif"
 			alt="<?=traducir("Ver más")?>" style="display: none;" /> <a href="#"
@@ -58,6 +60,40 @@ $profile = (isset ( $profile ) ? $profile : null);
 			onclick="document.body.scrollTop=0; return false;"
 			style="display: none;"><?=traducir("Ir al primer artículo")?></a>
 	</p><?php
+		} else {
+			?><p class="ver-mas"><?php
+			if ($npagina > 1) {
+				$inicio = 1;
+				$fin = 10;
+				if ($pagina > 5) {
+					$inicio = $pagina - 5;
+					$fin = $inicio + ($pagina % 2 == 0 ? 9 : 10);
+				}
+				if ($fin > $npagina) {
+					$fin = $npagina;
+				}
+				if ($pagina > 1) {
+					?><a href="?pagina=1" onclick="return cambiarPagina(1);">&lt;&lt;</a><a
+			href="?pagina=<?=($pagina-1)?>"
+			onclick="return cambiarPagina(<?=($pagina-1)?>);">&lt;</a><?php
+				}
+				for($i = $inicio; $i <= $fin; $i ++) {
+					if ($i != $pagina) {
+						?><a href="?pagina=<?=$i?>"
+			onclick="return cambiarPagina(<?=$i?>);"><?=$i?></a><?php
+					} else {
+						?><span><?=$i?></span><?php
+					}
+				}
+				if ($fin < $npagina) {
+					?><a href="?pagina=<?=($pagina+1)?>"
+			onclick="return cambiarPagina(<?=$pagina+1?>);">&gt;</a><a
+			href="?pagina=<?=$npagina?>"
+			onclick="return cambiarPagina(<?=$npagina?>);">&gt;&gt;</a><?php
+				}
+				?><?php
+			}
+			?></p><?php
 		}
 	} else {
 		?><div class="item clearfix last-child"

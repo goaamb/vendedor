@@ -998,4 +998,4 @@ Array
 [2012-07-17 10:30:30] - 25442 - Enviando Respuesta: {"name":"388885","ext":"jpg","path":"files\/20\/","quien":"2"}
 [2012-07-17 10:30:30] - 25442 - Se termino de redimensionar las imagenes
 [2012-07-17 10:30:30] - 25442 - Redimiensionando imagen Thumb: D:/wamp/www/lovende/kernel/../files/20/388885.thumb.jpg
-[2012-07-17 10:30:30] - 25442 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/388885.jpg
+[2012-07-17 10:30:30] - 25442 - Redimiensionando imagen Grande: D:/wamp/www/lovende/kernel/../files/20/388885.jpg

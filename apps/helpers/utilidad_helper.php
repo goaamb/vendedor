@@ -292,7 +292,7 @@ if (! function_exists ( "uploadImage" )) {
 		);
 		if (isset ( $_FILES ) && isset ( $_FILES ["imagen"] )) {
 			$files = $_FILES ["imagen"];
-			if (intval ( $files ["size"] ) <= 10485760 && $files ["error"] !== UPLOAD_ERR_FORM_SIZE) {
+			if (intval ( $files ["size"] ) <= 4194304 && $files ["error"] !== UPLOAD_ERR_FORM_SIZE) {
 				if ($files ["type"] == "application/octet-stream") {
 					$files ["type"] = get_mime ( $files ["tmp_name"] );
 				}

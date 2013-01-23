@@ -52,7 +52,8 @@ function verificarOrdenamiento() {
 			a = "asc";
 			break;
 		}
-		$("#" + who).next("table").find("th[data-orderby='" + gob + "']").addClass("select " + a).data("asc", a);
+		$("#" + who).next("table").find("th[data-orderby='" + gob + "']")
+				.addClass("select " + a).data("asc", a);
 	} else {
 		var s = $("th[data-default='true']").addClass("select");
 		for ( var i = 0; i < s.length; i++) {
@@ -538,7 +539,8 @@ function verMasArticulos(tipo, p, s) {
 					var oc = ap.attr("onclick").replace(/.*([\d]+).*/, "$1");
 					oc = parseInt(oc, 10);
 					oc = isNaN(oc) ? 1 : oc;
-					ap.attr("onclick", "return verMasArticulos('home','" + (oc + 1) + "','" + (s ? s : "all") + "');");
+					ap.attr("onclick", "return verMasArticulos('home','"
+							+ (oc + 1) + "','" + (s ? s : "all") + "');");
 					var f = parseInt(data["final"], 10);
 					f = isNaN(f) ? 0 : f;
 					$("#contadorFinal").html(f);
@@ -596,7 +598,8 @@ function verMas(url, funcion, crear, vfinal, vtotal, p, s) {
 				}
 				$('.nmodal').nyroModal();
 				var ap = $("p.ver-mas a:first");
-				ap.attr("onclick", "return " + funcion + "('" + data[vfinal] + "','" + (s ? s : "all") + "');");
+				ap.attr("onclick", "return " + funcion + "('" + data[vfinal]
+						+ "','" + (s ? s : "all") + "');");
 				var f = parseInt(data[vfinal], 10);
 				f = isNaN(f) ? 0 : f;
 				$("#contadorFinal").html(f);
@@ -620,23 +623,32 @@ function verMas(url, funcion, crear, vfinal, vtotal, p, s) {
 	return false;
 }
 function verMasArticulosComprados(p, s) {
-	return verMas("usuario/verMasArticulosComprados", "verMasArticulosComprados", crearArticuloVendido, "finalComprados", "totalComprados", p, s);
+	return verMas("usuario/verMasArticulosComprados",
+			"verMasArticulosComprados", crearArticuloVendido, "finalComprados",
+			"totalComprados", p, s);
 }
 function verMasArticulosVendidos(p, s) {
-	return verMas("usuario/verMasArticulosVendidos", "verMasArticulosVendidos", crearArticuloVendido, "finalVendidos", "totalVendidos", p, s);
+	return verMas("usuario/verMasArticulosVendidos", "verMasArticulosVendidos",
+			crearArticuloVendido, "finalVendidos", "totalVendidos", p, s);
 }
 
 function verMasArticulosEnCompra(p, s) {
-	return verMas("usuario/verMasArticulosEnCompra", "verMasArticulosEnCompra", crearArticuloEnCompra, "finalEnCompra", "totalEnCompra", p, s);
+	return verMas("usuario/verMasArticulosEnCompra", "verMasArticulosEnCompra",
+			crearArticuloEnCompra, "finalEnCompra", "totalEnCompra", p, s);
 }
 function verMasArticulosEnVenta(p, s) {
-	return verMas("usuario/verMasArticulosEnVenta", "verMasArticulosEnVenta", crearArticuloEnVenta, "finalEnVenta", "totalEnVenta", p, s);
+	return verMas("usuario/verMasArticulosEnVenta", "verMasArticulosEnVenta",
+			crearArticuloEnVenta, "finalEnVenta", "totalEnVenta", p, s);
 }
 function verMasArticulosNoComprados(p, s) {
-	return verMas("usuario/verMasArticulosNoComprados", "verMasArticulosNoComprados", crearArticuloNoComprados, "finalNoComprados", "totalNoComprados", p, s);
+	return verMas("usuario/verMasArticulosNoComprados",
+			"verMasArticulosNoComprados", crearArticuloNoComprados,
+			"finalNoComprados", "totalNoComprados", p, s);
 }
 function verMasArticulosNoVendidos(p, s) {
-	return verMas("usuario/verMasArticulosNoVendidos", "verMasArticulosNoVendidos", crearArticuloNoVendidos, "finalNoVendidos", "totalNoVendidos", p, s);
+	return verMas("usuario/verMasArticulosNoVendidos",
+			"verMasArticulosNoVendidos", crearArticuloNoVendidos,
+			"finalNoVendidos", "totalNoVendidos", p, s);
 }
 
 function cambiarOrdenBusqueda() {
@@ -650,25 +662,33 @@ function cambiarCriterioBusqueda(profile) {
 	return cambiarURLGET("criterio", this.value, profile);
 }
 function cambiarBusquedaCategoria(categoria) {
-	return cambiarURLGET("categoria", categoria, profile);
+	var url = cambiarURLGET("categoria", categoria, profile, false, true);
+	return cambiarURLGET("pagina", "1", profile, url);
 }
 
 function resetBusqueda() {
 	cambiarURLGET("criterio", "");
 }
+function cambiarPagina(pagina) {
+	return cambiarURLGET("pagina", pagina, profile);
+}
 var usuarioID = false;
 var profile = false;
-function cambiarURLGET(variable, valor, profile) {
-	var url = location.href;
-	var vars = G.url._GET();
+function cambiarURLGET(variable, valor, profile, url, ret) {
+	url = url ? url : location.href;
+	var vars = G.url._GET(false, url);
 	if (!profile) {
 		var m = G.dom.$$$("base", 0);
 		url = G.url._setGET(vars, false, m.href);
 	} else if (usuarioID) {
 		url = G.url._setGET("usuario", usuarioID, url);
 	}
-	location.href = G.url._setGET(variable, valor, url);
-	return false;
+	if (!ret) {
+		location.href = G.url._setGET(variable, valor, url);
+		return false;
+	} else {
+		return G.url._setGET(variable, valor, url);
+	}
 }
 
 function enviarMensajePrivado() {
@@ -722,7 +742,8 @@ function denunciarPago() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -746,7 +767,8 @@ function verificarRetrasoEnvio() {
 			dataType : "json",
 			success : function(data) {
 				if (data.exito) {
-					location.href = location.href.split("#").shift().split("?").shift();
+					location.href = location.href.split("#").shift().split("?")
+							.shift();
 				} else {
 					$('.nyroModalClose').click();
 				}
@@ -771,7 +793,8 @@ function denunciarRecibido() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -792,7 +815,8 @@ function denunciarEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -814,7 +838,8 @@ function denunciarGastosEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -839,7 +864,8 @@ function enviarGastosEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -910,7 +936,8 @@ function enviarPago() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -935,7 +962,8 @@ function confirmarRecepcion() {
 			dataType : "json",
 			success : function(data) {
 				if (data.exito) {
-					location.href = location.href.split("#").shift().split("?").shift();
+					location.href = location.href.split("#").shift().split("?")
+							.shift();
 				} else {
 					$('.nyroModalClose').click();
 				}
@@ -957,7 +985,8 @@ function confirmarEnvio() {
 		dataType : "json",
 		success : function(data) {
 			if (data.exito) {
-				location.href = location.href.split("#").shift().split("?").shift();
+				location.href = location.href.split("#").shift().split("?")
+						.shift();
 			} else {
 				$('.nyroModalClose').click();
 			}
@@ -981,7 +1010,8 @@ function cambiarTipoTarifa() {
 			dataType : "json",
 			success : function(data) {
 				if (data.exito) {
-					location.href = location.href.split("#").shift().split("?").shift();
+					location.href = location.href.split("#").shift().split("?")
+							.shift();
 				} else {
 					$('.nyroModalClose').click();
 				}
@@ -1037,7 +1067,8 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length - 2; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("disabled").attr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").addClass("required").addClass("min-value").removeAttr("disabled");
+					$(".formA input[name='" + dxi + "']").addClass("required")
+							.addClass("min-value").removeAttr("disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1048,7 +1079,8 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length - 1; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("disabled").attr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").addClass("required").addClass("min-value").removeAttr("disabled");
+					$(".formA input[name='" + dxi + "']").addClass("required")
+							.addClass("min-value").removeAttr("disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1068,7 +1100,9 @@ function cambiarGastos() {
 				for ( var i = 1; i < c.length; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").removeClass("required").removeClass("min-value").attr("disabled", "disabled");
+					$(".formA input[name='" + dxi + "']").removeClass(
+							"required").removeClass("min-value").attr(
+							"disabled", "disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 
@@ -1080,7 +1114,9 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("checked", "checked");
-					$(".formA input[name='" + dxi + "']").removeClass("required").removeClass("min-value").attr("disabled", "disabled");
+					$(".formA input[name='" + dxi + "']").removeClass(
+							"required").removeClass("min-value").attr(
+							"disabled", "disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1091,7 +1127,9 @@ function cambiarGastos() {
 				for ( var i = 0; i < c.length; i++) {
 					var dxi = $(c[i]).data("input");
 					$(c[i]).removeAttr("checked");
-					$(".formA input[name='" + dxi + "']").removeClass("required").removeClass("min-value").attr("disabled", "disabled");
+					$(".formA input[name='" + dxi + "']").removeClass(
+							"required").removeClass("min-value").attr(
+							"disabled", "disabled");
 					$("#" + dxi + "Error").html("");
 					$("#" + dxi + "Error").data("tipo-error", "");
 				}
@@ -1112,7 +1150,8 @@ function envioLocalCambio() {
 		var c = f.find("input[type='checkbox']").not(this);
 		if (this.checked) {
 			c.attr("disabled", "disabled");
-			f.find("input[type='text']").attr("disabled", "disabled").removeClass("required");
+			f.find("input[type='text']").attr("disabled", "disabled")
+					.removeClass("required");
 			for ( var i = 0; i < c.length; i++) {
 				var di = $(c[i]).data("input");
 				$("#" + di + "Error").html("").data("tipo-error", "");
@@ -1122,7 +1161,8 @@ function envioLocalCambio() {
 			for ( var i = 0; i < c.length; i++) {
 				if (c[i].checked) {
 					var di = $(c[i]).data("input");
-					$(".formA input[name='" + di + "']").removeAttr("disabled").addClass("required");
+					$(".formA input[name='" + di + "']").removeAttr("disabled")
+							.addClass("required");
 				}
 			}
 		}
