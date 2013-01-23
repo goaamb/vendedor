@@ -2,6 +2,7 @@
 $headerTitle = isset ( $headerTitle ) ? $headerTitle : (isset ( $this->configuracion ) ? $this->configuracion->variables ( "defaultHeaderTitle" ) : "");
 $extraMeta = isset ( $extraMeta ) ? $extraMeta : "";
 $publi = ($this->configuracion->variables ( "publicidad" ) == "Si");
+$isFacebook = isset ( $isFacebook );
 ?>
 <!doctype html>
 <html lang="es">
@@ -47,7 +48,7 @@ $publi = ($this->configuracion->variables ( "publicidad" ) == "Si");
 </script>
 </head>
 <body>
-	<div id="ieMessage">
+	<div id="ieMessage" style="display: none;">
 		<div class="contenido">
 			El presente Navegador es demasiado obsoleto para desplegar la pagina,
 			y en el caso de ingresar articulos podria causar inconvenientes, se
@@ -57,7 +58,12 @@ $publi = ($this->configuracion->variables ( "publicidad" ) == "Si");
 				Chrome</a><span onclick="$('#ieMessage').hide()">x</span>
 		</div>
 	</div>
-	<header class="header">
+	<header class="header"
+		<?php
+		if ($isFacebook) {
+			print "style='display:none;'";
+		}
+		?>>
 		<div class="logosection">
 			<div class="contenedor">
 				<div class="slogan"></div>

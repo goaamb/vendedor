@@ -1,5 +1,10 @@
 </div>
-<footer class="footer">
+<footer class="footer"
+	<?php
+	if ($isFacebook) {
+		print "style='display:none;'";
+	}
+	?>>
 	<div class="wrapper">
 		<div class="f-l"></div>
 		<div class="f-r">
