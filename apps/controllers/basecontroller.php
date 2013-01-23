@@ -5,6 +5,7 @@ class BaseController extends CI_Controller {
 	private $facebook_url;
 	public $myuser = false;
 	public $predata = array ();
+	public $preheader = array ();
 	public $tipoUbicacion = "dominio";
 	public $dominio = "es";
 	public $pais = false;
@@ -86,9 +87,16 @@ class BaseController extends CI_Controller {
 			$header = array ();
 		}
 		$this->load->model ( "Articulo_Model", "articulo" );
-		$header = array_merge ( array ("logged" => ($this->myuser !== false), "usuario" => $this->myuser, "categorias" => $this->articulo->darCategorias ( $this->input->get ( "categoria" ) ) ), $header );
+		$header = array_merge ( array (
+				"logged" => ($this->myuser !== false),
+				"usuario" => $this->myuser,
+				"categorias" => $this->articulo->darCategorias ( $this->input->get ( "categoria" ) ) 
+		), $header );
 		if ($this->predata) {
 			$data = array_merge ( $data, $this->predata );
+		}
+		if ($this->preheader) {
+			$header = array_merge ( $header, $this->preheader );
 		}
 		
 		$this->view ( "includes/header", $header );
@@ -105,7 +113,7 @@ class BaseController extends CI_Controller {
 			$data = array ();
 		}
 		$this->view ( $view, $data );
-		$this->view ( "includes/footer" );
+		$this->view ( "includes/footer",$header );
 	}
 	public function view($view, $data = null) {
 		if (is_file ( APPPATH . "views/$view" . EXT )) {
@@ -140,7 +148,9 @@ class BaseController extends CI_Controller {
 		}
 	}
 	public function process() {
-		return array ("facebook_url" => $this->facebook_url );
+		return array (
+				"facebook_url" => $this->facebook_url 
+		);
 	}
 }
 

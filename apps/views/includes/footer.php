@@ -1,4 +1,6 @@
-</div>
+<?php
+$isFacebook = isset ( $isFacebook ); 
+?></div>
 <footer class="footer"
 	<?php
 	if ($isFacebook) {

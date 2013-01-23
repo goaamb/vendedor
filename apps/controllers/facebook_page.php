@@ -6,7 +6,7 @@ class Facebook_page extends Articulo {
 		parent::__construct ();
 	}
 	public function index() {
-		$this->predata = array_merge ( $this->predata, array (
+		$this->preheader = array_merge ( $this->preheader, array (
 				"isFacebook" => true 
 		) );
 		parent::nuevo ();
