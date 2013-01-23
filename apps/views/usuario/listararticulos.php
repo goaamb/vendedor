@@ -37,6 +37,8 @@ $npagina = $totalpagina > 0 ? ceil ( $total / $totalpagina ) : 1;
 				
 				?>">
 		<a href="<?=$furl?>" title="<?=$articulo->titulo?>"><span class="imagen" style="background: white url(<?=$imagen?>) no-repeat top right scroll;width:140px;height:<?=$h?>px;"></span></a>
+		<img style="display: none;" src="<?=$imagen?>"
+			alt="<?=$articulo->titulo?>" />
 		<div class="meta">
 			<p>
 				<strong><?=$articulo->precio!=0?formato_moneda($articulo->precio)." \$us":"Preguntar"?></strong>

@@ -9,7 +9,7 @@ $visible = false;
 if ($this->myuser && $this->myuser->estado == "Baneado") {
 	$articulo->terminado = 1;
 }
-$propietario = isset ( $this->myuser )&& is_object ( $this->myuser ) &&  ($this->myuser->tipo == "Administrador" ||( isset ( $articulo->usuario ) && is_object ( $articulo->usuario ) && $this->myuser->id == $articulo->usuario->id));
+$propietario = isset ( $this->myuser ) && is_object ( $this->myuser ) && ($this->myuser->tipo == "Administrador" || (isset ( $articulo->usuario ) && is_object ( $articulo->usuario ) && $this->myuser->id == $articulo->usuario->id));
 $visible = ($visible && $articulo->estado !== "Baneado");
 if ($baneado) {
 	$articulo->terminado = 1;
@@ -48,6 +48,15 @@ if (! $baneado || $visible) {
 	}
 	?>
 				</ul>
+				<?php
+	
+	foreach ( $imagenes as $i => $ima ) {
+		if (is_file ( $file . $ima )) {
+			?><img src="<?=$ruta.$ima?>"
+					alt="<?=$articulo->titulo." - ".($i+1)?>" style="display: none;" /><?php
+		}
+	}
+	?>
 			</div>
 		</div>
 
@@ -70,14 +79,14 @@ if (! $baneado || $visible) {
 				<li><strong>COMBUSTIBLE:</strong>  <?=$articulo->vehiculo->combustible?></li>
 				<li><strong>CAJA:</strong>  <?=$articulo->vehiculo->caja?></li>
 				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li><?php
-		break;
+			break;
 		case "2" :
 			?><li><strong>RAZA:</strong> <?=$articulo->mascota->raza?></li>
 				<li><strong>PEDIGRI:</strong> <?=$articulo->mascota->pedigri?></li>
 				<li><strong>SEXO:</strong> <?=$articulo->mascota->sexo?></li>
 				<li><strong>OBSERVACION:</strong> <?=$articulo->mascota->observacion?></li>
 				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li><?php
-		break;
+			break;
 		case "3" :
 			?><li><strong>Tipo Venta:</strong> <?=$articulo->vivienda->tipo_venta?></li>
 				<li><strong>Dirección:</strong> <?=$articulo->vivienda->direccion?></li>
@@ -85,7 +94,7 @@ if (! $baneado || $visible) {
 				<li><strong>Dormitorios:</strong> <?=$articulo->vivienda->dormitorios?></li>
 				<li><strong>Baños:</strong> <?=$articulo->vivienda->banos?></li>
 				<li><strong>Antigüedad:</strong> <?=$articulo->vivienda->antiguedad?></li><?php
-		break;
+			break;
 	}
 	?>
 			</ul>
