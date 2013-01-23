@@ -47,24 +47,16 @@ $publi = ($this->configuracion->variables ( "publicidad" ) == "Si");
 </script>
 </head>
 <body>
-<?php
-if ($publi) {
-	?>
-	<div class="top-publi">
-		<script type="text/javascript"><!--
-google_ad_client = "ca-pub-1382616588916243";
-/* vendedor-header */
-google_ad_slot = "3474018681";
-google_ad_width = 728;
-google_ad_height = 90;
-//-->
-</script>
-		<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	</div><?php
-}
-?>
+	<div id="ieMessage">
+		<div class="contenido">
+			El presente Navegador es demasiado obsoleto para desplegar la pagina,
+			y en el caso de ingresar articulos podria causar inconvenientes, se
+			recomienda usar: <a href="http://www.mozilla.org/es-ES/firefox/new/">Mozilla
+				Firefox</a> y/o <a
+				href="https://www.google.com/intl/es/chrome/browser/?hl=es">Google
+				Chrome</a><span onclick="$('#ieMessage').hide()">x</span>
+		</div>
+	</div>
 	<header class="header">
 		<div class="logosection">
 			<div class="contenedor">

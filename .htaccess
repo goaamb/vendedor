@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
  Options +FollowSymLinks
 RewriteEngine On
-RewriteBase /tigo/
+RewriteBase /vendedor/
 
 	RewriteCond %{REQUEST_URI} ^kernel.*
     RewriteRule ^(.*)$ /index.php?/$1 [L]

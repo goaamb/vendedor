@@ -316,7 +316,7 @@ form#formPaypalPago.error {
 	border: none;
 }
 
-.ver-mas a,.ver-mas span {
+.ver-mas.paginador a,.ver-mas.paginador span {
 	border: 1px solid #035f8d;
 	padding: 3px 5px;
 	margin: 2px;
@@ -325,15 +325,45 @@ form#formPaypalPago.error {
 	background-color: #F4AA00;
 	color: white;
 	box-shadow: 2px 2px gray;
-	border-radius:3px;
+	border-radius: 3px;
 }
 
-.ver-mas a:hover {
+.ver-mas.paginador a:hover {
 	background-color: transparent;
 	border-color: #F4AA00;
 	color: #035f8d;
 }
 
-.ver-mas span {
+.ver-mas.paginador span {
 	border: none;
+}
+
+#ieMessage {
+	position: relative;
+	width: 912px;
+	margin: auto;
+	display: none;
+	z-index: 99;
+}
+
+#ieMessage .contenido {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: #F4AA00;
+	width: 872px;
+	padding: 20px;
+	color: white;
+	font-weight: bold;
+	font-size: 2em;
+	z-index: 99;
+}
+
+#ieMessage .contenido span {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	border: 1px solid white;
+	cursor: pointer;
+	padding: 5px 7px;
 }

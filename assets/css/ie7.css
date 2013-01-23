@@ -1,2 +1,20 @@
-.formA .con-moneda input[type="text"] {width: 190px; border:0;}
-.formB .d-b {margin-bottom: 15px;}
+.formA .con-moneda input[type="text"] {
+	width: 190px;
+	border: 0;
+}
+
+.formB .d-b {
+	margin-bottom: 15px;
+}
+
+.icon-box a {
+	float: left;
+}
+
+.icon-box a span {
+	display: block;
+}
+
+header.header .inferiorCabecera .search-box {
+	left: 0px;
+}

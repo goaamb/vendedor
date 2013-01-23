@@ -25,8 +25,14 @@ $(document).on("ready", function() {
 		}
 	});
 	verificarOrdenamiento();
-
+	verificarNavegador();
 });
+
+function verificarNavegador() {
+	if (G.nav.isIE && G.nav.version < 7) {
+		$("#ieMessage").show();
+	}
+}
 
 function focusCriterio() {
 	var c = $("input[name='criterio']");

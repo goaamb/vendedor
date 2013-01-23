@@ -63,7 +63,7 @@ $npagina = $totalpagina > 0 ? ceil ( $total / $totalpagina ) : 1;
 			style="display: none;"><?=traducir("Ir al primer artículo")?></a>
 	</p><?php
 		} else {
-			?><p class="ver-mas"><?php
+			?><p class="ver-mas paginador"><?php
 			if ($npagina > 1) {
 				$inicio = 1;
 				$fin = 10;
