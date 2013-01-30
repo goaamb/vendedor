@@ -140,7 +140,7 @@ form .line .fleft label {
 	float: left;
 }
 
-#precio-cantidad-box .durac input.texto,#destino-envios .durac input.texto
+#precio-cantidad-box .durac input.texto,#destino-envios .durac input.texto,#destino-envios .durac select.texto
 	{
 	float: right;
 	text-align: right;

@@ -435,16 +435,16 @@ class Articulo extends BaseController {
 				$result .= "  Error fatal en la línea $errline en el archivo $errfile";
 				$result .= ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
 				$result .= "Abortando...<br />\n";
-			break;
+				break;
 			case E_USER_WARNING :
 				$result .= "<b>Mi WARNING</b> [$errno] $errstr<br />\n";
-			break;
+				break;
 			case E_USER_NOTICE :
 				$result .= "<b>Mi NOTICE</b> [$errno] $errstr<br />\n";
-			break;
+				break;
 			default :
 				$result .= "Tipo de error desconocido: [$errno] $errstr<br />\n";
-			break;
+				break;
 		}
 		print json_encode ( array (
 				"error" => $result 
@@ -627,10 +627,10 @@ class Articulo extends BaseController {
 								}
 							}
 						}
-					break;
+						break;
 					case "rechazar" :
 						$res = $this->articulo->rechazarOferta ( $oferta, $articulo );
-					break;
+						break;
 				}
 				if ($json) {
 					$this->output->set_output ( json_encode ( array (
@@ -663,7 +663,7 @@ class Articulo extends BaseController {
 				if ($extra) {
 					$datos ["extra"] = intval ( $extra );
 				}
-			break;
+				break;
 			case "ofertas" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
@@ -675,22 +675,22 @@ class Articulo extends BaseController {
 				if ($this->myuser && $datos ["articulo"]->usuario == $this->myuser->id) {
 					$this->articulo->activarOfertasVistos ( $id );
 				}
-			break;
+				break;
 			case "ultimaOferta" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
 				$datos ["oferta"] = $this->articulo->ultimaOferta ( $id, $this->myuser->id );
-			break;
+				break;
 			case "mensaje" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
 				$datos ["receptor"] = $this->usuario->darUsuarioXId ( $datos ["articulo"]->usuario );
-			break;
+				break;
 			case "ultimaPuja" :
 				$this->load->model ( "articulo_model", "articulo" );
 				$datos ["articulo"] = $this->articulo->darArticulo ( $id );
 				$datos ["oferta"] = $this->articulo->mayorOferta ( $id );
-			break;
+				break;
 		}
 		parent::modal ( $modal, $datos );
 	}
@@ -744,10 +744,10 @@ class Articulo extends BaseController {
 			switch ($c) {
 				case 1 :
 					$json ["exito"] = $o;
-				break;
+					break;
 				default :
 					$json ["error"] = "Llego al maximo de ofertas permitido.";
-				break;
+					break;
 			}
 		}
 		$this->output->set_output ( json_encode ( $json ) );
@@ -873,17 +873,17 @@ class Articulo extends BaseController {
 				switch ($data ["padre"]) {
 					case "1" :
 						$descripcion = "MARCA:{$articulo->vehiculo->marca}; MODELO:{$articulo->vehiculo->modelo}; TIPO:{$articulo->vehiculo->tipo}; KILOMETRAJE:{$articulo->vehiculo->kilometraje}; CILINDRADA:{$articulo->vehiculo->cilindrada}; COMBUSTIBLE:{$articulo->vehiculo->combustible}; CAJA:{$articulo->vehiculo->caja}; CONTACTAR CON:{$articulo->contactar_con}";
-					break;
+						break;
 					
 					case "2" :
 						$descripcion = "Raza:{$articulo->mascota->raza}; Pedigri:{$articulo->mascota->pedigri}; Sexo:{$articulo->mascota->sexo}; CONTACTAR CON:{$articulo->contactar_con}";
-					break;
+						break;
 					case "3" :
 						;
-					break;
+						break;
 					default :
 						$descripcion = "CONTACTAR CON:{$articulo->contactar_con}";
-					break;
+						break;
 				}
 				$header ["extraMeta"] .= "<meta property='og:description' content='" . substr ( str_replace ( "\n", " ", strip_tags ( $descripcion ) ), 0, 150 ) . "'/>";
 			}
@@ -994,13 +994,14 @@ class Articulo extends BaseController {
 		switch ($this->input->post ( "__accion" )) {
 			case "ingresar" :
 				$data = array_merge ( $data, $this->post_ingresar () );
-			break;
+				break;
 			case "modificar" :
 				if ($this->myuser) {
 					$data = array_merge ( $data, $this->post_modificar () );
 				}
-			break;
+				break;
 		}
+		$data ["ciudades"] = $this->locacion->listarCiudades ( "BOL" );
 		$cats = $this->categoria->darCategoriasXNivel ( 1 );
 		$retcat = $this->parseCategories ( $cats );
 		if ($this->input->post ( "categoria" )) {
@@ -1026,19 +1027,19 @@ class Articulo extends BaseController {
 					switch ($c) {
 						case 1 :
 							$errores ["exito"] = true;
-						break;
+							break;
 						case 2 :
 							$errores ["ofertaError"] = "El articulo ya no se encuentra a la venta.";
-						break;
+							break;
 						case 3 :
 							$errores ["ofertaError"] = "Tu puja no puede ser menor a la que ya ofertaste antes.";
-						break;
+							break;
 						case 0 :
 							$errores ["ofertaError"] = "No alcanzo el Monto Minimo.";
-						break;
+							break;
 						default :
 							$errores ["ofertaError"] = "Ocurrio un error vuelva a intentarlo mas tarde.";
-						break;
+							break;
 					}
 				} else {
 					$errores ["ofertaError"] = "El monto debe ser mayor a 0.";
@@ -1126,16 +1127,16 @@ class Articulo extends BaseController {
 							}
 						}
 						redirect ( "product/$articulo->id-" . normalizarTexto ( $articulo->titulo ) . "-send", "refresh" );
-					break;
+						break;
 					case 2 :
 						$errores ["ofertaError"] = "El articulo ya no se encuentra a la venta.";
-					break;
+						break;
 					case 3 :
 						$errores ["ofertaError"] = "El debe colocar un monto mayor a su ultima oferta.";
-					break;
+						break;
 					default :
 						$errores ["ofertaError"] = "Llego al maximo de ofertas permitido.";
-					break;
+						break;
 				}
 			} else {
 				$errores ["ofertaError"] = "El monto debe ser mayor a 0.";
@@ -1206,7 +1207,7 @@ class Articulo extends BaseController {
 						}
 					}
 					$imagenes = implode ( ",", $imagenes );
-				break;
+					break;
 			}
 			$padre = $this->categoria->darArbolCategoria ( $this->articulo->categoria, $this->idioma->language->id );
 			$objeto = new stdClass ();
@@ -1221,14 +1222,14 @@ class Articulo extends BaseController {
 					$objeto->cilindrada = $this->input->post ( "cilindrada" );
 					$objeto->combustible = $this->input->post ( "combustible" );
 					$objeto->caja = $this->input->post ( "caja" );
-				break;
+					break;
 				case 2 :
 					$objeto->raza = $this->input->post ( "raza" );
 					$objeto->pedigri = $this->input->post ( "pedigri" );
 					$objeto->sexo = $this->input->post ( "sexo" );
 					$objeto->observacion = $this->input->post ( "observacion" );
 					$mascota = true;
-				break;
+					break;
 				case 3 :
 					$objeto->tipo_venta = $this->input->post ( "tipo_venta" );
 					$objeto->direccion = $this->input->post ( "direccion" );
@@ -1237,10 +1238,10 @@ class Articulo extends BaseController {
 					$objeto->banos = $this->input->post ( "banos" );
 					$objeto->antiguedad = $this->input->post ( "antiguedad" );
 					$vivienda = true;
-				break;
+					break;
 				default :
 					;
-				break;
+					break;
 			}
 			$this->articulo->foto = $imagenes;
 			$this->articulo->precio = $this->input->post ( "precio-oferta" );

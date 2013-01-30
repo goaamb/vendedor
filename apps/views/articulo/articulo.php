@@ -78,14 +78,16 @@ if (! $baneado || $visible) {
 				<li><strong>CILINDRADA:</strong>  <?=$articulo->vehiculo->cilindrada?></li>
 				<li><strong>COMBUSTIBLE:</strong>  <?=$articulo->vehiculo->combustible?></li>
 				<li><strong>CAJA:</strong>  <?=$articulo->vehiculo->caja?></li>
-				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li><?php
+				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li>
+				<li><strong>CIUDAD:</strong> <?=$articulo->ciudad->nombre?></li><?php
 			break;
 		case "2" :
 			?><li><strong>RAZA:</strong> <?=$articulo->mascota->raza?></li>
 				<li><strong>PEDIGRI:</strong> <?=$articulo->mascota->pedigri?></li>
 				<li><strong>SEXO:</strong> <?=$articulo->mascota->sexo?></li>
 				<li><strong>OBSERVACION:</strong> <?=$articulo->mascota->observacion?></li>
-				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li><?php
+				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li>
+				<li><strong>CIUDAD:</strong> <?=$articulo->ciudad->nombre?></li><?php
 			break;
 		case "3" :
 			?><li><strong>Tipo Venta:</strong> <?=$articulo->vivienda->tipo_venta?></li>
@@ -93,7 +95,9 @@ if (! $baneado || $visible) {
 				<li><strong>Superficie:</strong> <?=$articulo->vivienda->superficie?></li>
 				<li><strong>Dormitorios:</strong> <?=$articulo->vivienda->dormitorios?></li>
 				<li><strong>Baños:</strong> <?=$articulo->vivienda->banos?></li>
-				<li><strong>Antigüedad:</strong> <?=$articulo->vivienda->antiguedad?></li><?php
+				<li><strong>Antigüedad:</strong> <?=$articulo->vivienda->antiguedad?></li>
+				<li><strong>CONTACTAR CON:</strong> <?=$articulo->contactar_con?></li>
+				<li><strong>CIUDAD:</strong> <?=$articulo->ciudad->nombre?></li><?php
 			break;
 	}
 	?>

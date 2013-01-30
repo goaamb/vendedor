@@ -262,7 +262,16 @@ CKEDITOR.config.toolbar =
 					</p>
 					<span class="errorTxt" id="contactoError"></span>
 					<div style="clear: both;"></div>
-					<input type="hidden" name="ciudad" value="196" />
+					<p class="durac">
+						<label>Ciudad:</label> <select name="ciudad" class="t-r texto"><?php
+				foreach ( $ciudades as $ciudad ) {
+					?><option value="<?=$ciudad->id?>"
+								<?=my_set_select("ciudad",$ciudad->id,$ciudad->id==196)?>><?=$ciudad->nombre?></option><?php
+				}
+				?></select>
+					</p>
+					<span class="errorTxt" id="ciudadError"></span>
+					<div style="clear: both;"></div>
 
 					<div id="vehiculoCaracteristicas" style="<?php
 				if (! isset ( $padre ) || (isset ( $padre ) && $padre !== "1")) {

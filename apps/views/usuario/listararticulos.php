@@ -47,7 +47,8 @@ $npagina = $totalpagina > 0 ? ceil ( $total / $totalpagina ) : 1;
 		<ul>
 			<li><h2>
 					<a href="<?=$furl?>" title="<?=$articulo->titulo?>"><?=$articulo->titulo?></a>
-				</h2></li>
+				</h2>
+				<i><?=$articulo->ciudad_nombre?></i></li>
 		</ul>
 	</div><?php
 			}
