@@ -155,8 +155,18 @@ $isFacebook = isset ( $isFacebook );
 						$unico = (count ( $categorias ) == 1);
 						foreach ( $categorias as $k => $categoria ) {
 							$d = $categoria ["datos"];
-							?><option value="<?=$k?>"
+							if (isset ( $categoria ["hijos"] ) && is_array ( $categoria ["hijos"] ) && count ( $categoria ["hijos"] ) > 0) {
+								?><optgroup label="<?=$d["nombre"];?> (<?=$d["cantidad"]?>)"><?php
+								foreach ( $categoria ["hijos"] as $k => $categoria ) {
+									$d = $categoria ["datos"];
+									?><option value="<?=$k?>"
+									<?php if(isset($_GET["categoria"]) && $_GET["categoria"]==$k){print "selected='selected'";}?>><?=$d["nombre"];?> (<?=$d["cantidad"]?>)</option><?php
+								}
+								?></optgroup><?php
+							} else {
+								?><option value="<?=$k?>"
 								<?php if(isset($_GET["categoria"]) && $_GET["categoria"]==$k){print "selected='selected'";}?>><?=$d["nombre"];?> (<?=$d["cantidad"]?>)</option><?php
+							}
 						}
 						?></select><?php
 					}

@@ -1006,7 +1006,8 @@ class Home extends BaseController {
 					"pagina" => $pagina 
 			) );
 			$this->loadGUI ( "home", $data, array (
-					"categorias" => $data ["categorias"] 
+					"categorias" => $data ["categorias"],
+					"ciudades" => $data ["ciudades"] 
 			) );
 		} else {
 			$cats = $this->categoria->darCategoriasXNivel ( 1 );

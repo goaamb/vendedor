@@ -358,81 +358,6 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		$x->iva = $iva;
 		return $x;
 	}
-	private function darCategorias2($categoria = false, $categorias = false, $dosniveles = false) {
-		$CI = &get_instance ();
-		$CI->load->model ( "Categoria_model", "categoria" );
-		$ret = array ();
-		$cantidades = array ();
-		if ($categorias && is_array ( $categorias ) && count ( $categorias ) > 0) {
-			$cs = array ();
-			foreach ( $categorias as $c ) {
-				$cantidades [$c->categoria] = $c->cantidad;
-			}
-		}
-		$arboles = Array ();
-		$contados = array ();
-		$cR = array ();
-		foreach ( $cantidades as $id => $c ) {
-			$arbol = $this->darPadres ( $id, $contados );
-			foreach ( $arbol as $i => $v ) {
-				$a = $arbol [$i];
-				if ($i == 0) {
-					if (! isset ( $cR [$a ["id"]] )) {
-						$ret [$a ["id"]] = array (
-								"datos" => array (
-										"nombre" => $a ["nombre"],
-										"cantidad" => $a ["cantidad"],
-										"url" => $a ["url"],
-										"nivel" => $a ["nivel"],
-										"padre" => $a ["padre"] 
-								),
-								"hijos" => array () 
-						);
-						$cR [$a ["id"]] = &$ret [$a ["id"]];
-					}
-				} else {
-					if (isset ( $cR [$a ["padre"]] )) {
-						if (! isset ( $cR [$a ["padre"]] ["hijos"] [$a ["id"]] )) {
-							$cR [$a ["padre"]] ["hijos"] [$a ["id"]] = array (
-									"datos" => array (
-											"nombre" => $a ["nombre"],
-											"cantidad" => $a ["cantidad"],
-											"url" => $a ["url"],
-											"nivel" => $a ["nivel"],
-											"padre" => $a ["padre"] 
-									),
-									"hijos" => array () 
-							);
-							$cR [$a ["id"]] = &$cR [$a ["padre"]] ["hijos"] [$a ["id"]];
-						}
-					}
-				}
-			}
-		}
-		$this->calcularCantidades ( $ret, $cantidades );
-		if ($categoria) {
-			if (isset ( $ret [$categoria] )) {
-				foreach ( $ret [$categoria] ["hijos"] as &$r ) {
-					$r ["hijos"] = array ();
-				}
-			} else {
-				$ret = ($this->encuentraHijo ( $ret, $categoria ));
-				$ret [$categoria] ["datos"] ["nivel"] = 1;
-			}
-		} else if ($dosniveles) {
-			foreach ( $ret as $c => &$v ) {
-				foreach ( $v ["hijos"] as &$vv ) {
-					$vv ["hijos"] = array ();
-				}
-			}
-		} else {
-			foreach ( $ret as $c => &$v ) {
-				$v ["hijos"] = array ();
-			}
-		}
-		
-		return $ret;
-	}
 	private function ordenarArbol(&$arbol) {
 		if ($arbol && is_array ( $arbol ) && count ( $arbol ) > 0) {
 			$keys = array_keys ( $arbol );
@@ -582,6 +507,82 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 				inner join ciudad c on c.id=a.ciudad 
 				group by c.id
 				order by c.nombre" )->result ();
+	}
+	private function darCategorias2($categoria = false, $categorias = false, $dosniveles = false) {
+		$CI = &get_instance ();
+		$CI->load->model ( "Categoria_model", "categoria" );
+		$ret = array ();
+		$cantidades = array ();
+		if ($categorias && is_array ( $categorias ) && count ( $categorias ) > 0) {
+			$cs = array ();
+			foreach ( $categorias as $c ) {
+				$cantidades [$c->categoria] = $c->cantidad;
+			}
+		}
+		$arboles = Array ();
+		$contados = array ();
+		$cR = array ();
+		foreach ( $cantidades as $id => $c ) {
+			$arbol = $this->darPadres ( $id, $contados );
+			
+			foreach ( $arbol as $i => $v ) {
+				$a = $arbol [$i];
+				if ($i == 0) {
+					if (! isset ( $cR [$a ["id"]] )) {
+						$ret [$a ["id"]] = array (
+								"datos" => array (
+										"nombre" => $a ["nombre"],
+										"cantidad" => $a ["cantidad"],
+										"url" => $a ["url"],
+										"nivel" => $a ["nivel"],
+										"padre" => $a ["padre"] 
+								),
+								"hijos" => array () 
+						);
+						$cR [$a ["id"]] = &$ret [$a ["id"]];
+					}
+				} else {
+					if (isset ( $cR [$a ["padre"]] )) {
+						if (! isset ( $cR [$a ["padre"]] ["hijos"] [$a ["id"]] )) {
+							$cR [$a ["padre"]] ["hijos"] [$a ["id"]] = array (
+									"datos" => array (
+											"nombre" => $a ["nombre"],
+											"cantidad" => $a ["cantidad"],
+											"url" => $a ["url"],
+											"nivel" => $a ["nivel"],
+											"padre" => $a ["padre"] 
+									),
+									"hijos" => array () 
+							);
+							$cR [$a ["id"]] = &$cR [$a ["padre"]] ["hijos"] [$a ["id"]];
+						}
+					}
+				}
+			}
+		}
+		$this->calcularCantidades ( $ret, $cantidades );
+
+		if ($categoria) {
+			if (isset ( $ret [$categoria] )) {
+				foreach ( $ret [$categoria] ["hijos"] as &$r ) {
+					$r ["hijos"] = array ();
+				}
+			} else {
+				$ret = ($this->encuentraHijo ( $ret, $categoria ));
+				$ret [$categoria] ["datos"] ["nivel"] = 1;
+			}
+		} else if ($dosniveles) {
+			foreach ( $ret as $c => &$v ) {
+				foreach ( $v ["hijos"] as &$vv ) {
+					$vv ["hijos"] = array ();
+				}
+			}
+		} else {
+			foreach ( $ret as $c => &$v ) {
+				$v ["hijos"] = array ();
+			}
+		}
+		return $ret;
 	}
 	public function darCategorias($categoria = false) {
 		$CI = &get_instance ();
