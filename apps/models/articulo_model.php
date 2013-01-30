@@ -576,6 +576,13 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 		}
 		return $ret;
 	}
+	public function darCiudades() {
+		return $this->db->query ( "select c.id,c.nombre,count(a.id) cantidad 
+				from articulo a 
+				inner join ciudad c on c.id=a.ciudad 
+				group by c.id
+				order by c.nombre" )->result ();
+	}
 	public function darCategorias($categoria = false) {
 		$CI = &get_instance ();
 		$CI->load->model ( "Categoria_model", "categoria" );
@@ -1674,11 +1681,8 @@ ORDER BY $orderby $asc ";
 		// print ($this->db->last_query ()) ;
 		if ($x) {
 			list ( $data ["total"], $data ["articulos"], $categorias, $data ["ciudades"] ) = $x;
-			if (trim ( $criterio ) !== "" || $usuario) {
-				$data ["categorias"] = $this->darCategorias2 ( $categoria, $categorias, true );
-			} else {
-				$data ["categorias"] = $this->darCategorias ( $categoria );
-			}
+			$data ["categorias"] = $this->darCategorias2 ( $categoria, $categorias, true );
+			
 			$data ["categorias"] = $this->ordenarArbol ( $data ["categorias"] );
 			$this->procesarArticulos ( $data ["articulos"] );
 		}
@@ -2743,6 +2747,12 @@ ORDER BY articulo.titulo desc";
 		return false;
 	}
 	public function prepararConsultaArticuloXCriterioFecha($criterio = false, $tipo = false, $orden = false, $ubicacion = false, $categoria = false, $idioma = false, $usuario = false) {
+		$CI = &get_instance ();
+		$ciudad = $CI->input->get ( "ciudad" );
+		$cextra = "";
+		if ($ciudad) {
+			$cextra = " and ciudad.id='$ciudad'";
+		}
 		if (trim ( $orden ) === "" && $usuario) {
 			$orden = "finaliza";
 		}
@@ -2815,7 +2825,7 @@ ORDER BY articulo.titulo desc";
 			$query = "SELECT articulo.id,articulo.titulo,$precio,articulo.fecha_registro,articulo.usuario,articulo.foto,articulo.ciudad, ciudad.nombre as ciudad_nombre, articulo.categoria as categoria $adicionalSelect
 			FROM (articulo)
 			LEFT JOIN usuario ON usuario.id=articulo.usuario and usuario.estado<>'Baneado'
-			INNER JOIN ciudad ON ciudad.id=articulo.ciudad
+			INNER JOIN ciudad ON ciudad.id=articulo.ciudad $cextra
 			WHERE articulo.estado<>'Finalizado'
 			$extra
 			$orderby";
@@ -2839,7 +2849,7 @@ ORDER BY articulo.titulo desc";
 				$query = "select categoria,count(categoria)as cantidad from ($rquery) as s group by categoria";
 				$res = $this->db->query ( $query );
 				$categorias = $this->darResuts ( $res );
-				$query = "select ciudad,count(ciudad)as cantidad from ($rquery) as s group by ciudad";
+				$query = "select c.id,c.nombre,count(s.ciudad)as cantidad from ($rquery) as s inner join ciudad c on c.id=s.ciudad group by c.id";
 				$res = $this->db->query ( $query );
 				$ciudades = $this->darResuts ( $res );
 				return array (

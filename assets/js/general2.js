@@ -671,6 +671,10 @@ function cambiarBusquedaCategoria(categoria) {
 	var url = cambiarURLGET("categoria", categoria, profile, false, true);
 	return cambiarURLGET("pagina", "1", profile, url);
 }
+function cambiarBusquedaCiudad(ciudad) {
+	var url = cambiarURLGET("ciudad", ciudad, profile, false, true);
+	return cambiarURLGET("pagina", "1", profile, url);
+}
 
 function resetBusqueda() {
 	cambiarURLGET("criterio", "");

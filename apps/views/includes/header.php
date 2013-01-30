@@ -160,6 +160,21 @@ $isFacebook = isset ( $isFacebook );
 						}
 						?></select><?php
 					}
+					if (isset ( $ciudades ) && is_array ( $ciudades ) && count ( $ciudades ) > 0) {
+						if (! isset ( $seccion )) {
+							$seccion = "city";
+						}
+						$seccion .= "/";
+						$keys = array_keys ( $ciudades );
+						?> <select onchange="cambiarBusquedaCiudad(this.value)"><option
+								value="">Todas las Ciudades</option> <?php
+						$unico = (count ( $ciudades ) == 1);
+						foreach ( $ciudades as $ciudad ) {
+							?><option value="<?=$ciudad->id?>"
+								<?php if(isset($_GET["ciudad"]) && $_GET["ciudad"]==$ciudad->id){print "selected='selected'";}?>><?=$ciudad->nombre;?> (<?=$ciudad->cantidad?>)</option><?php
+						}
+						?></select><?php
+					}
 					?>
 						<input type="text" class="texto OwnTextBox" name="criterio"
 							data-text="<?=traducir("Escriba aqui");?>"

@@ -90,7 +90,8 @@ class BaseController extends CI_Controller {
 		$header = array_merge ( array (
 				"logged" => ($this->myuser !== false),
 				"usuario" => $this->myuser,
-				"categorias" => $this->articulo->darCategorias ( $this->input->get ( "categoria" ) ) 
+				"categorias" => $this->articulo->darCategorias ( $this->input->get ( "categoria" ) ),
+				"ciudades" => $this->articulo->darCiudades () 
 		), $header );
 		if ($this->predata) {
 			$data = array_merge ( $data, $this->predata );
@@ -113,7 +114,7 @@ class BaseController extends CI_Controller {
 			$data = array ();
 		}
 		$this->view ( $view, $data );
-		$this->view ( "includes/footer",$header );
+		$this->view ( "includes/footer", $header );
 	}
 	public function view($view, $data = null) {
 		if (is_file ( APPPATH . "views/$view" . EXT )) {
