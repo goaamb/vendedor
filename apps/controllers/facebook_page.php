@@ -16,6 +16,8 @@ class Facebook_page extends Articulo {
 		) );
 		if ($this->iLike ()) {
 			parent::nuevo ();
+		} else {
+			$this->loadGUI ( "no_gusta", $this->preheader );
 		}
 	}
 	private function checkPermission() {

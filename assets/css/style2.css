@@ -367,3 +367,8 @@ form#formPaypalPago.error {
 	cursor: pointer;
 	padding: 5px 7px;
 }
+
+.no_gusta {
+	background: transparent url(../images/html/fondo_no_gusta.jpg) center
+		center scroll;
+}
