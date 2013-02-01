@@ -1152,7 +1152,10 @@ class Articulo extends BaseController {
 			redirect ( "/" );
 			return array ();
 		}
-		$isFacebook = $this->mysession->userdata ( "facebook" );
+		if (! isset ( $this->facebook )) {
+			$this->load->library ( "facebook" );
+		}
+		$isFacebook = $this->facebook->getUser ();
 		$errores = array ();
 		$a = $this->articulo->darArticulo ( $this->input->post ( "id" ) );
 		$this->load->library ( 'form_validation' );
@@ -1189,6 +1192,7 @@ class Articulo extends BaseController {
 			$this->articulo->categoria = $this->input->post ( "categoria" );
 			$this->articulo->contactar_con = $this->input->post ( "contactar_con" );
 			$this->articulo->ciudad = $this->input->post ( "ciudad" );
+			$this->articulo->facebook = $isFacebook ? "Si" : "No";
 			$modo = $this->input->post ( "modo" );
 			$imagenes = $this->input->post ( "imagenes" );
 			switch ($modo) {
@@ -1254,7 +1258,7 @@ class Articulo extends BaseController {
 			}
 			if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
 				if ($isFacebook) {
-					redirect ( "facebook_page/product/$this->articulo->id" );
+					redirect ( "facebook_page/product/{$this->articulo->id}" );
 				} else {
 					$seccion = "nuevo";
 					if ($modificar) {

@@ -12,6 +12,7 @@ class Articulo_model extends CI_Model {
 	public $estado;
 	public $contactar_con;
 	public $ciudad;
+	public $facebook;
 	public static $formas_pago = array (
 			1 => "Otros",
 			2 => "Pago contra reembolso",
@@ -561,7 +562,7 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 			}
 		}
 		$this->calcularCantidades ( $ret, $cantidades );
-
+		
 		if ($categoria) {
 			if (isset ( $ret [$categoria] )) {
 				foreach ( $ret [$categoria] ["hijos"] as &$r ) {
@@ -2572,7 +2573,8 @@ ORDER BY articulo.titulo desc";
 				"precio" => $this->precio,
 				"moneda" => $this->moneda,
 				"contactar_con" => $this->contactar_con,
-				"ciudad" => $this->ciudad 
+				"ciudad" => $this->ciudad,
+				"facebook" => $this->facebook 
 		);
 		if ($modificar) {
 			$this->db->where ( array (

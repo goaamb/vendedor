@@ -21,6 +21,9 @@ class Facebook_page extends Articulo {
 		}
 	}
 	public function product($id) {
+		$this->preheader = array_merge ( $this->preheader, array(
+				"isFacebook" => $this->mysession->userdata ( "facebook" ) 
+		) );
 		$data = array (
 				"articulo" => $this->articulo->darArticulo ( $id ) 
 		);

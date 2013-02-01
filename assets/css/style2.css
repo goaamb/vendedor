@@ -386,10 +386,12 @@ form#formPaypalPago.error {
 #facebookProduct {
 	background-image: url(../images/html/fondo_facebook_item.jpg);
 	position: relative;
+	width: 780px;
+	height: 780px;
 }
 
 #facebookProduct .contenido {
-	top: 230px;
+	top: 190px;
 	text-align: center;
 	display: block;
 	font-size: 3em;
