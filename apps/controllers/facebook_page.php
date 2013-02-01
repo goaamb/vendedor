@@ -14,20 +14,29 @@ class Facebook_page extends Articulo {
 		$this->preheader = array_merge ( $this->preheader, array (
 				"isFacebook" => $this->mysession->userdata ( "facebook" ) 
 		) );
-		if ($this->iLike ()) {
-			parent::nuevo ();
+		if ($this->checkPermission ()) {
+			if ($this->iLike ()) {
+				parent::nuevo ();
+			} else {
+				$this->loadGUI ( "no_gusta", $this->preheader );
+			}
 		} else {
-			$this->loadGUI ( "no_gusta", $this->preheader );
+			$this->loadGUI ( "permiso", array (
+					"loginUrl" => $this->facebook->getLoginUrl ( array (
+							'scope' => 'user_about_me,user_birthday,user_photos,publish_actions,email,publish_stream,share_item',
+							'redirect_uri' => "http://www.facebook.com/clasificados.vendedor.bolivia/?sk=app_108831492599921" 
+					) ) 
+			), $this->preheader );
 		}
 	}
 	public function product($id) {
-		$this->preheader = array_merge ( $this->preheader, array(
+		$this->preheader = array_merge ( $this->preheader, array (
 				"isFacebook" => $this->mysession->userdata ( "facebook" ) 
 		) );
 		$data = array (
 				"articulo" => $this->articulo->darArticulo ( $id ) 
 		);
-		$this->loadGUI("articulo/facebook_item",$data);
+		$this->loadGUI ( "articulo/facebook_item", $data );
 	}
 	private function checkPermission() {
 		$permit = true;
