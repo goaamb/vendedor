@@ -47,7 +47,7 @@ $isFacebook = isset ( $isFacebook );
 	});
 </script>
 </head>
-<body>
+<body <?=$isFacebook?"id='isFacebook'":""?>>
 	<div id="ieMessage" style="display: none;">
 		<div class="contenido">
 			El presente Navegador es demasiado obsoleto para desplegar la pagina,

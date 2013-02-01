@@ -1152,6 +1152,7 @@ class Articulo extends BaseController {
 			redirect ( "/" );
 			return array ();
 		}
+		$isFacebook = $this->mysession->userdata ( "facebook" );
 		$errores = array ();
 		$a = $this->articulo->darArticulo ( $this->input->post ( "id" ) );
 		$this->load->library ( 'form_validation' );
@@ -1252,11 +1253,15 @@ class Articulo extends BaseController {
 				$this->articulo->estado = "A la venta";
 			}
 			if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
-				$seccion = "nuevo";
-				if ($modificar) {
-					$seccion = "actualizado";
+				if ($isFacebook) {
+					redirect ( "facebook_page/product/$this->articulo->id" );
+				} else {
+					$seccion = "nuevo";
+					if ($modificar) {
+						$seccion = "actualizado";
+					}
+					redirect ( "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) . "/$seccion" );
 				}
-				redirect ( "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) . "/$seccion" );
 			}
 		}
 		return $errores;

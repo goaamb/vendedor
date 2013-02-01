@@ -20,6 +20,12 @@ class Facebook_page extends Articulo {
 			$this->loadGUI ( "no_gusta", $this->preheader );
 		}
 	}
+	public function product($id) {
+		$data = array (
+				"articulo" => $this->articulo->darArticulo ( $id ) 
+		);
+		$this->loadGUI("articulo/facebook_item",$data);
+	}
 	private function checkPermission() {
 		$permit = true;
 		try {

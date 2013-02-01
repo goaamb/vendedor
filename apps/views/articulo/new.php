@@ -451,8 +451,14 @@ CKEDITOR.config.toolbar =
 				?>
 					<input type="hidden" name="modo" value="1" /> <input type="submit"
 					value="<?=($modificar?"Actualizar":"Poner a la venta");?>"
-					class="bt" /> <span class="mhm">o</span> <a href=""
-					title="cancelar e ir al Inicio">cancelar</a>
+					class="bt" /> 
+					<?php
+					if (! isset ( $isFacebook ) || (isset ( $isFacebook ) && ! $isFacebook)) {
+						?><span class="mhm">o</span> <a href=""
+					title="cancelar e ir al Inicio">cancelar</a><?php
+					}
+					?>
+					
 			</div><?=form_close()?>
 </div>
 
