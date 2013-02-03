@@ -46,7 +46,8 @@ header.header div.logosection div.logo {
 		center center;
 	z-index: 1;
 	opacity: 0.57;
-	filter: alpha(opacity =                                             57);
+	filter: alpha(opacity =                                                       57
+		);
 }
 
 header.header .user-box {
@@ -67,11 +68,12 @@ header.header div.logosection div.barrasuperiorfondo {
 	background-color: white;
 	opacity: 0.64;
 	behavior: url(PIE.htc);
-	filter: alpha(opacity =                                                 64);
+	filter: alpha(opacity =                                                         
+		 64);
 	background: -webkit-linear-gradient(top, white 0%, #CCC 100%);
 	background: -ms-linear-gradient(top, white 0%, #CCC 100%);
 	background: linear-gradient(to bottom, white 0%, #CCC 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(        
+	filter: progid:DXImageTransform.Microsoft.gradient(             
 		                     startColorstr='#FFFFFF', endColorstr='#CCCCCC',
 		GradientType=0 );
 	top: 0px;
@@ -218,7 +220,7 @@ header.header .user-box {
 	font-size: 1em;
 	line-height: 56px;
 	opacity: 0.5;
-	filter: alpha(opacity =                                         50);
+	filter: alpha(opacity =                                                   50);
 }
 
 header.header .user-box .avatar {
@@ -274,9 +276,10 @@ header.header .menu .fondo {
 	background: -ms-linear-gradient(top, white 0%, #CCC 100%);
 	background: linear-gradient(to bottom, white 0%, #CCC 100%);
 	background: -webkit-linear-gradient(top, white 0%, #CCC 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(                    startColorstr='#FFFFFF',
-		endColorstr='#CCCCCC', GradientType=0 )
-		alpha(opacity =                                       64);
+	filter: progid:DXImageTransform.Microsoft.gradient(   
+		                     startColorstr='#FFFFFF', endColorstr='#CCCCCC',
+		GradientType=0 )
+		alpha(opacity =                                                 64);
 	background: -ms-linear-gradient(top, white 0%, #CCC 100%);
 }
 
@@ -1368,7 +1371,7 @@ header.header .menu ul li a {
 	margin-left: 2px;
 	border-radius: 3px;
 	opacity: 0.52;
-	filter: alpha(opacity =                             52);
+	filter: alpha(opacity =                                       52);
 	margin-top: 4px;
 }
 
@@ -1380,7 +1383,10 @@ header.header .menu ul li a:hover {
 .main-col article ul li {
 	float: left;
 	text-align: center;
-	width: 150px;
+	width: 148px;
+	overflow: hidden;
+	padding: 5px 0;
+	height: 90px;
 }
 
 .main-col article ul li img {
@@ -1389,4 +1395,18 @@ header.header .menu ul li a:hover {
 
 .main-col article ul li span {
 	display: block;
+}
+
+.main-col article ul li span.titulo {
+	height: 1.2em;
+	overflow: hidden;
+}
+
+.main-col article.mitad {
+	width: 429px;
+	clear: none;
+}
+
+.main-col article.mitad ul li {
+	width: 143px;
 }

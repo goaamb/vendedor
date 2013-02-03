@@ -411,3 +411,17 @@ form#formPaypalPago.error {
 	position: relative;
 	top: 30px;
 }
+
+.main-col article {
+	clear: both;
+	float: left;
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 10px;
+	background: white;
+	margin-bottom: 10px;
+}
+
+.main-col article h1 {
+	font-size: 2em;
+}
