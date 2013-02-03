@@ -1,5 +1,5 @@
 <?php
-$isFacebook = isset ( $isFacebook ); 
+$isFacebook = isset ( $isFacebook );
 ?></div>
 <footer class="footer"
 	<?php
@@ -11,10 +11,9 @@ $isFacebook = isset ( $isFacebook );
 		<div class="f-l"></div>
 		<div class="f-r">
 			<p>
-				<a href="#" title="Ir al Twitter"><img
-					src="assets/images/ico/ico-tw-24.png" alt="Twiter" /></a> <a
-					href="#" title="Ir al Facebook"><img
-					src="assets/images/ico/ico-fb-24.png" alt="Facebook" /></a>
+				<a href="http://www.facebook.com/clasificados.vendedor.bolivia"
+					title="Ir al Facebook"><img src="assets/images/ico/ico-fb-24.png"
+					alt="Facebook" /></a>
 			</p>
 		</div>
 		<div class="central"></div>

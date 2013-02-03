@@ -167,11 +167,11 @@ class Home extends BaseController {
 							}
 							unset ( $r );
 						}
-						break;
+					break;
 					case "2" :
 						if (isset ( $_FILES ) && isset ( $_FILES ["excel"] ))
 							$emails = $this->importarEmails ( $_FILES ["excel"] );
-						break;
+					break;
 				}
 				/*
 				 * $emails = array ( "goaamb@gmail.com" => "Alvaro Justo Michel
@@ -360,22 +360,22 @@ class Home extends BaseController {
 					switch (strtoupper ( $sexo )) {
 						case "M" :
 							$sexo = "Macho";
-							break;
+						break;
 						case "H" :
 							$sexo = "Hembra";
-							break;
+						break;
 						default :
 							$sexo = "Hembra y Macho";
-							break;
+						break;
 					}
 					$pedigri = $h->getCellByColumnAndRow ( $c + 2, $r )->getValue ();
 					switch (strtoupper ( $pedigri )) {
 						case "SI" :
 							$pedigri = "Si";
-							break;
+						break;
 						default :
 							$pedigri = "No";
-							break;
+						break;
 					}
 					$telefono = $h->getCellByColumnAndRow ( $c + 3, $r )->getValue ();
 					$observacion = $h->getCellByColumnAndRow ( $c + 4, $r )->getValue ();
@@ -454,22 +454,22 @@ class Home extends BaseController {
 					switch (strtolower ( $codigo )) {
 						case "terreno" :
 							$articulo->categoria = 25;
-							break;
+						break;
 						case "propiedad comercial" :
 							$articulo->categoria = 24;
-							break;
+						break;
 						case "oficina" :
 							$articulo->categoria = 26;
-							break;
+						break;
 						case "edificio" :
 							$articulo->categoria = 21;
-							break;
+						break;
 						case "departamento" :
 							$articulo->categoria = 19;
-							break;
+						break;
 						default :
 							$articulo->categoria = 20;
-							break;
+						break;
 					}
 					
 					$articulo->precio = $precio;
@@ -749,23 +749,23 @@ class Home extends BaseController {
 				switch ($tipo) {
 					case "mensaje" :
 						$data ["receptor"] = $this->usuario->darUsuarioXId ( $id );
-						break;
+					break;
 					case "articulo" :
 						$data ["articulo"] = $this->articulo->darArticulo ( $id );
-						break;
+					break;
 					case "usuario" :
 						$data ["usuario"] = $this->usuario->darUsuarioXId ( $id );
-						break;
+					break;
 					case "votos" :
 						$data ["usuario"] = $this->usuario->darUsuarioXId ( $id );
 						$data ["mes1"] = $this->usuario->darVotos ( $id, 1 );
 						$data ["mes6"] = $this->usuario->darVotos ( $id, 6 );
 						$data ["mes12"] = $this->usuario->darVotos ( $id, 12 );
 						$data ["todos"] = $this->usuario->darVotos ( $id );
-						break;
+					break;
 					case "myuser" :
 						$data ["usuario"] = $this->usuario->darUsuarioXId ( $this->myuser->id );
-						break;
+					break;
 					case "articulosComprados" :
 						$this->load->model ( "Paypal_model", "paypal" );
 						$data ["comprador"] = $this->usuario->darUsuarioXId ( $id );
@@ -778,7 +778,7 @@ class Home extends BaseController {
 								$data ["vendedor"] = $this->usuario->darUsuarioXId ( $data ["paquete"]->vendedor );
 							}
 						}
-						break;
+					break;
 					case "articulosVendedor" :
 						$this->load->model ( "Paypal_model", "paypal" );
 						$data ["vendedor"] = $this->usuario->darUsuarioXId ( $id );
@@ -791,7 +791,7 @@ class Home extends BaseController {
 								$data ["comprador"] = $this->usuario->darUsuarioXId ( $data ["paquete"]->comprador );
 							}
 						}
-						break;
+					break;
 					case "paquete" :
 						$this->load->model ( "Paypal_model", "paypal" );
 						$data ["comprador"] = $this->usuario->darUsuarioXId ( $id );
@@ -799,21 +799,21 @@ class Home extends BaseController {
 						if ($data ["paquete"]) {
 							$data ["vendedor"] = $this->usuario->darUsuarioXId ( $data ["paquete"]->vendedor );
 						}
-						break;
+					break;
 					case "comprador" :
 						$data ["comprador"] = $this->usuario->darUsuarioXId ( $id );
 						if ($data ["comprador"]) {
 							$data ["comprador"]->pais = $data ["comprador"]->darPais ();
 							$data ["comprador"]->ciudad = $data ["comprador"]->darCiudad ();
 						}
-						break;
+					break;
 					case "vendedor" :
 						$data ["vendedor"] = $this->usuario->darUsuarioXId ( $id );
 						if ($data ["vendedor"]) {
 							$data ["vendedor"]->pais = $data ["vendedor"]->darPais ();
 							$data ["vendedor"]->ciudad = $data ["vendedor"]->darCiudad ();
 						}
-						break;
+					break;
 					case "facturaDetalle" :
 						$mes = date ( "m" );
 						$anio = date ( "Y" );
@@ -835,7 +835,7 @@ class Home extends BaseController {
 								}
 							}
 						}
-						break;
+					break;
 					case "denunciamensaje" :
 						if ($this->myuser) {
 							$data ['reportador'] = $this->usuario->darUsuarioXId ( $pagos );
@@ -992,7 +992,14 @@ class Home extends BaseController {
 	}
 	public function index($noExiste = false) {
 		parent::index ( true );
-		if (! $noExiste) {
+		if (isset ( $_GET ) && count ( $_GET ) == 0) {
+			$data = array ();
+			$data ["vehiculos"] = $this->articulo->leerVehiculosAleatorio ();
+			$data ["mascotas"] = $this->articulo->leerMascotasAleatorio ();
+			$data ["viviendas"] = $this->articulo->leerViviendasAleatorio ();
+			
+			$this->loadGUI ( "index", $data );
+		} elseif (! $noExiste) {
 			$uri = explode ( "/", uri_string () );
 			$section = array_shift ( $uri );
 			$action = array_shift ( $uri );

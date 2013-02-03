@@ -23,6 +23,30 @@ class Articulo_model extends CI_Model {
 	public function __construct() {
 		parent::__construct ();
 	}
+	public function leerVehiculosAleatorio() {
+		$sql = "select a.id,a.titulo,a.foto,a.precio 
+				from articulo a 
+				inner join vehiculo v on v.articulo=a.id 
+			  order by rand()
+			limit 20";
+		return $this->db->query ( $sql )->result ();
+	}
+	public function leerMascotasAleatorio() {
+		$sql = "select a.id,a.titulo,a.foto,a.precio
+				from articulo a
+				inner join mascota m on m.articulo=a.id
+			  order by rand()
+			limit 10";
+		return $this->db->query ( $sql )->result ();
+	}
+	public function leerViviendasAleatorio() {
+		$sql = "select a.id,a.titulo,a.foto,a.precio
+				from articulo a
+				inner join vivienda v on v.articulo=a.id
+			  order by rand()
+			limit 10";
+		return $this->db->query ( $sql )->result ();
+	}
 	public function listarSeguimientosPorFinalizar($tiempo) {
 		$tiempo = intval ( $tiempo ) * 3600;
 		$sql = "select s.id as seguimiento,u.seudonimo,u.email,a.id,a.titulo from (select id,titulo,
