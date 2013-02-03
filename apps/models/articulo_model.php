@@ -23,6 +23,10 @@ class Articulo_model extends CI_Model {
 	public function __construct() {
 		parent::__construct ();
 	}
+	public function leerMarcas() {
+		$sql = "select ucase(marca) as marca from (SELECT trim(marca) as marca FROM vehiculo group by marca)x order by marca";
+		return $this->db->query ( $sql )->result ();
+	}
 	public function leerVehiculosAleatorio() {
 		$sql = "(select a.id,a.titulo,a.foto,a.precio
 			  from articulo a 

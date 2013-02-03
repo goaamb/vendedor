@@ -280,8 +280,16 @@ CKEDITOR.config.toolbar =
 				?>">
 						<p class="durac">
 							<label>Marca:</label> <input type="text" class="t-r texto "
-								name="marca" value="<?=my_set_value("marca","")?>" />
-						</p>
+								name="marca" value="<?=my_set_value("marca","")?>" /><?php
+				if (isset ( $marcas ) && is_array ( $marcas ) && count ( $marcas ) > 0) {
+					?><span id="listaMarcas"><strong><?php
+					foreach ( $marcas as $m ) {
+						?><i><?=$m->marca?></i><?php
+					}
+					?></strong></span><?php
+				}
+				?></p>
+
 						<span class="errorTxt" id="marcaError"></span>
 						<div style="clear: both;"></div>
 						<p class="durac">

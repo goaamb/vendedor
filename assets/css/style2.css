@@ -425,3 +425,37 @@ form#formPaypalPago.error {
 .main-col article h1 {
 	font-size: 2em;
 }
+
+#listaMarcas {
+	position: relative;
+	display: inline;
+	left: 72px;
+	top: 25px;
+}
+
+#listaMarcas strong {
+	position: absolute;
+	display: block;
+	background: white;
+	padding: 5px;
+	border: 1px solid #abadb3;
+	width: 120px;
+	overflow: hidden;
+	border-top: none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-weight: normal;
+	max-height: 200px;
+	overflow-y: scroll;
+}
+
+#listaMarcas strong i {
+	display: block;
+	cursor: default;
+	font-style: normal;
+}
+
+#listaMarcas strong i:hover {
+	background: #0000C0;
+	color: white;
+}

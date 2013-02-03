@@ -1,7 +1,9 @@
 <div class="wrapper clearfix">
 	<div class="main-col">
 		<article>
-			<h1>Vehiculos</h1>
+			<h1>
+				<a href="?categoria=1" title="ver más Vehiculos">Vehiculos</a>
+			</h1>
 			<ul>
 		<?php
 		if (isset ( $vehiculos ) && is_array ( $vehiculos ) && count ( $vehiculos )) {
@@ -20,7 +22,9 @@
 	</ul>
 		</article>
 		<article class="mitad" style="margin-right: 10px;">
-			<h1>Mascotas</h1>
+			<h1>
+				<a href="?categoria=2" title="ver más Mascotas">Mascotas</a>
+			</h1>
 			<ul>
 		<?php
 		if (isset ( $mascotas ) && is_array ( $mascotas ) && count ( $mascotas )) {
@@ -39,7 +43,9 @@
 	</ul>
 		</article>
 		<article class="mitad">
-			<h1>Viviendas</h1>
+			<h1>
+				<a href="?categoria=3" title="ver más Viviendas">Viviendas</a>
+			</h1>
 			<ul>
 		<?php
 		if (isset ( $viviendas ) && is_array ( $viviendas ) && count ( $viviendas )) {
