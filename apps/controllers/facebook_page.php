@@ -4,16 +4,34 @@ require_once ('articulo.php');
 class Facebook_page extends Articulo {
 	public function __construct() {
 		parent::__construct ();
+		
 		$this->load->library ( "facebook" );
 		$usuario = $this->mysession->userdata ( "facebook" );
 		if (! $usuario) {
 			$this->mysession->set_userdata ( "facebook", $this->facebook->getUser () );
 		}
 	}
+	public function offlineAccess($x = false) {
+		$this->preheader = array_merge ( $this->preheader, array (
+				"isFacebook" => $this->facebook->getUser () 
+		) );
+		if ($this->checkPermission ()) {
+			var_dump ( $this->facebook->getAccessToken () );
+		} else {
+			$this->loadGUI ( "permiso", array (
+					"loginUrl" => $this->facebook->getLoginUrl ( array (
+							'canvas' => 1,
+							'scope' => 'user_about_me,user_birthday,user_photos,publish_actions,email,publish_stream,share_item,manage_pages,offline_access',
+							'fbconnect' => 0 
+					) ) 
+			), $this->preheader );
+		}
+	}
 	public function index() {
 		$this->preheader = array_merge ( $this->preheader, array (
 				"isFacebook" => $this->mysession->userdata ( "facebook" ) 
 		) );
+		// var_dump($this->facebook->api("/305189709593750/?fields=access_token"));
 		if ($this->checkPermission ()) {
 			if ($this->iLike ()) {
 				parent::nuevo ();
@@ -23,8 +41,9 @@ class Facebook_page extends Articulo {
 		} else {
 			$this->loadGUI ( "permiso", array (
 					"loginUrl" => $this->facebook->getLoginUrl ( array (
+							'canvas' => 1,
 							'scope' => 'user_about_me,user_birthday,user_photos,publish_actions,email,publish_stream,share_item',
-							'redirect_uri' => "http://www.facebook.com/clasificados.vendedor.bolivia/?sk=app_108831492599921" 
+							'fbconnect' => 0 
 					) ) 
 			), $this->preheader );
 		}
@@ -38,29 +57,36 @@ class Facebook_page extends Articulo {
 		);
 		$this->loadGUI ( "articulo/facebook_item", $data );
 	}
-	private function checkPermission() {
+	private function checkPermission($adicional = false) {
 		$permit = true;
 		try {
-			$usuario = $this->mysession->userdata ( "facebook" );
-			$permissions = $this->facebook->api ( "/$usuario/permissions" );
-			if (is_array ( $permissions ) && count ( $permissions ) > 0 && isset ( $permissions ['data'] ) && is_array ( $permissions ['data'] ) && count ( $permissions ['data'] ) > 0) {
-				$myAppPermit = array (
-						'user_about_me',
-						'user_birthday',
-						'user_photos',
-						'publish_actions',
-						'email',
-						'publish_stream',
-						'share_item' 
-				);
-				foreach ( $myAppPermit as $mp ) {
-					if (! array_key_exists ( 'publish_actions', $permissions ['data'] [0] )) {
-						$permit = false;
-						continue;
+			$usuario = $this->facebook->getUser ();
+			if ($usuario) {
+				$permissions = $this->facebook->api ( "/$usuario/permissions" );
+				if (is_array ( $permissions ) && count ( $permissions ) > 0 && isset ( $permissions ['data'] ) && is_array ( $permissions ['data'] ) && count ( $permissions ['data'] ) > 0) {
+					$myAppPermit = array (
+							'user_about_me',
+							'user_birthday',
+							'user_photos',
+							'publish_actions',
+							'email',
+							'publish_stream',
+							'share_item' 
+					);
+					if (is_array ( $adicional )) {
+						$myAppPermit = array_merge ( $myAppPermit, $adicional );
 					}
+					foreach ( $myAppPermit as $mp ) {
+						if (! array_key_exists ( $mp, $permissions ['data'] [0] )) {
+							$permit = false;
+							continue;
+						}
+					}
+				} else {
+					return false;
 				}
 			} else {
-				return false;
+				$permit = false;
 			}
 		} catch ( Exception $ex ) {
 			$permit = false;

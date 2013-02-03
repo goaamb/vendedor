@@ -1258,6 +1258,16 @@ class Articulo extends BaseController {
 			}
 			if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
 				if ($isFacebook) {
+					$params = array (
+							'access_token' => $this->facebook->getAccessToken (),
+							'caption' => $this->articulo->titulo,
+							'link' => base_url () . "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) 
+					);
+					if (count ( $imagenes ) > 0) {
+						$params ["picture"] = base_url () . "files/articulos/" . $imagenes [0];
+					}
+					$this->facebook->api ( "/108831492599921/feed", $params );
+					
 					redirect ( "facebook_page/product/{$this->articulo->id}" );
 				} else {
 					$seccion = "nuevo";
