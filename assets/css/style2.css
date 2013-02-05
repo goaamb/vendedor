@@ -428,7 +428,7 @@ form#formPaypalPago.error {
 
 #listaMarcas {
 	position: relative;
-	display: inline;
+	display: none;
 	left: 72px;
 	top: 25px;
 }

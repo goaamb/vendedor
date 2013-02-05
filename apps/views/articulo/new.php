@@ -280,11 +280,14 @@ CKEDITOR.config.toolbar =
 				?>">
 						<p class="durac">
 							<label>Marca:</label> <input type="text" class="t-r texto "
-								name="marca" value="<?=my_set_value("marca","")?>" /><?php
+								name="marca" value="<?=my_set_value("marca","")?>"
+								onfocus="verListaMarcas.call(this);"
+								onblur="ocultaListaMarcas.call(this);"
+								onkeyup="verListaMarcas.call(this);" autocomplete="off" /><?php
 				if (isset ( $marcas ) && is_array ( $marcas ) && count ( $marcas ) > 0) {
 					?><span id="listaMarcas"><strong><?php
 					foreach ( $marcas as $m ) {
-						?><i><?=$m->marca?></i><?php
+						?><i onclick="seleccionarMarca.call(this)"><?=$m->marca?></i><?php
 					}
 					?></strong></span><?php
 				}
