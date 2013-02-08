@@ -236,6 +236,7 @@ class Home extends BaseController {
 		}
 		return $emails;
 	}
+
 	public function importarVehiculos() {
 		ini_set ( "max_execution_time", "3600" );
 		$data = array ();

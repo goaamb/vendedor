@@ -285,7 +285,7 @@ CKEDITOR.config.toolbar =
 								onblur="ocultaListaMarcas.call(this);"
 								onkeyup="verListaMarcas.call(this);" autocomplete="off" /><?php
 				if (isset ( $marcas ) && is_array ( $marcas ) && count ( $marcas ) > 0) {
-					?><span id="listaMarcas"><strong><?php
+					?><span id="listaMarcas" onclick="clearTimeout(timeMarcas);"><strong><?php
 					foreach ( $marcas as $m ) {
 						?><i onclick="seleccionarMarca.call(this)"><?=$m->marca?></i><?php
 					}

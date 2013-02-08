@@ -37,10 +37,10 @@ class Articulo_model extends CI_Model {
 			  from articulo a 
 			  inner join vehiculo v on v.articulo=a.id
 			  order by a.fecha_registro desc
-			  limit 0,6)";
+			  limit 0,12)";
 		$res = $this->db->query ( $sql )->result ();
-		if (count ( $res ) < 12 && count ( $res ) > 0) {
-			$dif = 12 - count ( $res );
+		if (count ( $res ) < 18 && count ( $res ) > 0) {
+			$dif = 18 - count ( $res );
 			$ids = array ();
 			foreach ( $res as $articulo ) {
 				$ids [] = $articulo->id;
@@ -68,10 +68,10 @@ class Articulo_model extends CI_Model {
 			  from articulo a
 			  inner join mascota m on m.articulo=a.id
 			  order by a.fecha_registro desc
-			  limit 0,3)";
+			  limit 0,6)";
 		$res = $this->db->query ( $sql )->result ();
-		if (count ( $res ) < 6 && count ( $res ) > 0) {
-			$dif = 6 - count ( $res );
+		if (count ( $res ) < 9 && count ( $res ) > 0) {
+			$dif = 9 - count ( $res );
 			$ids = array ();
 			foreach ( $res as $articulo ) {
 				$ids [] = $articulo->id;
@@ -99,10 +99,10 @@ class Articulo_model extends CI_Model {
 			  from articulo a
 			  inner join vivienda v on v.articulo=a.id
 			  order by a.fecha_registro desc
-			  limit 0,3)";
+			  limit 0,6)";
 		$res = $this->db->query ( $sql )->result ();
-		if (count ( $res ) < 6 && count ( $res ) > 0) {
-			$dif = 6 - count ( $res );
+		if (count ( $res ) < 9 && count ( $res ) > 0) {
+			$dif = 9 - count ( $res );
 			$ids = array ();
 			foreach ( $res as $articulo ) {
 				$ids [] = $articulo->id;

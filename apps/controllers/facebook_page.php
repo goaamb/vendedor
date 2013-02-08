@@ -15,13 +15,37 @@ class Facebook_page extends Articulo {
 		$this->preheader = array_merge ( $this->preheader, array (
 				"isFacebook" => $this->facebook->getUser () 
 		) );
-		if ($this->checkPermission ()) {
-			var_dump ( $this->facebook->getAccessToken () );
+		if ($this->checkPermission ( array (
+				'publish_stream',
+				'manage_pages' 
+		) )) {
+			$accessToken = $this->facebook->setExtendedAccessToken ();
+			$res = $this->db->query ( "select codigo,cuenta from fsesion where fid='" . $this->facebook->getUser () . "'" )->result ();
+			if ($res && is_array ( $res ) && count ( $res ) > 0) {
+				if ($res [0]->codigo !== $accessToken) {
+					$cuenta = intval ( $res [0]->cuenta ) + 1;
+					$this->db->update ( "fsesion", array (
+							"codigo" => $accessToken,
+							"fecha" => date ( "Y-m-d H:i:s" ),
+							"cuenta" => $cuenta 
+					), array (
+							"fid" => $this->facebook->getUser () 
+					) );
+				}
+			} else {
+				$this->db->insert ( "fsesion", array (
+						"fid" => $this->facebook->getUser (),
+						"codigo" => $accessToken,
+						"fecha" => date ( "Y-m-d H:i:s" ),
+						"cuenta" => 1 
+				) );
+			}
+			print $accessToken;
 		} else {
 			$this->loadGUI ( "permiso", array (
 					"loginUrl" => $this->facebook->getLoginUrl ( array (
 							'canvas' => 1,
-							'scope' => 'user_about_me,user_birthday,user_photos,publish_actions,email,publish_stream,share_item,manage_pages,offline_access',
+							'scope' => 'publish_stream,manage_pages',
 							'fbconnect' => 0 
 					) ) 
 			), $this->preheader );
@@ -31,7 +55,6 @@ class Facebook_page extends Articulo {
 		$this->preheader = array_merge ( $this->preheader, array (
 				"isFacebook" => $this->mysession->userdata ( "facebook" ) 
 		) );
-		// var_dump($this->facebook->api("/305189709593750/?fields=access_token"));
 		if ($this->checkPermission ()) {
 			if ($this->iLike ()) {
 				parent::nuevo ();
@@ -42,7 +65,7 @@ class Facebook_page extends Articulo {
 			$this->loadGUI ( "permiso", array (
 					"loginUrl" => $this->facebook->getLoginUrl ( array (
 							'canvas' => 1,
-							'scope' => 'user_about_me,user_birthday,user_photos,publish_actions,email,publish_stream,share_item',
+							'scope' => 'user_about_me,user_birthday,user_photos,email',
 							'fbconnect' => 0 
 					) ) 
 			), $this->preheader );
@@ -57,22 +80,18 @@ class Facebook_page extends Articulo {
 		);
 		$this->loadGUI ( "articulo/facebook_item", $data );
 	}
-	private function checkPermission($adicional = false) {
+	private function checkPermission($adicional = array('user_about_me',
+							'user_birthday',
+							'user_photos',
+							'email'
+ )) {
 		$permit = true;
 		try {
 			$usuario = $this->facebook->getUser ();
 			if ($usuario) {
 				$permissions = $this->facebook->api ( "/$usuario/permissions" );
 				if (is_array ( $permissions ) && count ( $permissions ) > 0 && isset ( $permissions ['data'] ) && is_array ( $permissions ['data'] ) && count ( $permissions ['data'] ) > 0) {
-					$myAppPermit = array (
-							'user_about_me',
-							'user_birthday',
-							'user_photos',
-							'publish_actions',
-							'email',
-							'publish_stream',
-							'share_item' 
-					);
+					$myAppPermit = array ();
 					if (is_array ( $adicional )) {
 						$myAppPermit = array_merge ( $myAppPermit, $adicional );
 					}

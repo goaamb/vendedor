@@ -391,6 +391,7 @@ abstract class BaseFacebook {
 		$this->destroySession ();
 		
 		$this->setPersistentData ( 'access_token', $response_params ['access_token'] );
+		return $response_params ['access_token'];
 	}
 	
 	/**

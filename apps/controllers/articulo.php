@@ -980,6 +980,34 @@ class Articulo extends BaseController {
 	public function uploadImage($ouput = true) {
 		return uploadImage ( $ouput );
 	}
+	public function sendMessage($message, $link, $picture) {
+		if (! isset ( $this->facebook )) {
+			$this->load->library ( "facebook" );
+		}
+		
+		$res = $this->db->query ( "select codigo from fsesion order by fecha desc limit 1" )->result ();
+		if ($res && is_array ( $res ) && count ( $res ) > 0) {
+			$access_token = $res [0]->codigo;
+			$pid = 305189709593750;
+			$res = $this->facebook->api ( "/305189709593750/", array (
+					"access_token" => $access_token,
+					"fields" => "access_token" 
+			) );
+			if ($res && is_array ( $res ) && count ( $res ) > 0 && isset ( $res ["access_token"] )) {
+				$pAccess_Token = $res ["access_token"];
+				$res = ($this->facebook->api ( "/$pid/feed", 'POST', array (
+						"access_token" => $pAccess_Token,
+						"message" => $message,
+						"link" => $link,
+						"picture" => $picture 
+				) ));
+				if ($res && is_array ( $res ) && count ( $res ) > 0 && isset ( $res ["id"] )) {
+					return $res ["id"];
+				}
+			}
+		}
+		return false;
+	}
 	public function process() {
 		$this->load->model ( "categoria_model", "categoria" );
 		$this->load->model ( "articulo_model", "articulo" );
@@ -1258,17 +1286,9 @@ class Articulo extends BaseController {
 				$this->articulo->estado = "A la venta";
 			}
 			if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
+				$foto = array_shift ( explode ( ",", $this->articulo->foto ) );
+				$this->sendMessage ( $this->articulo->titulo, base_url () . "product/{$this->articulo->id}-" . normalizarTexto ( $this->articulo->titulo ), base_url () . "files/articulos/$foto" );
 				if ($isFacebook) {
-					$params = array (
-							'access_token' => $this->facebook->getAccessToken (),
-							'caption' => $this->articulo->titulo,
-							'link' => base_url () . "product/" . $this->articulo->id . "-" . normalizarTexto ( $this->articulo->titulo ) 
-					);
-					if (count ( $imagenes ) > 0) {
-						$params ["picture"] = base_url () . "files/articulos/" . $imagenes [0];
-					}
-					$this->facebook->api ( "/108831492599921/feed", $params );
-					
 					redirect ( "facebook_page/product/{$this->articulo->id}" );
 				} else {
 					$seccion = "nuevo";
