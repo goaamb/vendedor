@@ -1285,6 +1285,9 @@ class Articulo extends BaseController {
 				$this->articulo->fecha_registro = date ( "Y-m-d H:i:s" );
 				$this->articulo->estado = "A la venta";
 			}
+			if ($isFacebook) {
+				$this->articulo->facebook="Si";
+			}
 			if (count ( $errores ) == 0 && $this->articulo->registrar ( $modificar, $objeto, $mascota, $vivienda )) {
 				$foto = array_shift ( explode ( ",", $this->articulo->foto ) );
 				$this->sendMessage ( $this->articulo->titulo, base_url () . "product/{$this->articulo->id}-" . normalizarTexto ( $this->articulo->titulo ), base_url () . "files/articulos/$foto" );
