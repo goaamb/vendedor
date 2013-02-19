@@ -135,7 +135,10 @@ $isFacebook = isset ( $isFacebook );
 					onclick="cambiarBusquedaCategoria(3);return false;"><img
 					src="assets/images/html/casa.png" /><span>Viviendas</span></a> <a
 					href="product/nuevo" title="Publicar" class="ultimo"><img
-					src="assets/images/html/publicar.png" /><span>Publicar</span></a>
+					src="assets/images/html/publicar.png" /><span>Publicar</span></a><a
+					href="http://www.ruat.gob.bo/" target="_blank" title="RUAT"
+					class="ultimo" style="right: 100px; top: 10px;"><img
+					src="assets/images/html/ruat.png" /></a>
 			</div>
 
 			<div class="search-box">
