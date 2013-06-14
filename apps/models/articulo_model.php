@@ -31,11 +31,13 @@ class Articulo_model extends CI_Model {
 		$sql = "(select a.id,a.titulo,a.foto,a.precio
 			  from articulo a 
 			  inner join vehiculo v on v.articulo=a.id
+			  where a.estado<>'Finalizado'
 			  order by a.visita desc
 			  limit 0,6)union
 			  (select a.id,a.titulo,a.foto,a.precio
 			  from articulo a 
 			  inner join vehiculo v on v.articulo=a.id
+			  where a.estado<>'Finalizado'
 			  order by a.fecha_registro desc
 			  limit 0,12)";
 		$res = $this->db->query ( $sql )->result ();
@@ -48,7 +50,7 @@ class Articulo_model extends CI_Model {
 			$sql = "select a.id,a.titulo,a.foto,a.precio
 				from articulo a
 				inner join vehiculo v on v.articulo=a.id
-				where a.id not in(" . implode ( ",", $ids ) . ")
+				where a.id not in(" . implode ( ",", $ids ) . ") and a.estado<>'Finalizado'
 			  order by rand()
 			limit $dif";
 			$extra = $this->db->query ( $sql )->result ();
@@ -62,11 +64,13 @@ class Articulo_model extends CI_Model {
 		$sql = "(select a.id,a.titulo,a.foto,a.precio
 			  from articulo a
 			  inner join mascota m on m.articulo=a.id
+				where a.estado<>'Finalizado'
 			  order by a.visita desc
 			  limit 0,3)union
 			  (select a.id,a.titulo,a.foto,a.precio
 			  from articulo a
 			  inner join mascota m on m.articulo=a.id
+				where a.estado<>'Finalizado'
 			  order by a.fecha_registro desc
 			  limit 0,6)";
 		$res = $this->db->query ( $sql )->result ();
@@ -79,7 +83,7 @@ class Articulo_model extends CI_Model {
 			$sql = "select a.id,a.titulo,a.foto,a.precio
 				from articulo a
 				inner join mascota m on m.articulo=a.id
-				where a.id not in(" . implode ( ",", $ids ) . ")
+				where a.id not in(" . implode ( ",", $ids ) . ") and a.estado<>'Finalizado'
 						order by rand()
 						limit $dif";
 			$extra = $this->db->query ( $sql )->result ();
@@ -93,11 +97,13 @@ class Articulo_model extends CI_Model {
 		$sql = "(select a.id,a.titulo,a.foto,a.precio
 			  from articulo a
 			  inner join vivienda v on v.articulo=a.id
+				where a.estado<>'Finalizado'
 			  order by a.visita desc
 			  limit 0,3)union
 			  (select a.id,a.titulo,a.foto,a.precio
 			  from articulo a
 			  inner join vivienda v on v.articulo=a.id
+				where a.estado<>'Finalizado'
 			  order by a.fecha_registro desc
 			  limit 0,6)";
 		$res = $this->db->query ( $sql )->result ();
@@ -110,7 +116,7 @@ class Articulo_model extends CI_Model {
 			$sql = "select a.id,a.titulo,a.foto,a.precio
 				from articulo a
 				inner join vivienda v on v.articulo=a.id
-				where a.id not in(" . implode ( ",", $ids ) . ")
+				where a.id not in(" . implode ( ",", $ids ) . ") and a.estado<>'Finalizado'
 						order by rand()
 						limit $dif";
 			$extra = $this->db->query ( $sql )->result ();
@@ -165,14 +171,14 @@ class Articulo_model extends CI_Model {
 								"inicio" => $t->inicio,
 								"porcentaje" => $t->porcentaje 
 						);
-					break;
+						break;
 					case "Plana" :
 						$tarifa [$tt] [] = array (
 								"inicio" => $t->inicio,
 								"monto" => $t->monto,
 								"nombre" => $t->nombre 
 						);
-					break;
+						break;
 				}
 			}
 		}
@@ -807,10 +813,10 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-				break;
+					break;
 				default :
 					$asc = "desc";
-				break;
+					break;
 			}
 			switch ($orderby) {
 				case "charge" :
@@ -819,29 +825,29 @@ where articulo.id in ($articulos) order by articulo.titulo asc" )->result ();
 					$sextra .= ",if(articulo.estado='Sin Pago',1,if(articulo.estado='Sin Envio',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Pago',1,if(transaccion.estado='Sin Envio',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_terminado ";
-				break;
+					break;
 				case "shipping" :
 					// 1-,
 					// 2-,3
 					$sextra .= ",if(articulo.estado='Sin Envio',1,if(articulo.estado='Enviado',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Envio',1,if(transaccion.estado='Enviado',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_envio ";
-				break;
+					break;
 				case "time" :
 					$sextra .= ",ordernarFechaVendidos(articulo.paquete,'$asc',0) as fecha_conjunta";
 					$sextra2 .= ",ordernarFechaVendidos(transaccion.paquete,'$asc',1) as fecha_conjunta";
 					$orderby = "fecha_conjunta $asc,paquete asc,fecha_terminado ";
-				break;
+					break;
 				case "price" :
 					$sextra .= ",ordernarPrecioVendidos(articulo.paquete) as precio_total";
 					$sextra2 .= ",ordernarPrecioVendidos(transaccion.paquete) as precio_total";
 					$orderby = "precio_total $asc,paquete asc,precio_total ";
-				break;
+					break;
 				default :
 					$sextra .= ",if(articulo.estado='Sin gastos Envio',1,if(articulo.estado='Sin Pago',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin gastos Envio',1,if(transaccion.estado='Sin Pago',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,gastos_envio ";
-				break;
+					break;
 			}
 			return "select * from ((SELECT 
 null as transaccion,
@@ -1169,10 +1175,10 @@ ORDER BY $orderby $asc";
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-				break;
+					break;
 				default :
 					$asc = "desc";
-				break;
+					break;
 			}
 			switch ($orderby) {
 				case "charge" :
@@ -1181,29 +1187,29 @@ ORDER BY $orderby $asc";
 					$sextra .= ",if(articulo.estado='Sin Pago',1,if(articulo.estado='Sin Envio',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Pago',1,if(transaccion.estado='Sin Envio',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_terminado ";
-				break;
+					break;
 				case "shipping" :
 					// 1-,
 					// 2-,3
 					$sextra .= ",if(articulo.estado='Sin Envio',1,if(articulo.estado='Enviado',2,3)) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin Envio',1,if(transaccion.estado='Enviado',2,3)) as aEstado";
 					$orderby = "aEstado $asc,paquete desc,fecha_envio ";
-				break;
+					break;
 				case "time" :
 					$sextra .= ",ordernarFechaVendidos(articulo.paquete,'$asc',0) as fecha_conjunta";
 					$sextra2 .= ",ordernarFechaVendidos(transaccion.paquete,'$asc',1) as fecha_conjunta";
 					$orderby = "fecha_conjunta $asc,paquete asc,fecha_terminado ";
-				break;
+					break;
 				case "price" :
 					$sextra .= ",ordernarPrecioVendidos(articulo.paquete) as precio_total";
 					$sextra2 .= ",ordernarPrecioVendidos(transaccion.paquete) as precio_total";
 					$orderby = "precio_total $asc,paquete asc,precio_total ";
-				break;
+					break;
 				default :
 					$sextra .= ",if(articulo.estado='Sin gastos Envio',1,2) as aEstado";
 					$sextra2 .= ",if(transaccion.estado='Sin gastos Envio',1,2) as aEstado";
 					$orderby = "aEstado $asc,gastos_envio $asc,paquete ";
-				break;
+					break;
 			}
 			
 			return "select * from ((SELECT
@@ -1291,29 +1297,29 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "title" :
 					$orderby = "articulo.titulo";
-				break;
+					break;
 				case "status" :
 					// 1-maximo pujador,
 					// 2-sobrepujado,3-ofertaenviada,4-ofertarechazada
 					$sextra .= ",if(articulo.tipo='Subasta',if((select usuario from oferta where oferta.articulo=articulo.id order by monto_automatico desc,fecha asc limit 0,1)='$usuario',1,2),if((select estado from oferta where oferta.articulo=articulo.id and oferta.usuario='$usuario' order by monto desc limit 0,1 )='Pendiente',3,4))as oEstado";
 					$orderby = "oEstado";
-				break;
+					break;
 				case "price" :
 					$sextra = ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-				break;
+					break;
 				default :
 					$sextra .= ",if(articulo.tipo='Fijo',unix_timestamp(articulo.fecha_registro)+$vencimientoOferta- unix_timestamp(),unix_timestamp(articulo.fecha_registro)+articulo.duracion*86400 - unix_timestamp())as tiempo";
 					$orderby = "tiempo";
-				break;
+					break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-				break;
+					break;
 				default :
 					$asc = "desc";
-				break;
+					break;
 			}
 			$vencimientoOferta = intval ( $this->configuracion->variables ( "vencimientoOferta" ) ) * 86400;
 			return "SELECT articulo.cantidad,articulo.id,articulo.titulo,articulo.tipo,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,(select usuario from oferta where oferta.articulo=articulo.id order by monto desc limit 0,1) as maximoPujador ,(select estado from oferta where oferta.articulo=articulo.id and oferta.usuario='$usuario' order by monto desc limit 0,1) as estadoOferta $sextra
@@ -1342,27 +1348,27 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "follower" :
 					$orderby = "seguidores";
-				break;
+					break;
 				case "deals" :
 					$orderby = "nOfertas";
 					$sextra .= ",(select count(oferta.id) from oferta inner join usuario on usuario.id=oferta.usuario and usuario.estado<>'Baneado' where articulo.id=oferta.articulo) as nOfertas";
-				break;
+					break;
 				case "price" :
 					$sextra .= ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-				break;
+					break;
 				default :
 					$sextra .= ",if(articulo.tipo='Fijo',unix_timestamp(articulo.fecha_registro)+$vencimientoOferta- unix_timestamp(),unix_timestamp(articulo.fecha_registro)+articulo.duracion*86400 - unix_timestamp())as tiempo";
 					$orderby = "tiempo";
-				break;
+					break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-				break;
+					break;
 				default :
 					$asc = "desc";
-				break;
+					break;
 			}
 			if ($new) {
 				$fextra = "INNER JOIN (select count(oferta.id) as cantidad,oferta.articulo from oferta inner join articulo on oferta.articulo=articulo.id inner join usuario on usuario.id=oferta.usuario and usuario.estado<>'Baneado' where oferta.estado='Pendiente' and articulo.tipo='Fijo' group by oferta.articulo ) as s on s.articulo=articulo.id and s.cantidad>0";
@@ -1396,22 +1402,22 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "title" :
 					$orderby = "articulo.titulo";
-				break;
+					break;
 				case "price" :
 					$sextra = ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-				break;
+					break;
 				default :
 					$orderby = "articulo.terminado";
-				break;
+					break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-				break;
+					break;
 				default :
 					$asc = "desc";
-				break;
+					break;
 			}
 			return "SELECT articulo.id,articulo.titulo,articulo.tipo,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,articulo.fecha_terminado $sextra
 			FROM articulo
@@ -1435,25 +1441,25 @@ ORDER BY $orderby $asc ";
 			switch ($orderby) {
 				case "title" :
 					$orderby = "articulo.titulo";
-				break;
+					break;
 				case "type" :
 					$orderby = "articulo.tipo";
-				break;
+					break;
 				case "price" :
 					$sextra .= ",if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "precio";
-				break;
+					break;
 				default :
 					$orderby = "articulo.terminado";
-				break;
+					break;
 			}
 			switch ($asc) {
 				case "asc" :
 					$asc = "asc";
-				break;
+					break;
 				default :
 					$asc = "desc";
-				break;
+					break;
 			}
 			
 			return "SELECT articulo.cantidad,articulo.id,articulo.titulo,articulo.tipo,articulo.precio,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,articulo.fecha_terminado $sextra
@@ -1767,13 +1773,13 @@ ORDER BY $orderby $asc ";
 		switch ($section) {
 			case "item" :
 				$tipo = "Fijo";
-			break;
+				break;
 			case "auction" :
 				$tipo = "Subasta";
-			break;
+				break;
 			default :
 				$tipo = false;
-			break;
+				break;
 		}
 		
 		$x = $this->listarArticulosXCriterioFecha ( $criterio, $tipo, $orden, $ubicacion, $categoria, $idioma, $usuario, $inicio, $totalpagina );
@@ -2038,8 +2044,7 @@ ORDER BY $orderby $asc ";
 					$gastos += intval ( $articulo->gastos_todos * $transaccion->cantidad );
 				}
 				/*
-				 * var_dump ( $gastos ); var_dump ( $monto ); var_dump ( $p->id
-				 * );
+				 * var_dump ( $gastos ); var_dump ( $monto ); var_dump ( $p->id );
 				 */
 				$this->db->update ( "paquete", array (
 						"transacciones" => implode ( ",", $transacciones ),
@@ -2172,16 +2177,7 @@ WHERE paquete.estado='Sin pago' and paquete.vendedor='$articulo->usuario' and pa
 				$wextra2 .= " and articulo.pagos='" . str_replace ( "-", ",", $pagos ) . "'";
 			}
 			/*
-			 * return "SELECT
-			 * articulo.id,articulo.titulo,articulo.tipo,if(isnull(articulo.precio_oferta),articulo.precio,articulo.precio_oferta)
-			 * as
-			 * precio,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto,
-			 * articulo.categoria as
-			 * categoria,articulo.comprador,articulo.fecha_terminado,articulo.estado,
-			 * (if(isnull(articulo.paquete),null,(select gastos_envio from
-			 * paquete where paquete.id=articulo.paquete)))as
-			 * gastos_envio,articulo.pagos FROM articulo $jextra WHERE $wextra
-			 * ORDER BY articulo.titulo desc";
+			 * return "SELECT articulo.id,articulo.titulo,articulo.tipo,if(isnull(articulo.precio_oferta),articulo.precio,articulo.precio_oferta) as precio,articulo.fecha_registro,articulo.duracion,articulo.usuario,articulo.foto, articulo.categoria as categoria,articulo.comprador,articulo.fecha_terminado,articulo.estado, (if(isnull(articulo.paquete),null,(select gastos_envio from paquete where paquete.id=articulo.paquete)))as gastos_envio,articulo.pagos FROM articulo $jextra WHERE $wextra ORDER BY articulo.titulo desc";
 			 */
 			
 			return "select * from ((SELECT 
@@ -2416,14 +2412,12 @@ ORDER BY articulo.titulo desc";
 	}
 	public function desactivarOfertasVistos($articulo) {
 		/*
-		 * if ($articulo) { $this->db->update ( "articulo", array (
-		 * "ofertas_visto" => 0 ), array ( "id" => $articulo ) ); }
+		 * if ($articulo) { $this->db->update ( "articulo", array ( "ofertas_visto" => 0 ), array ( "id" => $articulo ) ); }
 		 */
 	}
 	public function activarOfertasVistos($articulo) {
 		/*
-		 * if ($articulo) { $this->db->update ( "articulo", array (
-		 * "ofertas_visto" => 1 ), array ( "id" => $articulo ) ); }
+		 * if ($articulo) { $this->db->update ( "articulo", array ( "ofertas_visto" => 1 ), array ( "id" => $articulo ) ); }
 		 */
 	}
 	public function ofertar($articulo, $usuario, $monto) {
@@ -2868,11 +2862,11 @@ ORDER BY articulo.titulo desc";
 					switch ($ubicacion [0]) {
 						case "P" :
 							$extra .= " and pais.codigo3='" . $ubicacion [1] . "' ";
-						break;
+							break;
 						
 						default :
 							$extra .= " and pais.continente='" . $ubicacion [1] . "' ";
-						break;
+							break;
 					}
 				}
 			}
@@ -2881,15 +2875,15 @@ ORDER BY articulo.titulo desc";
 					$orderby = "ORDER BY tiempo asc";
 					$vencimientoOferta = intval ( $this->configuracion->variables ( "vencimientoOferta" ) ) * 86400;
 					$adicionalSelect = ",unix_timestamp(articulo.fecha_registro) as tiempo";
-				break;
+					break;
 				case "mas-alto" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio desc";
-				break;
+					break;
 				case "mas-bajo" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio asc";
-				break;
+					break;
 			}
 			$ors = array_merge ( array (), $criterio );
 			if (count ( $ors ) > 0) {
@@ -3164,13 +3158,13 @@ ORDER BY articulo.titulo desc";
 		switch ($section) {
 			case "item" :
 				$tipo = "Fijo";
-			break;
+				break;
 			case "auction" :
 				$tipo = "Subasta";
-			break;
+				break;
 			default :
 				$tipo = false;
-			break;
+				break;
 		}
 		
 		$x = $this->listarArticulosXCriterioFecha2 ( $criterio, $tipo, $orden, $ubicacion, $categoria, false, $usuario, $inicio, $totalpagina, $limite );
@@ -3228,11 +3222,11 @@ ORDER BY articulo.titulo desc";
 					switch ($ubicacion [0]) {
 						case "P" :
 							$extra .= " and pais.codigo3='" . $ubicacion [1] . "' ";
-						break;
+							break;
 						
 						default :
 							$extra .= " and pais.continente='" . $ubicacion [1] . "' ";
-						break;
+							break;
 					}
 				}
 			}
@@ -3241,11 +3235,11 @@ ORDER BY articulo.titulo desc";
 				case "mas-alto" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio desc";
-				break;
+					break;
 				case "mas-bajo" :
 					$precio = "if(articulo.tipo='Fijo',articulo.precio,mayorPuja(articulo.id)) as precio";
 					$orderby = "ORDER BY precio asc";
-				break;
+					break;
 			}
 			$ors = array_merge ( array (), $criterio );
 			if (count ( $ors ) > 0) {
