@@ -103,7 +103,7 @@ class Articulo_model extends CI_Model {
 			  (select a.id,a.titulo,a.foto,a.precio
 			  from articulo a
 			  inner join vivienda v on v.articulo=a.id
-				where a.estado<>'Finalizado'
+				
 			  order by a.fecha_registro desc
 			  limit 0,6)";
 		$res = $this->db->query ( $sql )->result ();
@@ -116,7 +116,7 @@ class Articulo_model extends CI_Model {
 			$sql = "select a.id,a.titulo,a.foto,a.precio
 				from articulo a
 				inner join vivienda v on v.articulo=a.id
-				where a.id not in(" . implode ( ",", $ids ) . ") and a.estado<>'Finalizado'
+				where a.id not in(" . implode ( ",", $ids ) . ")
 						order by rand()
 						limit $dif";
 			$extra = $this->db->query ( $sql )->result ();
